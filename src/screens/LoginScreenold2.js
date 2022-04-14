@@ -2,11 +2,10 @@ import React, {useState} from 'react';
 import {View, Text, SafeAreaView, TextInput} from 'react-native';
 import {COLORS, SIZES} from '../constants';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import SignInSignUpSVG from '../../assets/images/SignInOrSignUp.svg';
 import Button from '../components/Button';
 import LoginSvg from '../Svg/LoginSvg';
 
-const CreateAccount = ({navigation}) => {
+const LoginScreen = ({navigation}) => {
   const [activeInput, setActiveInput] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -18,13 +17,14 @@ const CreateAccount = ({navigation}) => {
         padding: SIZES.base * 2,
         position: 'relative',
       }}>
-      <AntDesignIcon
+      {/* <AntDesignIcon
         name="arrowleft"
         style={{fontSize: 30}}
         onPress={() => {
           navigation.goBack();
         }}
-      />
+      /> */}
+
       <LoginSvg height={100} />
       <View
         style={{
@@ -49,26 +49,8 @@ const CreateAccount = ({navigation}) => {
               textAlign: 'center',
               marginVertical: SIZES.base * 2,
             }}>
-            Create Account
+            Sign In
           </Text>
-          <View style={{marginBottom: SIZES.base}}>
-            <Text
-              style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
-              Full Name
-            </Text>
-            <TextInput
-              onFocus={() => setActiveInput('fullname')}
-              style={{
-                padding: SIZES.base,
-                backgroundColor: COLORS.white,
-                borderRadius: 5,
-                paddingVertical: SIZES.base * 1.5,
-                borderWidth: 1.5,
-                borderColor:
-                  activeInput == 'fullname' ? COLORS.primary : COLORS.white,
-              }}
-            />
-          </View>
           <View style={{marginBottom: SIZES.base}}>
             <Text
               style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
@@ -102,7 +84,6 @@ const CreateAccount = ({navigation}) => {
                 secureTextEntry={showPassword ? false : true}
                 style={{
                   padding: SIZES.base,
-                  color: COLORS.black,
                   backgroundColor: COLORS.white,
                   borderRadius: 5,
                   paddingVertical: SIZES.base * 1.5,
@@ -123,8 +104,22 @@ const CreateAccount = ({navigation}) => {
               />
             </View>
           </View>
+
+          {/* Forgon password link */}
+          <Text
+            style={{
+              fontSize: 16,
+              opacity: 0.8,
+              textAlign: 'right',
+              fontWeight: 'bold',
+            }}
+            onPress={() => {
+              navigation.navigate('ResetScreen');
+            }}>
+            Forgot Password?
+          </Text>
           <Button
-            label={'Create Account'}
+            label={'Sign In'}
             isPrimary={true}
             style={{
               marginVertical: SIZES.base * 2,
@@ -141,7 +136,7 @@ const CreateAccount = ({navigation}) => {
               style={{
                 fontSize: 16,
               }}>
-              Already have an account ?
+              Don't have an account ?
             </Text>
             <Text
               style={{
@@ -151,9 +146,9 @@ const CreateAccount = ({navigation}) => {
                 color: COLORS.primary,
               }}
               onPress={() => {
-                navigation.navigate('Login');
+                navigation.navigate('CreateAccountScreen');
               }}>
-              Sign In
+              Create Account
             </Text>
           </View>
         </View>
@@ -162,4 +157,4 @@ const CreateAccount = ({navigation}) => {
   );
 };
 
-export default CreateAccount;
+export default React.memo(LoginScreen);

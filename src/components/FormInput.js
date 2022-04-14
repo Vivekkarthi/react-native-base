@@ -8,8 +8,10 @@ import {
 } from 'react-native';
 import {windowHeight, windowWidth} from '../utils/Dimentions';
 
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Controller, useFormContext} from 'react-hook-form';
+import {COLORS, SIZES} from '../constants';
 
 const FormInput = props => {
   const {control} = useFormContext();
@@ -34,13 +36,29 @@ const FormInput = props => {
                 />
                 {props.textName === 'Password' ||
                 props.textName === 'ConfirmPassword' ? (
-                  <TouchableOpacity
-                    style={{justifyContent: 'flex-end', padding: 15}}
-                    onPress={props.showHidePassword}>
-                    <Text style={{fontSize: 12}}>
-                      {props.showPassword ? 'Hide' : 'Show'}
-                    </Text>
-                  </TouchableOpacity>
+                  props.showPassword ? (
+                    <AntDesign
+                      name="eye"
+                      onPress={props.showHidePassword}
+                      style={{
+                        position: 'absolute',
+                        right: SIZES.base * 2,
+                        fontSize: 30,
+                        color: COLORS.black,
+                      }}
+                    />
+                  ) : (
+                    <AntDesign
+                      name="eyeo"
+                      onPress={props.showHidePassword}
+                      style={{
+                        position: 'absolute',
+                        right: SIZES.base * 2,
+                        fontSize: 30,
+                        color: COLORS.primary,
+                      }}
+                    />
+                  )
                 ) : null}
               </View>
             </View>
@@ -176,7 +194,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRightColor: '#ccc',
-    borderRightWidth: 1,
+    // borderRightWidth: 1,
     width: 50,
   },
   input: {
