@@ -1,110 +1,64 @@
 export const sliderData = [
   {
-    title: 'First Game',
-    image: require('../../assets/images/homescreen/download.jpg'),
+    title: 'Beautiful and dramatic Antelope Canyon',
+    subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
+    illustration: 'https://i.imgur.com/UYiroysl.jpg',
   },
   {
-    title: 'Second Game',
-    image: require('../../assets/images/homescreen/download.jpg'),
+    title: 'Earlier this morning, NYC',
+    subtitle: 'Lorem ipsum dolor sit amet',
+    illustration: 'https://i.imgur.com/UPrs1EWl.jpg',
   },
   {
-    title: 'Third Game',
-    image: require('../../assets/images/homescreen/download.jpg'),
+    title: 'White Pocket Sunset',
+    subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
+    illustration: 'https://i.imgur.com/MABUbpDl.jpg',
+  },
+  {
+    title: 'Acrocorinth, Greece',
+    subtitle: 'Lorem ipsum dolor sit amet et nuncat mergitur',
+    illustration: 'https://i.imgur.com/KZsmUi2l.jpg',
+  },
+  {
+    title: 'The lone tree, majestic landscape of New Zealand',
+    subtitle: 'Lorem ipsum dolor sit amet',
+    illustration: 'https://i.imgur.com/2nCt3Sbl.jpg',
   },
 ];
 
-export const paidGames = [
-  {
-    poster: require('../../assets/images/spiderman.webp'),
-    title: 'Spider-Man',
-    subtitle: 'Marvel',
-    isFree: 'No',
-    price: '$25.99',
-    id: '1',
-  },
-  {
-    poster: require('../../assets/images/battlefield-2042.webp'),
-    title: 'Battlefield 2042',
-    subtitle: 'EA',
-    isFree: 'No',
-    price: '$19.99',
-    id: '2',
-  },
-  {
-    poster: require('../../assets/images/miles-morales.webp'),
-    title: 'Spider-Man: Miles Morales',
-    subtitle: 'Marvel',
-    isFree: 'No',
-    price: '$29.99',
-    id: '3',
-  },
-  {
-    poster: require('../../assets/images/halo-infinite.jpeg'),
-    title: 'Halo Infinite',
-    subtitle: 'Xbox Game',
-    isFree: 'No',
-    price: '$24.99',
-    id: '4',
-  },
-  {
-    poster: require('../../assets/images/FarCry6.png'),
-    title: 'Far Cry 6',
-    subtitle: 'Ubisoft',
-    isFree: 'No',
-    price: '$15.99',
-    id: '5',
-  },
-  {
-    poster: require('../../assets/images/god-of-war.jpeg'),
-    title: 'God of War: Ragnarok',
-    subtitle: 'Sony',
-    isFree: 'No',
-    price: '$25.99',
-    id: '6',
-  },
-];
-
-export const freeGames = [
-  {
-    poster: require('../../assets/images/Altos-Odyssey.jpeg'),
-    title: 'Altos Odyssey',
-    subtitle: 'Noodlecake Studios',
-    isFree: 'Yes',
-    id: '1',
-  },
-  {
-    poster: require('../../assets/images/asphalt-9.jpeg'),
-    title: 'Asphalt 9',
-    subtitle: 'Gameloft',
-    isFree: 'Yes',
-    id: '2',
-  },
-  {
-    poster: require('../../assets/images/genshin-impact.jpeg'),
-    title: 'Genshin Impact',
-    subtitle: 'miHoYo',
-    isFree: 'Yes',
-    id: '3',
-  },
-  {
-    poster: require('../../assets/images/fortnite.webp'),
-    title: 'Fortnite',
-    subtitle: 'Epic Games',
-    isFree: 'Yes',
-    id: '4',
-  },
-  {
-    poster: require('../../assets/images/pokemon-unite.jpeg'),
-    title: 'Pokémon Unite',
-    subtitle: 'The Pokémon Company',
-    isFree: 'Yes',
-    id: '5',
-  },
-  {
-    poster: require('../../assets/images/diablo-4.jpeg'),
-    title: 'Diablo 4',
-    subtitle: 'Blizzard Entertainment',
-    isFree: 'No',
-    id: '6',
-  },
-];
+export const HomeData = {
+  isLock: true,
+  packageMessage: 'Door box is locked',
+  notifications: [
+    {
+      id: 0,
+      title: 'Notification 1',
+      description: 'Notification messages 1',
+      date: 'April 11, 2022',
+    },
+    {
+      id: 1,
+      title: 'Notification 2',
+      description: 'Notification messages 2',
+      date: 'April 12, 2022',
+    },
+    {
+      id: 2,
+      title: 'Notification 3',
+      description: 'Notification messages 3',
+      date: 'April 12, 2022',
+    },
+    {
+      id: 3,
+      title: 'Notification 4',
+      description: 'Notification messages 4',
+      date: 'April 13, 2022',
+    },
+    {
+      id: 4,
+      title: 'Notification 5',
+      description: 'Notification messages 5',
+      date: 'April 14, 2022',
+    },
+  ],
+};

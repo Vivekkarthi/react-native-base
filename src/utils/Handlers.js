@@ -139,12 +139,10 @@ const clearAppData = async function () {
     const keys = await AsyncStorage.getAllKeys();
     const removeKeys = [];
     keys.map((key, index) => {
-      if (key !== 'rememberMe') {
+      if (key !== 'rememberMe' && key !== 'alreadyLaunched') {
         removeKeys.push(key);
       }
     });
-
-    console.log('========', removeKeys);
     await AsyncStorage.multiRemove(removeKeys);
   } catch (error) {
     console.error('Error clearing app data.');

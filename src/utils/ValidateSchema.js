@@ -39,4 +39,8 @@ const registerSchema = yup.object().shape({
     .required(),
 });
 
-export {loginSchema, registerSchema};
+const resetPassSchema = yup.object().shape({
+  Email: yup.string().email().required(),
+});
+
+export {loginSchema, registerSchema, resetPassSchema};

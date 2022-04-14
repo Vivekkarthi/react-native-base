@@ -13,8 +13,20 @@ import {
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import auth from '@react-native-firebase/auth';
+import {useDispatch} from 'react-redux';
+import {logoutSuccess} from '../redux/actions/AuthState';
 
 const CustomDrawer = props => {
+  const dispatch = useDispatch();
+  const logoutUser = async () => {
+    try {
+      await auth().signOut();
+      dispatch(logoutSuccess());
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView
@@ -34,9 +46,9 @@ const CustomDrawer = props => {
               fontFamily: 'Roboto-Medium',
               marginBottom: 5,
             }}>
-            John Doe
+            Tom Holland
           </Text>
-          <View style={{flexDirection: 'row'}}>
+          {/* <View style={{flexDirection: 'row'}}>
             <Text
               style={{
                 color: '#fff',
@@ -46,27 +58,16 @@ const CustomDrawer = props => {
               280 Coins
             </Text>
             <FontAwesome5 name="coins" size={14} color="#fff" />
-          </View>
+          </View> */}
         </ImageBackground>
         <View style={{flex: 1, backgroundColor: '#fff', paddingTop: 10}}>
           <DrawerItemList {...props} />
         </View>
       </DrawerContentScrollView>
       <View style={{padding: 20, borderTopWidth: 1, borderTopColor: '#ccc'}}>
-        <TouchableOpacity onPress={() => {}} style={{paddingVertical: 15}}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            {/* <Ionicons name="share-social-outline" size={22} /> */}
-            {/* <Text
-              style={{
-                fontSize: 15,
-                fontFamily: 'Roboto-Medium',
-                marginLeft: 5,
-              }}>
-              Tell a Friend
-            </Text> */}
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}} style={{paddingVertical: 15}}>
+        <TouchableOpacity
+          style={{paddingVertical: 15}}
+          onPress={() => logoutUser()}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Ionicons name="exit-outline" size={22} />
             <Text
