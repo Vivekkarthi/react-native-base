@@ -148,7 +148,7 @@ const LoginScreen = ({navigation}) => {
             </Text>
             <FormInput
               autoFocus={true}
-              iconType="user"
+              iconType="mail"
               defaultValues={inputUser.Email ? inputUser.Email : ''}
               textLabel={'Email'}
               // placeHolder={'Email'}
@@ -188,6 +188,23 @@ const LoginScreen = ({navigation}) => {
               />
             </View>
           </View>
+          <View style={{flexDirection: 'row'}}>
+            <CheckBox
+              value={isSelected}
+              onValueChange={setSelection}
+              style={{alignSelf: 'center', borderColor: 'red'}}
+            />
+            <Text
+              style={{
+                fontSize: 12,
+                opacity: 0.8,
+                marginTop: 8,
+                paddingRight: 20,
+                textAlign: 'left',
+              }}>
+              Remember me ?
+            </Text>
+          </View>
 
           <TouchableOpacity
             style={{
@@ -207,24 +224,6 @@ const LoginScreen = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </FormProvider>
-
-        <View style={{flexDirection: 'row'}}>
-          <CheckBox
-            value={isSelected}
-            onValueChange={setSelection}
-            style={{alignSelf: 'center'}}
-          />
-          <Text
-            style={{
-              fontSize: 12,
-              opacity: 0.8,
-              marginTop: 8,
-              paddingRight: 20,
-              textAlign: 'left',
-            }}>
-            Remember me ?
-          </Text>
-        </View>
 
         {!isEmpty(loginError) ? (
           <Text
@@ -306,7 +305,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     height: 150,
-    width: 320,
+    width: 380,
     resizeMode: 'cover',
   },
   text: {

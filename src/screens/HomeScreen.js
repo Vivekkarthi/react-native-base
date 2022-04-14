@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {
   View,
   Text,
+  Image,
   SafeAreaView,
   ScrollView,
   ImageBackground,
@@ -13,16 +14,28 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import BannerSlider from '../components/BannerSlider';
 import {windowWidth} from '../utils/Dimentions';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {logoutSuccess} from '../redux/actions/AuthState';
+import {useDispatch} from 'react-redux';
 
 import {freeGames, paidGames, sliderData} from '../model/data';
-import CustomSwitch from '../components/CustomSwitch';
-import ListItem from '../components/ListItem';
+//import CustomSwitch from '../components/CustomSwitch';
+//import ListItem from '../components/ListItem';
 
 export default function HomeScreen({navigation}) {
   const [gamesTab, setGamesTab] = useState(1);
 
   const renderBanner = ({item, index}) => {
     return <BannerSlider data={item} />;
+  };
+  const dispatch = useDispatch();
+  const logout = async () => {
+    try {
+      await auth().signOut();
+      dispatch(logoutSuccess());
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const onSelectSwitch = value => {
@@ -34,19 +47,24 @@ export default function HomeScreen({navigation}) {
       <ScrollView style={{padding: 20}}>
         <View
           style={{
+            marginVertical: -12,
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginBottom: 20,
           }}>
-          <Text style={{fontSize: 18, fontFamily: 'Roboto-Medium'}}>
-            Hello John Doe
-          </Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <ImageBackground
               source={require('../../assets/images/user-profile.jpg')}
-              style={{width: 35, height: 35}}
+              style={{top: 18, width: 35, height: 35}}
               imageStyle={{borderRadius: 25}}
             />
+          </TouchableOpacity>
+          <Image
+            source={require('../../assets/images/icon.png')}
+            style={{right: 60, bottom: 9, width: 185, height: 88}}
+            imageStyle={{borderRadius: 25}}
+          />
+          <TouchableOpacity onPress={() => logout()}>
+            <Ionicons name="exit-outline" size={22} style={{top: 19}} />
           </TouchableOpacity>
         </View>
 
@@ -63,9 +81,9 @@ export default function HomeScreen({navigation}) {
             name="search"
             size={20}
             color="#C6C6C6"
-            style={{marginRight: 5}}
+            style={{marginRight: 5, top: 5}}
           />
-          <TextInput placeholder="Search" />
+          <TextInput placeholder="Search" style={{padding: -1}} />
         </View>
 
         <View
@@ -75,10 +93,10 @@ export default function HomeScreen({navigation}) {
             justifyContent: 'space-between',
           }}>
           <Text style={{fontSize: 18, fontFamily: 'Roboto-Medium'}}>
-            Upcoming Games
+            Doorbox updates
           </Text>
           <TouchableOpacity onPress={() => {}}>
-            <Text style={{color: '#0aada8'}}>See all</Text>
+            <Text style={{color: '#0aada8'}}></Text>
           </TouchableOpacity>
         </View>
 
@@ -93,16 +111,30 @@ export default function HomeScreen({navigation}) {
           loop={true}
         />
 
-        <View style={{marginVertical: 20}}>
+        <View
+          style={{
+            marginVertical: 25,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <Image
+            source={require('../../assets/images/unlock/Unlock_Icon_72.png')}
+            style={{fontSize: 18, fontFamily: 'Roboto-Medium'}}
+          />
+          <TouchableOpacity onPress={() => {}}>
+            <Text style={{textAlign: 'center'}}>Door box is unlocked</Text>
+          </TouchableOpacity>
+        </View>
+        {/* <View style={{marginVertical: 20}}>
           <CustomSwitch
             selectionMode={1}
             option1="Free to play"
             option2="Paid games"
             onSelectSwitch={onSelectSwitch}
           />
-        </View>
+        </View> */}
 
-        {gamesTab == 1 &&
+        {/* {gamesTab == 1 &&
           freeGames.map(item => (
             <ListItem
               key={item.id}
@@ -117,8 +149,8 @@ export default function HomeScreen({navigation}) {
                 })
               }
             />
-          ))}
-        {gamesTab == 2 &&
+          ))} */}
+        {/* {gamesTab == 2 &&
           paidGames.map(item => (
             <ListItem
               key={item.id}
@@ -134,7 +166,7 @@ export default function HomeScreen({navigation}) {
                 })
               }
             />
-          ))}
+          ))} */}
       </ScrollView>
     </SafeAreaView>
   );

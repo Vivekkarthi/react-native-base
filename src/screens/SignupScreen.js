@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     height: 150,
-    width: 320,
+    width: 380,
     resizeMode: 'cover',
   },
   text: {
