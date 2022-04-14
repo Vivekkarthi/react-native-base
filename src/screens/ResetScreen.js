@@ -158,7 +158,7 @@ const ResetScreen = ({navigation}) => {
             borderTopEndRadius: SIZES.radius * 2,
             padding: SIZES.base * 2,
           }}>
-          <Text style={styles.text}>Forgot Password</Text>
+          <Text style={styles.text}>Restore Password</Text>
           <FormProvider {...methods}>
             <View style={{marginBottom: SIZES.base}}>
               <Text
@@ -167,7 +167,7 @@ const ResetScreen = ({navigation}) => {
               </Text>
               <FormInput
                 autoFocus={true}
-                iconType="user"
+                iconType="mail"
                 defaultValues={inputUser.Email ? inputUser.Email : ''}
                 textLabel={'Email'}
                 // placeHolder={'Email'}
@@ -178,39 +178,13 @@ const ResetScreen = ({navigation}) => {
                 refField={() => PasswordRef.current.focus()}
               />
             </View>
-
             <Text
               style={{
                 fontSize: 16,
-                opacity: 0.8,
-                textAlign: 'right',
-                fontWeight: 'bold',
-              }}
-              onPress={() => {
-                navigation.navigate('ResetScreen');
               }}>
-              Forgot Password?
+              You will receive email with password reset link.
             </Text>
           </FormProvider>
-
-          <View style={{flexDirection: 'row'}}>
-            <CheckBox
-              value={isSelected}
-              onValueChange={setSelection}
-              style={{alignSelf: 'center'}}
-            />
-            <Text
-              style={{
-                fontSize: 12,
-                opacity: 0.8,
-                marginTop: 8,
-                paddingRight: 20,
-                textAlign: 'left',
-              }}>
-              Remember me ?
-            </Text>
-          </View>
-
           {!isEmpty(loginError) ? (
             <Text
               style={{
@@ -241,40 +215,13 @@ const ResetScreen = ({navigation}) => {
               alignItems: 'center',
               marginVertical: SIZES.base,
             }}>
-            <Text
-              style={{
-                fontSize: 16,
-              }}>
-              Don't have an account ?
-            </Text>
             <TouchableOpacity
               style={{
                 padding: 10,
               }}
               onPress={() => {
                 navigation.navigate('Signup');
-              }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  marginLeft: SIZES.base,
-                  color: COLORS.primary,
-                }}>
-                Create Account
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              textAlign: 'center',
-              justifyContent: 'center',
-            }}>
-            <Text style={styles.color_textPrivate}>
-              &#169; 2022 Door box, All rights reserved.
-            </Text>
+              }}></TouchableOpacity>
           </View>
         </View>
       </ScrollView>
@@ -292,7 +239,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     height: 150,
-    width: 320,
+    width: 380,
     resizeMode: 'cover',
   },
   text: {
