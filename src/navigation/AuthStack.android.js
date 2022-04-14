@@ -1,15 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
 import SignupScreen from '../screens/SignupScreen';
 import LoginScreen from '../screens/LoginScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
-
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import CreateAccount from '../screens/CreateAccount';
 import ResetScreen from '../screens/ResetScreen';
 
 const Stack = createStackNavigator();
@@ -56,11 +54,7 @@ const AuthStack = () => {
         component={LoginScreen}
         options={{header: () => null}}
       />
-      <Stack.Screen
-        name="CreateAccountScreen"
-        component={CreateAccount}
-        options={{header: () => null}}
-      />
+
       <Stack.Screen
         name="ResetScreen"
         component={ResetScreen}

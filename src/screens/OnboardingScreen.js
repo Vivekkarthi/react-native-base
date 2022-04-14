@@ -55,8 +55,8 @@ const OnboardingScreen = ({navigation}) => {
               source={require('../../assets/images/onboarding-img1.png')}
             />
           ),
-          title: 'Connect to the World',
-          subtitle: 'A New Way To Connect With The World',
+          title: 'Secure Combination Lock',
+          subtitle: 'To receive multiple deliveries',
         },
         {
           backgroundColor: '#fdeb93',
@@ -65,8 +65,8 @@ const OnboardingScreen = ({navigation}) => {
               source={require('../../assets/images/onboarding-img2.png')}
             />
           ),
-          title: 'Share Your Favorites',
-          subtitle: 'Share Your Thoughts With Similar Kind of People',
+          title: 'Lock Assembly',
+          subtitle: 'That fits all types of doorknobs, guardrails and posts',
         },
         {
           backgroundColor: '#e9bcbe',
@@ -75,8 +75,8 @@ const OnboardingScreen = ({navigation}) => {
               source={require('../../assets/images/onboarding-img3.png')}
             />
           ),
-          title: 'Become The Star',
-          subtitle: 'Let The Spot Light Capture You',
+          title: 'Anti Theft Audible Alarm',
+          subtitle: 'A 125-decibe; audible alarm',
         },
       ]}
     />

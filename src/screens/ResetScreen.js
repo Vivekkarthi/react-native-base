@@ -7,40 +7,26 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
+  Alert,
 } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
-import {useDispatch} from 'react-redux';
 import {useForm, FormProvider} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import {loginSchema} from '../utils/ValidateSchema';
+import {resetPassSchema} from '../utils/ValidateSchema';
 
-import auth from '@react-native-firebase/auth';
-import {firebaseAuthErrors} from '../utils/Handlers';
 import {isEmpty} from 'lodash';
-import {rememberMe, saveMemberDetails} from '../redux/actions/AuthState';
 import {Loader} from '../components/Loader';
-import {useSelector} from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import SVGComponent from '../components/svg';
 import {COLORS, SIZES} from '../constants';
-import LoginSvg from '../Svg/LoginSvg';
 
 const ResetScreen = ({navigation}) => {
-  const {rememberLogin} = useSelector(state => state.AuthState);
-
   const [inputUser, setInputUser] = useState({Email: '', Password: ''});
-  const [isSelected, setSelection] = useState(false);
   const [loader, setLoader] = useState(false);
   const [loginError, setLoginError] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
-  const [pwdVisible, setPwdVisible] = useState(true);
 
   const EmailRef = useRef(null);
-  const PasswordRef = useRef(null);
 
   const methods = useForm({
     criteriaMode: 'all',
@@ -50,80 +36,27 @@ const ResetScreen = ({navigation}) => {
     },
     mode: 'all',
     reValidateMode: 'onChange',
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(resetPassSchema),
   });
   const {
     handleSubmit,
-    setValue,
     formState: {errors},
   } = methods;
-
-  const dispatch = useDispatch();
 
   const onResetSubmit = async user => {
     try {
       setLoginError(null);
-      setLoader(true);
+      // setLoader(true);
+      Alert.alert('You will receive email with password for reset password');
       const formData = {
         Email: user.Email,
-        Password: user.Password,
       };
       setInputUser(() => formData);
-      await auth()
-        .signInWithEmailAndPassword(user.Email, user.Password)
-        .then(authResponse => {
-          if (authResponse.user) {
-            authResponse.user
-              .getIdToken()
-              .then(token => {
-                console.log('Token: ', token);
-                dispatch(rememberMe(user, isSelected));
-                dispatch(saveMemberDetails(authResponse.user));
-                setLoader(false);
-                setInputUser(prevState => ({
-                  ...prevState,
-                  Email: '',
-                  Password: '',
-                }));
-              })
-              .catch(error => {
-                setLoader(false);
-                console.log('CatchedTokenError', error);
-              });
-          }
-        })
-        //we need to catch the whole sign up process if it fails too.
-        .catch(error => {
-          const response = firebaseAuthErrors(error);
-          setLoader(false);
-          setLoginError(response);
-          console.log('CatchedTokenError2', response);
-        });
     } catch (e) {
       console.log(e);
       setLoader(false);
     }
   };
-
-  const getRememberData = useCallback(async () => {
-    if (rememberLogin) {
-      await AsyncStorage.getItem('rememberMe').then(value => {
-        const rememberData = JSON.parse(value);
-        setValue('Email', rememberData.Email);
-        setValue('Password', rememberData.Password);
-
-        setInputUser(prevState => ({
-          ...prevState,
-          Email: rememberData.Email,
-          Password: rememberData.Password,
-        }));
-      });
-    }
-  }, [rememberLogin, setValue]);
-
-  useEffect(() => {
-    getRememberData();
-  }, [getRememberData]);
 
   return (
     <SafeAreaView
@@ -175,7 +108,6 @@ const ResetScreen = ({navigation}) => {
                 keyboardType="email-address"
                 errorobj={errors}
                 refs={EmailRef}
-                refField={() => PasswordRef.current.focus()}
               />
             </View>
             <Text
@@ -239,7 +171,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     height: 150,
-    width: 380,
+    width: 300,
     resizeMode: 'cover',
   },
   text: {

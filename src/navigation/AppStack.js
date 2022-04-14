@@ -1,14 +1,12 @@
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import ProfileScreen from '../screens/ProfileScreen';
-import MessagesScreen from '../screens/MessagesScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import Feather from 'react-native-vector-icons/Feather';
 
 import TabNavigator from './TabNavigator';
-
 import CustomDrawer from '../components/CustomDrawer';
+import NotificationsScreen from '../screens/NotificationsScreen';
+import UsersScreen from '../screens/UsersScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -18,7 +16,7 @@ const AuthStack = () => {
       drawerContent={props => <CustomDrawer {...props} />}
       screenOptions={{
         headerShown: false,
-        drawerActiveBackgroundColor: '#aa18ea',
+        drawerActiveBackgroundColor: '#002060',
         drawerActiveTintColor: '#fff',
         drawerInactiveTintColor: '#333',
         drawerLabelStyle: {
@@ -32,34 +30,25 @@ const AuthStack = () => {
         component={TabNavigator}
         options={{
           drawerIcon: ({color}) => (
-            <Ionicons name="home-outline" size={22} color={color} />
+            <Feather name="home" size={22} color={color} />
           ),
         }}
       />
       <Drawer.Screen
-        name="Profile"
-        component={ProfileScreen}
+        name="Notifications"
+        component={NotificationsScreen}
         options={{
           drawerIcon: ({color}) => (
-            <Ionicons name="person-outline" size={22} color={color} />
+            <Ionicons name="notifications" size={22} color={color} />
           ),
         }}
       />
       <Drawer.Screen
-        name="Messages"
-        component={MessagesScreen}
+        name="Users"
+        component={UsersScreen}
         options={{
           drawerIcon: ({color}) => (
-            <Ionicons name="chatbox-ellipses-outline" size={22} color={color} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{
-          drawerIcon: ({color}) => (
-            <Ionicons name="settings-outline" size={22} color={color} />
+            <Feather name="users" size={22} color={color} />
           ),
         }}
       />

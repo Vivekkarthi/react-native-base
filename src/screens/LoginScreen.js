@@ -23,9 +23,7 @@ import {rememberMe, saveMemberDetails} from '../redux/actions/AuthState';
 import {Loader} from '../components/Loader';
 import {useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SVGComponent from '../components/svg';
 import {COLORS, SIZES} from '../constants';
-import LoginSvg from '../Svg/LoginSvg';
 
 const LoginScreen = ({navigation}) => {
   const {rememberLogin} = useSelector(state => state.AuthState);
@@ -305,7 +303,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     height: 150,
-    width: 380,
+    width: 300,
     resizeMode: 'cover',
   },
   text: {

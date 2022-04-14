@@ -1,172 +1,116 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  ImageBackground,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import Carousel from 'react-native-snap-carousel';
-import Feather from 'react-native-vector-icons/Feather';
-
-import BannerSlider from '../components/BannerSlider';
-import {windowWidth} from '../utils/Dimentions';
+import React, {useState, useEffect} from 'react';
+import {View, SafeAreaView, ScrollView} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {logoutSuccess} from '../redux/actions/AuthState';
-import {useDispatch} from 'react-redux';
+import moment from 'moment';
 
-import {freeGames, paidGames, sliderData} from '../model/data';
-//import CustomSwitch from '../components/CustomSwitch';
-//import ListItem from '../components/ListItem';
+import CustomHeader from '../components/CustomHeader';
+import {useSelector, useDispatch} from 'react-redux';
+import {fetchHomeData} from '../redux/actions/HomeState';
+import {Card, Title, Paragraph} from 'react-native-paper';
 
 export default function HomeScreen({navigation}) {
-  const [gamesTab, setGamesTab] = useState(1);
-
-  const renderBanner = ({item, index}) => {
-    return <BannerSlider data={item} />;
-  };
   const dispatch = useDispatch();
-  const logout = async () => {
-    try {
-      await auth().signOut();
-      dispatch(logoutSuccess());
-    } catch (e) {
-      console.log(e);
-    }
+  const {homeDetails} = useSelector(state => state.HomeState);
+  const [notify, setNotify] = useState({
+    notifications: homeDetails.notifications,
+    activeNotification: '',
+    date: moment(new Date()).format('MMMM DD, YYYY'),
+    title: 'Notifications',
+    description: 'Notification not found',
+  });
+
+  const getNextNotify = () => {
+    var arr = homeDetails.notifications.length;
+    var idx = notify.activeNotification + 1;
+    var idx = idx % arr;
+
+    setNotify({
+      activeNotification: idx,
+      date: homeDetails.notifications[idx].date,
+      title: homeDetails.notifications[idx].title,
+      description: homeDetails.notifications[idx].description,
+    });
   };
 
-  const onSelectSwitch = value => {
-    setGamesTab(value);
+  const getPreviousNotify = () => {
+    var arr = homeDetails.notifications.length;
+    var idx = notify.activeNotification;
+
+    console.log('initial: ' + idx);
+
+    if (idx === 0) {
+      var idx = arr - 1;
+    } else {
+      var idx = idx - 1;
+    }
+
+    console.log('updated: ' + idx);
+
+    setNotify({
+      activeNotification: idx,
+      date: homeDetails.notifications[idx].date,
+      title: homeDetails.notifications[idx].title,
+      description: homeDetails.notifications[idx].description,
+    });
   };
+
+  useEffect(() => {
+    dispatch(fetchHomeData());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
-        <View
-          style={{
-            marginVertical: -12,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <ImageBackground
-              source={require('../../assets/images/user-profile.jpg')}
-              style={{top: 18, width: 35, height: 35}}
-              imageStyle={{borderRadius: 25}}
-            />
-          </TouchableOpacity>
-          <Image
-            source={require('../../assets/images/icon.png')}
-            style={{right: 60, bottom: 9, width: 185, height: 88}}
-            imageStyle={{borderRadius: 25}}
-          />
-          <TouchableOpacity onPress={() => logout()}>
-            <Ionicons name="exit-outline" size={22} style={{top: 19}} />
-          </TouchableOpacity>
-        </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            borderColor: '#C6C6C6',
-            borderWidth: 1,
-            borderRadius: 8,
-            paddingHorizontal: 10,
-            paddingVertical: 8,
-          }}>
-          <Feather
-            name="search"
-            size={20}
-            color="#C6C6C6"
-            style={{marginRight: 5, top: 5}}
-          />
-          <TextInput placeholder="Search" style={{padding: -1}} />
-        </View>
-
-        <View
-          style={{
-            marginVertical: 15,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <Text style={{fontSize: 18, fontFamily: 'Roboto-Medium'}}>
-            Doorbox updates
-          </Text>
-          <TouchableOpacity onPress={() => {}}>
-            <Text style={{color: '#0aada8'}}></Text>
-          </TouchableOpacity>
-        </View>
-
-        <Carousel
-          ref={c => {
-            this._carousel = c;
-          }}
-          data={sliderData}
-          renderItem={renderBanner}
-          sliderWidth={windowWidth - 40}
-          itemWidth={300}
-          loop={true}
-        />
-
+        <CustomHeader navigation={navigation} />
         <View
           style={{
             marginVertical: 25,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
-          <Image
-            source={require('../../assets/images/unlock/Unlock_Icon_72.png')}
-            style={{fontSize: 18, fontFamily: 'Roboto-Medium'}}
-          />
-          <TouchableOpacity onPress={() => {}}>
-            <Text style={{textAlign: 'center'}}>Door box is unlocked</Text>
-          </TouchableOpacity>
+          <Card>
+            <Card.Cover
+              style={{width: 100, height: 100}}
+              source={
+                homeDetails.isLock
+                  ? require('../../assets/images/lock/Lock_Icon_256.png')
+                  : require('../../assets/images/unlock/Unlock_Icon_256.png')
+              }
+            />
+          </Card>
+          <Card>
+            <Card.Content>
+              <Title>Status</Title>
+              <Paragraph>{homeDetails.packageMessage}</Paragraph>
+            </Card.Content>
+          </Card>
         </View>
-        {/* <View style={{marginVertical: 20}}>
-          <CustomSwitch
-            selectionMode={1}
-            option1="Free to play"
-            option2="Paid games"
-            onSelectSwitch={onSelectSwitch}
-          />
-        </View> */}
 
-        {/* {gamesTab == 1 &&
-          freeGames.map(item => (
-            <ListItem
-              key={item.id}
-              photo={item.poster}
-              title={item.title}
-              subTitle={item.subtitle}
-              isFree={item.isFree}
-              onPress={() =>
-                navigation.navigate('GameDetails', {
-                  title: item.title,
-                  id: item.id,
-                })
-              }
+        <View style={{flex: 1}}>
+          <Card style={{paddingRight: 14}}>
+            <Card.Title
+              title={notify.date}
+              subtitle={notify.description}
+              titleStyle={{fontSize: 18}}
+              subtitleStyle={{fontSize: 16}}
+              left={props => (
+                <Ionicons
+                  name="arrow-back-circle-outline"
+                  size={30}
+                  onPress={() => getPreviousNotify()}
+                />
+              )}
+              right={props => (
+                <Ionicons
+                  name="arrow-forward-circle-outline"
+                  size={30}
+                  onPress={() => getNextNotify()}
+                />
+              )}
             />
-          ))} */}
-        {/* {gamesTab == 2 &&
-          paidGames.map(item => (
-            <ListItem
-              key={item.id}
-              photo={item.poster}
-              title={item.title}
-              subTitle={item.subtitle}
-              isFree={item.isFree}
-              price={item.price}
-              onPress={() =>
-                navigation.navigate('GameDetails', {
-                  title: item.title,
-                  id: item.id,
-                })
-              }
-            />
-          ))} */}
+          </Card>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
