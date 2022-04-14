@@ -1,11 +1,32 @@
 import React from 'react';
 import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {COLORS, SIZES} from '../constants';
 import {windowHeight, windowWidth} from '../utils/Dimentions';
 
-const FormButton = ({buttonTitle, ...rest}) => {
+const FormButton = ({isPrimary, style, buttonTitle, ...rest}) => {
   return (
-    <TouchableOpacity style={styles.buttonContainer} {...rest}>
-      <Text style={styles.buttonText}>{buttonTitle}</Text>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={{
+        paddingVertical: SIZES.base * 1.5,
+        backgroundColor: isPrimary ? '#002060' : COLORS.primary,
+        borderWidth: 1.5,
+        borderColor: isPrimary ? '#002060' : COLORS.black,
+        borderRadius: 5,
+        width: '100%',
+        alignItems: 'center',
+        marginVertical: SIZES.base,
+        ...style,
+      }}
+      {...rest}>
+      <Text
+        style={{
+          color: isPrimary ? COLORS.white : COLORS.black,
+          fontSize: 20,
+          fontWeight: 'bold',
+        }}>
+        {buttonTitle}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -14,11 +35,11 @@ export default FormButton;
 
 const styles = StyleSheet.create({
   buttonContainer: {
+    marginVertical: SIZES.base * 2,
     marginTop: 10,
     width: '100%',
     height: windowHeight / 15,
-    backgroundColor: '#2e64e5',
-    padding: 10,
+    backgroundColor: '#002060',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 3,

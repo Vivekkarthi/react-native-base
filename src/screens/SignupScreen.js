@@ -1,19 +1,19 @@
 import React, {useState, useRef} from 'react';
 import {
   View,
+  ScrollView,
   Text,
   TouchableOpacity,
   Platform,
   StyleSheet,
   KeyboardAvoidingView,
   FlatList,
+  Image,
 } from 'react-native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
-//import SocialButton from '../components/SocialButton';
 
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import {useDispatch} from 'react-redux';
 import {saveMemberDetails} from '../redux/actions/AuthState';
 import {FormProvider, useForm} from 'react-hook-form';
@@ -22,15 +22,14 @@ import {registerSchema} from '../utils/ValidateSchema';
 import {isEmpty} from 'lodash';
 import {firebaseAuthErrors} from '../utils/Handlers';
 import {Loader} from '../components/Loader';
+import {COLORS, SIZES} from '../constants';
 
 const SignupScreen = ({navigation}) => {
   const [inputUser, setInputUser] = useState({
-    FirstName: '',
-    Surname: '',
-    PhoneNumber: '',
+    Name: '',
     Email: '',
     Password: '',
-    ConfirmPassword: '',
+    ControllerId: '',
   });
   const [loader, setLoader] = useState(false);
   const [registerError, setRegisterError] = useState(null);
@@ -50,12 +49,10 @@ const SignupScreen = ({navigation}) => {
     formState: {errors},
   } = methods;
 
-  const FirstNameRef = useRef(null);
-  const SurnameRef = useRef(null);
-  const PhoneNumberRef = useRef(null);
+  const NameRef = useRef(null);
   const EmailRef = useRef(null);
   const PasswordRef = useRef(null);
-  const ConfirmPasswordRef = useRef(null);
+  const ControllerRef = useRef(null);
 
   const dispatch = useDispatch();
 
@@ -64,12 +61,10 @@ const SignupScreen = ({navigation}) => {
       setRegisterError(null);
       setLoader(true);
       const formData = {
-        FirstName: user.FirstName,
-        Surname: user.Surname,
-        PhoneNumber: user.PhoneNumber,
+        Name: user.Name,
         Email: user.Email,
         Password: user.Password,
-        ConfirmPassword: user.ConfirmPassword,
+        ControllerId: user.ControllerId,
       };
       setInputUser(() => formData);
       await auth()
@@ -78,31 +73,11 @@ const SignupScreen = ({navigation}) => {
           if (authResponse.user) {
             setInputUser({
               ...inputUser,
-              FirstName: user.FirstName,
-              Surname: user.Surname,
-              PhoneNumber: user.PhoneNumber,
+              Name: user.Name,
               Email: user.Email,
               Password: user.Password,
-              ConfirmPassword: user.ConfirmPassword,
+              ControllerId: user.ControllerId,
             });
-            // firestore()
-            //   .collection('users')
-            //   .doc(auth().currentUser.uid)
-            //   .set({
-            //     fname: user.FirstName,
-            //     lname: user.Surname,
-            //     email: email,
-            //     createdAt: firestore.Timestamp.fromDate(new Date()),
-            //     userImg: null,
-            //   })
-            //   //ensure we catch any errors at this stage to advise us if something does go wrong
-            //   .catch(error => {
-            //     console.log(
-            //       'Something went wrong with added user to firestore: ',
-            //       error,
-            //     );
-            //     setLoader(false);
-            //   });
             dispatch(saveMemberDetails(authResponse.user));
             setLoader(false);
           }
@@ -124,95 +99,87 @@ const SignupScreen = ({navigation}) => {
     return (
       <View>
         <FormProvider {...methods}>
-          <FormInput
-            iconType="edit"
-            autoFocus={true}
-            defaultValues={inputUser.FirstName}
-            textLabel={'First Name'}
-            placeHolder={'First Name'}
-            textName={'FirstName'}
-            keyboardType="default"
-            errorobj={errors}
-            validationError={registerError}
-            refs={FirstNameRef}
-            refField={() => SurnameRef.current.focus()}
-          />
+          <View style={{marginBottom: SIZES.base}}>
+            <Text
+              style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
+              Name
+            </Text>
+            <FormInput
+              iconType="edit"
+              autoFocus={true}
+              defaultValues={inputUser.Name}
+              textLabel={'Name'}
+              // placeHolder={'Name'}
+              textName={'Name'}
+              keyboardType="default"
+              errorobj={errors}
+              validationError={registerError}
+              refs={NameRef}
+              refField={() => EmailRef.current.focus()}
+            />
+          </View>
 
-          <FormInput
-            iconType="edit"
-            defaultValues={inputUser.Surname}
-            textLabel={'Controller id'}
-            placeHolder={'Controller id'}
-            textName={'Controller id'}
-            keyboardType="default"
-            errorobj={errors}
-            validationError={registerError}
-            refs={SurnameRef}
-            refField={() => PhoneNumberRef.current.focus()}
-          />
+          <View style={{marginBottom: SIZES.base}}>
+            <Text
+              style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
+              Email
+            </Text>
+            <FormInput
+              iconType="mail"
+              defaultValues={inputUser.Email}
+              textLabel={'Email'}
+              // placeHolder={'Email'}
+              textName={'Email'}
+              keyboardType="email-address"
+              errorobj={errors}
+              validationError={registerError}
+              refs={EmailRef}
+              refField={() => PasswordRef.current.focus()}
+            />
+          </View>
 
-          <FormInput
-            iconType="phone"
-            defaultValues={inputUser.PhoneNumber}
-            textLabel={'Phone Number'}
-            placeHolder={'Phone Number'}
-            textName={'PhoneNumber'}
-            keyboardType="numeric"
-            errorobj={errors}
-            validationError={registerError}
-            refs={PhoneNumberRef}
-            refField={() => EmailRef.current.focus()}
-          />
+          <View style={{marginBottom: SIZES.base}}>
+            <Text
+              style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
+              Password
+            </Text>
+            <FormInput
+              iconType="lock"
+              defaultValues={inputUser.Password}
+              textLabel={'Password'}
+              // placeHolder={'Password'}
+              textName={'Password'}
+              keyboardType="default"
+              errorobj={errors}
+              validationError={registerError}
+              showHidePassword={() => {
+                setPwdVisible(!pwdVisible);
+                setShowPassword(!showPassword);
+              }}
+              showPassword={showPassword}
+              pwdVisible={pwdVisible}
+              refs={PasswordRef}
+              refField={() => ControllerRef.current.focus()}
+            />
+          </View>
 
-          <FormInput
-            iconType="user"
-            defaultValues={inputUser.Email}
-            textLabel={'Email'}
-            placeHolder={'Email'}
-            textName={'Email'}
-            keyboardType="email-address"
-            errorobj={errors}
-            validationError={registerError}
-            refs={EmailRef}
-            refField={() => PasswordRef.current.focus()}
-          />
-
-          <FormInput
-            iconType="lock"
-            defaultValues={inputUser.Password}
-            textLabel={'Password'}
-            placeHolder={'Password'}
-            textName={'Password'}
-            keyboardType="default"
-            errorobj={errors}
-            validationError={registerError}
-            showHidePassword={() => {
-              setPwdVisible(!pwdVisible);
-              setShowPassword(!showPassword);
-            }}
-            showPassword={showPassword}
-            pwdVisible={pwdVisible}
-            refs={PasswordRef}
-            refField={() => ConfirmPasswordRef.current.focus()}
-          />
-
-          <FormInput
-            iconType="lock"
-            defaultValues={inputUser.ConfirmPassword}
-            textLabel={'ConfirmPassword'}
-            placeHolder={'ConfirmPassword'}
-            textName={'ConfirmPassword'}
-            keyboardType="default"
-            errorobj={errors}
-            validationError={registerError}
-            showHidePassword={() => {
-              setConfirmPwdVisible(!confirmPwdVisible);
-              setConfirmShowPassword(!confirmShowPassword);
-            }}
-            showPassword={confirmShowPassword}
-            pwdVisible={confirmPwdVisible}
-            refs={ConfirmPasswordRef}
-          />
+          <View style={{marginBottom: SIZES.base}}>
+            <Text
+              style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
+              Controller ID
+            </Text>
+            <FormInput
+              iconType="idcard"
+              defaultValues={inputUser.ControllerId}
+              textLabel={'Controller Id'}
+              // placeHolder={'Name'}
+              textName={'ControllerId'}
+              keyboardType="default"
+              errorobj={errors}
+              validationError={registerError}
+              refs={ControllerRef}
+            />
+          </View>
         </FormProvider>
 
         {!isEmpty(firebaseError) ? (
@@ -244,11 +211,15 @@ const SignupScreen = ({navigation}) => {
         ) : null}
 
         <FormButton
-          buttonTitle="Sign Up"
+          buttonTitle="Create Account"
+          isPrimary={true}
+          style={{
+            marginVertical: SIZES.base * 2,
+          }}
           onPress={handleSubmit(onRegisterSubmit)}
         />
 
-        <View style={styles.textPrivate}>
+        {/* <View style={styles.textPrivate}>
           <Text style={styles.color_textPrivate}>
             By registering, you confirm that you accept our{' '}
           </Text>
@@ -261,56 +232,76 @@ const SignupScreen = ({navigation}) => {
           <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
             Privacy Policy
           </Text>
-        </View>
-
-        {/* {Platform.OS === 'android' ? (
-          <View>
-            <SocialButton
-              buttonTitle="Sign Up with Facebook"
-              btnType="facebook"
-              color="#4867aa"
-              backgroundColor="#e6eaf4"
-              onPress={() => {}}
-            />
-
-            <SocialButton
-              buttonTitle="Sign Up with Google"
-              btnType="google"
-              color="#de4d41"
-              backgroundColor="#f5e7ea"
-              onPress={() => {}}
-            />
-          </View>
-        ) : null} */}
+        </View> */}
       </View>
     );
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={[styles.container]}>
       {loader ? <Loader /> : null}
-      <Text style={styles.text}>Create an account</Text>
+      <Image
+        source={require('../../assets/images/icon.png')}
+        style={styles.logo}
+      />
 
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
-        <FlatList
-          style={{width: '100%'}}
-          keyboardShouldPersistTaps="always"
-          showsVerticalScrollIndicator={false}
-          data={[{ID: '1'}]}
-          keyExtractor={item => `${item.ID}`}
-          renderItem={renderItem}
-        />
-      </KeyboardAvoidingView>
+      <View
+        style={{
+          backgroundColor: COLORS.lightGray,
+          width: '100%',
+          borderTopStartRadius: SIZES.radius * 2,
+          borderTopEndRadius: SIZES.radius * 2,
+          padding: SIZES.base * 2,
+        }}>
+        <Text style={styles.text}>Create Account</Text>
 
-      <TouchableOpacity
-        style={styles.navButton}
-        onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.navButtonText}>Have an account? Sign In</Text>
-      </TouchableOpacity>
-    </View>
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+          <FlatList
+            style={{width: '100%'}}
+            keyboardShouldPersistTaps="always"
+            showsVerticalScrollIndicator={false}
+            data={[{ID: '1'}]}
+            keyExtractor={item => `${item.ID}`}
+            renderItem={renderItem}
+          />
+        </KeyboardAvoidingView>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginVertical: SIZES.base,
+          }}>
+          <Text
+            style={{
+              fontSize: 16,
+            }}>
+            Already have an account ?
+          </Text>
+          <TouchableOpacity
+            style={{
+              padding: 10,
+            }}
+            onPress={() => {
+              navigation.navigate('Login');
+            }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: 'bold',
+                marginLeft: SIZES.base,
+                color: COLORS.primary,
+              }}>
+              Sign In
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -318,20 +309,26 @@ export default SignupScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f9fafd',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+    backgroundColor: COLORS.background,
+    padding: SIZES.base * 2,
+    position: 'relative',
+  },
+  logo: {
+    height: 150,
+    width: 320,
+    resizeMode: 'cover',
   },
   text: {
-    fontFamily: 'Kufam-SemiBoldItalic',
-    fontSize: 28,
-    marginBottom: 10,
-    color: '#051d5f',
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: SIZES.base * 2,
   },
   navButton: {
     marginTop: 15,
+  },
+  forgotButton: {
+    marginVertical: 35,
   },
   navButtonText: {
     fontSize: 18,
