@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "165108975186",
+    "project_id": "dropbox-7363b",
+    "storage_bucket": "dropbox-7363b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165108975186:android:d94d3bdc49c50d214c818b",
+        "android_client_info": {
+          "package_name": "com.dropbox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "165108975186-lkd2gh70pkuokb212fo3ia8mi19ok7ln.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dropbox",
+            "certificate_hash": "45fea2794019a064be338250cfdd7059adb1bc43"
+          }
+        },
+        {
+          "client_id": "165108975186-nsndc3d0t07uck2g9324nnt6n8s2oo3k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAvH--LE8kWG53uLL5LM10ObTRVPbPbEc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "165108975186-nsndc3d0t07uck2g9324nnt6n8s2oo3k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
