@@ -28,37 +28,42 @@ export const sliderData = [
 
 export const HomeData = {
   isLock: true,
-  packageMessage: 'Door box is locked',
+  packageMessage: ' locked',
   notifications: [
     {
       id: 0,
       title: 'Notification 1',
       description: 'Notification messages 1',
       date: 'April 11, 2022',
+      subtitle: 'Notification title',
     },
     {
       id: 1,
       title: 'Notification 2',
       description: 'Notification messages 2',
       date: 'April 12, 2022',
+      subtitle: 'Notification title',
     },
     {
       id: 2,
       title: 'Notification 3',
       description: 'Notification messages 3',
       date: 'April 12, 2022',
+      subtitle: 'Notification title',
     },
     {
       id: 3,
       title: 'Notification 4',
       description: 'Notification messages 4',
       date: 'April 13, 2022',
+      subtitle: 'Notification title',
     },
     {
       id: 4,
       title: 'Notification 5',
       description: 'Notification messages 5',
       date: 'April 14, 2022',
+      subtitle: 'Notification title',
     },
   ],
 };

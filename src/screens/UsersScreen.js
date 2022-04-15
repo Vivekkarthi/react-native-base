@@ -3,12 +3,15 @@ import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import {DataTable} from 'react-native-paper';
 
 import CustomHeader from '../components/CustomHeader';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const UsersScreen = ({navigation, route}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
-      <ScrollView>
+      <ScrollView style={{padding: 20}}>
         <CustomHeader navigation={navigation} />
+        <Ionicons name="arrow-back" size={22} style={{left: 310}} />
+        <Ionicons name="add" size={22} style={{left: 350, bottom: 25}} />
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <DataTable>
             <DataTable.Header>

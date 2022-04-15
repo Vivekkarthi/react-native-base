@@ -31,7 +31,6 @@ const CameraScreen = ({navigation}) => {
   const renderItem = ({item, index}, parallaxProps) => {
     return (
       <View style={styles.item}>
-        <Text style={{textAlign: 'center'}}>Packages</Text>
         <ParallaxImage
           source={{uri: item.illustration}}
           containerStyle={styles.imageContainer}
@@ -50,6 +49,23 @@ const CameraScreen = ({navigation}) => {
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
         <CustomHeader navigation={navigation} />
+        <Text style={{textAlign: 'center'}}>Intenal Camera</Text>
+        <View style={styles.container}>
+          {/* <Ionicons
+            name="arrow-forward-circle-outline"
+            size={30}
+            onPress={goForward}
+          /> */}
+          <Carousel
+            ref={carouselRef}
+            sliderWidth={screenWidth - 40}
+            itemWidth={500}
+            data={entries}
+            renderItem={renderItem}
+            hasParallaxImages={true}
+          />
+        </View>
+        <Text style={{textAlign: 'center', top: 10}}>External Camera</Text>
         <View style={styles.container}>
           {/* <Ionicons
             name="arrow-forward-circle-outline"
@@ -78,7 +94,8 @@ const styles = StyleSheet.create({
   },
   item: {
     width: screenWidth - 60,
-    height: 200,
+    height: 250,
+    top: 20,
   },
   imageContainer: {
     flex: 1,
