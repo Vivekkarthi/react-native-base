@@ -49,7 +49,7 @@ const CameraScreen = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
-        <CustomHeader navigation={navigation} />
+        {/* <CustomHeader navigation={navigation} /> */}
         <View style={styles.container}>
           {/* <Ionicons
             name="arrow-forward-circle-outline"
