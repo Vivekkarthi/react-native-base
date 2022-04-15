@@ -130,9 +130,36 @@ const AuthStack = () => {
         name="Settings"
         component={SettingsScreen}
         options={{
-          headerShown: false,
+          headerShown: true,
           drawerIcon: ({color}) => (
             <Feather name="settings" size={22} color={color} />
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Image
+                source={require('../../assets/images/icon.png')}
+                style={{
+                  width: 185,
+                  height: 88,
+                }}
+                imageStyle={{borderRadius: 25}}
+              />
+            </View>
+          ),
+          headerRight: () => (
+            <View
+              style={{
+                paddingRight: 10,
+              }}>
+              <TouchableOpacity onPress={() => logoutUser()}>
+                <Ionicons name="exit-outline" size={22} />
+              </TouchableOpacity>
+            </View>
           ),
         }}
       />
