@@ -33,7 +33,6 @@ const SignupScreen = ({navigation}) => {
   });
   const [loader, setLoader] = useState(false);
   const [registerError, setRegisterError] = useState(null);
-  const [confirmShowPassword, setConfirmShowPassword] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
