@@ -36,11 +36,15 @@ const SignupScreen = ({navigation}) => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
-  const [confirmPwdVisible, setConfirmPwdVisible] = useState(true);
   const [firebaseError, setFirebaseError] = useState(null);
 
   const methods = useForm({
-    mode: 'onBlur',
+    defaultValues: {
+      Name: '',
+      Email: '',
+      Password: '',
+      ControllerId: '',
+    },
     resolver: yupResolver(registerSchema),
   });
   const {

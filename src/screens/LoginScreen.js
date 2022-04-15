@@ -39,13 +39,10 @@ const LoginScreen = ({navigation}) => {
   const PasswordRef = useRef(null);
 
   const methods = useForm({
-    criteriaMode: 'all',
     defaultValues: {
       Email: '',
       Password: '',
     },
-    mode: 'all',
-    reValidateMode: 'onChange',
     resolver: yupResolver(loginSchema),
   });
   const {
