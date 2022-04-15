@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "android:release": "cd android && ./gradlew assembleRelease && cd ../"
+    "android:release": "cd android && ./gradlew assembleRelease && cd ../",
+    "android:clean": "cd android && ./gradlew clean && cd ../"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.8.8",
