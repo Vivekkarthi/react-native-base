@@ -65,7 +65,7 @@ export default function HomeScreen({navigation}) {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
-        <CustomHeader navigation={navigation} />
+        {/* <CustomHeader navigation={navigation} /> */}
         <View
           style={{
             marginVertical: 25,

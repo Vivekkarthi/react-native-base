@@ -11,7 +11,6 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
-import CustomHeader from '../components/CustomHeader';
 import {sliderData} from '../model/data';
 
 const {width: screenWidth} = Dimensions.get('window');
@@ -49,7 +48,6 @@ const PackagesScreen = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
-        <CustomHeader navigation={navigation} />
         <View style={styles.container}>
           {/* <Ionicons
             name="arrow-forward-circle-outline"
