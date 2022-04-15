@@ -303,7 +303,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     height: 150,
-    width: 300,
+    width: 350,
+    left: 10,
     resizeMode: 'cover',
   },
   text: {

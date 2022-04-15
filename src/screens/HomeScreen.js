@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, SafeAreaView, ScrollView} from 'react-native';
+import {View, SafeAreaView, Text, Image, ScrollView} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 
@@ -16,6 +16,7 @@ export default function HomeScreen({navigation}) {
     activeNotification: '',
     date: moment(new Date()).format('MMMM DD, YYYY'),
     title: 'Notifications',
+    subtitle: 'Notification title',
     description: 'Notification not found',
   });
 
@@ -29,6 +30,7 @@ export default function HomeScreen({navigation}) {
       date: homeDetails.notifications[idx].date,
       title: homeDetails.notifications[idx].title,
       description: homeDetails.notifications[idx].description,
+      subtitle: homeDetails.notifications[idx].subtitle,
     });
   };
 
@@ -51,6 +53,7 @@ export default function HomeScreen({navigation}) {
       date: homeDetails.notifications[idx].date,
       title: homeDetails.notifications[idx].title,
       description: homeDetails.notifications[idx].description,
+      subtitle: homeDetails.notifications[idx].subtitle,
     });
   };
 
@@ -71,19 +74,24 @@ export default function HomeScreen({navigation}) {
           }}>
           <Card>
             <Card.Cover
-              style={{width: 100, height: 100}}
+              style={{width: 142, height: 180}}
               source={
                 homeDetails.isLock
-                  ? require('../../assets/images/lock/Lock_Icon_256.png')
-                  : require('../../assets/images/unlock/Unlock_Icon_256.png')
+                  ? require('../../assets/images/lock.jpg')
+                  : require('../../assets/images/unlock.jpg')
               }
             />
+            <Text style={{textAlign: 'center'}}>
+              {homeDetails.packageMessage}
+            </Text>
           </Card>
           <Card>
-            <Card.Content>
-              <Title>Status</Title>
-              <Paragraph>{homeDetails.packageMessage}</Paragraph>
-            </Card.Content>
+            <Image
+              source={require('../../assets/images/download.jpg')}
+              style={{width: 232, height: 180}}></Image>
+            {/* <Title>Status</Title>
+              <Paragraph>{homeDetails.packageMessage}</Paragraph> */}
+            <Text style={{textAlign: 'center'}}>last updated</Text>
           </Card>
         </View>
 
@@ -91,6 +99,7 @@ export default function HomeScreen({navigation}) {
           <Card style={{paddingRight: 14}}>
             <Card.Title
               title={notify.date}
+              message={notify.subtitle}
               subtitle={notify.description}
               titleStyle={{fontSize: 18}}
               subtitleStyle={{fontSize: 16}}

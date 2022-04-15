@@ -16,7 +16,7 @@ import {sliderData} from '../model/data';
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const PackagesScreen = ({navigation}) => {
+const CameraScreen = ({navigation}) => {
   const [entries, setEntries] = useState([]);
   const carouselRef = useRef(null);
 
@@ -70,7 +70,8 @@ const PackagesScreen = ({navigation}) => {
   );
 };
 
-export default PackagesScreen;
+export default CameraScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -84,7 +85,6 @@ const styles = StyleSheet.create({
     marginBottom: Platform.select({ios: 0, android: 1}), // Prevent a random Android rendering issue
     backgroundColor: 'white',
     borderRadius: 8,
-    top: 10,
   },
   image: {
     ...StyleSheet.absoluteFillObject,
