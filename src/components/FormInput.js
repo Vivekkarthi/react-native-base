@@ -110,43 +110,6 @@ const Inputs = props => {
   };
 
   switch (props.textName) {
-    case 'PhoneNumber':
-      return props.disableField === true ? (
-        <Text
-          style={{
-            paddingTop: 10,
-            color: '#B3B3B3',
-            fontSize: 14,
-            fontFamily: 'Lato-Regular',
-          }}>
-          {props.value ? props.value : ''}
-        </Text>
-      ) : (
-        <TextInput
-          selectionColor={'#f17316'}
-          autoFocus={props.autoFocus}
-          style={props.style ? props.style : [styles.cardinput]}
-          onBlur={props.onBlur}
-          onChangeText={value => {
-            props.onChange(
-              value
-                .replace(/[^0-9]/g, '') // To allow only numbers
-                .trim(),
-            );
-            removeErrorMessage();
-          }}
-          value={props.value}
-          placeholder={props.placeHolder}
-          keyboardType={props.keyboardType}
-          secureTextEntry={props.pwdVisible}
-          autoCapitalize="none"
-          returnKeyType="next"
-          onSubmitEditing={props.refField}
-          ref={props.refs}
-          editable={props.editable}
-          maxLength={10}
-        />
-      );
     default:
       return (
         <TextInput

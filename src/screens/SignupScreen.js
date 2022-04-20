@@ -14,8 +14,8 @@ import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 
 import auth from '@react-native-firebase/auth';
-import {useDispatch} from 'react-redux';
-import {saveMemberDetails} from '../redux/actions/AuthState';
+// import {useDispatch} from 'react-redux';
+import {memberRegister, saveMemberDetails} from '../redux/actions/AuthState';
 import {FormProvider, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {registerSchema} from '../utils/ValidateSchema';
@@ -28,6 +28,7 @@ const SignupScreen = ({navigation}) => {
   const [inputUser, setInputUser] = useState({
     Name: '',
     Email: '',
+    PhoneNumber: '',
     Password: '',
     ControllerId: '',
   });
@@ -42,6 +43,7 @@ const SignupScreen = ({navigation}) => {
     defaultValues: {
       Name: '',
       Email: '',
+      PhoneNumber: '',
       Password: '',
       ControllerId: '',
     },
@@ -54,10 +56,11 @@ const SignupScreen = ({navigation}) => {
 
   const NameRef = useRef(null);
   const EmailRef = useRef(null);
+  const PhoneNumberRef = useRef(null);
   const PasswordRef = useRef(null);
   const ControllerRef = useRef(null);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const onRegisterSubmit = async user => {
     try {
@@ -66,31 +69,43 @@ const SignupScreen = ({navigation}) => {
       const formData = {
         Name: user.Name,
         Email: user.Email,
+        PhoneNumber: user.PhoneNumber,
         Password: user.Password,
         ControllerId: user.ControllerId,
       };
       setInputUser(() => formData);
-      await auth()
-        .createUserWithEmailAndPassword(user.Email, user.Password)
-        .then(authResponse => {
-          if (authResponse.user) {
-            setInputUser({
-              ...inputUser,
-              Name: user.Name,
-              Email: user.Email,
-              Password: user.Password,
-              ControllerId: user.ControllerId,
+      memberRegister(user, navigation)
+        .then(async resp => {
+          console.log('00000000000000000000', resp);
+          await auth()
+            .createUserWithEmailAndPassword(user.Email, user.Password)
+            .then(authResponse => {
+              if (authResponse.user) {
+                // setInputUser({
+                //   ...inputUser,
+                //   Name: user.Name,
+                //   Email: user.Email,
+                //   PhoneNumber: user.PhoneNumber,
+                //   Password: user.Password,
+                //   ControllerId: user.ControllerId,
+                // });
+
+                setLoader(false);
+                navigation.navigate('Login');
+              }
+            })
+            //we need to catch the whole sign up process if it fails too.
+            .catch(error => {
+              setRegisterError(null);
+              const response = firebaseAuthErrors(error);
+              setFirebaseError(response);
+              setLoader(false);
             });
-            dispatch(saveMemberDetails(authResponse.user));
-            setLoader(false);
-          }
         })
-        //we need to catch the whole sign up process if it fails too.
         .catch(error => {
-          setRegisterError(null);
-          const response = firebaseAuthErrors(error);
-          setFirebaseError(response);
+          console.log('eeeeeeeeeeeeeee', error);
           setLoader(false);
+          setRegisterError(error.message);
         });
     } catch (e) {
       console.log(e);
@@ -137,6 +152,24 @@ const SignupScreen = ({navigation}) => {
               errorobj={errors}
               validationError={registerError}
               refs={EmailRef}
+              refField={() => PhoneNumberRef.current.focus()}
+            />
+          </View>
+
+          <View style={{marginBottom: SIZES.base}}>
+            <Text
+              style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
+              Mobile
+            </Text>
+            <FormInput
+              iconType="phone"
+              defaultValues={inputUser.PhoneNumber}
+              textLabel={'Mobile'}
+              textName={'PhoneNumber'}
+              keyboardType="phone-pad"
+              errorobj={errors}
+              validationError={registerError}
+              refs={PhoneNumberRef}
               refField={() => PasswordRef.current.focus()}
             />
           </View>
