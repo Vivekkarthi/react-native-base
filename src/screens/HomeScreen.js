@@ -66,6 +66,9 @@ export default function HomeScreen({navigation}) {
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
         {/* <CustomHeader navigation={navigation} /> */}
+        <Ionicons name="home" size={23}>
+          <Text>Home</Text>
+        </Ionicons>
         <View
           style={{
             marginVertical: 25,
@@ -74,24 +77,30 @@ export default function HomeScreen({navigation}) {
           }}>
           <Card>
             <Card.Cover
-              style={{width: 142, height: 180}}
+              style={{width: 178, height: 180}}
               source={
                 homeDetails.isLock
-                  ? require('../../assets/images/lock.jpg')
+                  ? require('../../assets/images/new_lock.png')
                   : require('../../assets/images/unlock.jpg')
               }
             />
+            <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+              Date: {notify.date}
+            </Text>
             <Text style={{textAlign: 'center'}}>
-              {homeDetails.packageMessage}
+              State:{homeDetails.packageMessage}
             </Text>
           </Card>
-          <Card>
+          <Card style={{width: 190, height: 220}}>
             <Image
-              source={require('../../assets/images/download.jpg')}
-              style={{width: 232, height: 180}}></Image>
+              style={{width: 180, height: 120, top: 30}}
+              source={{
+                uri: 'https://controller5.s3.us-west-1.amazonaws.com/images/env1.jpg',
+              }}
+            />
             {/* <Title>Status</Title>
               <Paragraph>{homeDetails.packageMessage}</Paragraph> */}
-            <Text style={{textAlign: 'center'}}>last updated</Text>
+            <Text style={{textAlign: 'center', top: 60}}>last updated</Text>
           </Card>
         </View>
 

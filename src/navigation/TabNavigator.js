@@ -64,7 +64,7 @@ const HomeStack = ({navigation}) => {
                 paddingRight: 10,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} />
+                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -123,7 +123,7 @@ const SettingStack = ({navigation}) => {
                 paddingRight: 10,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} />
+                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -182,7 +182,7 @@ const PackageStack = ({navigation}) => {
                 paddingRight: 10,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} />
+                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),

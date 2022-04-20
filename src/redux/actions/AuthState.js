@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {isEqual} from 'lodash';
 
 import auth from '@react-native-firebase/auth';
+import {ENDPOINTURL} from '../../utils/Constants';
 
 export const initialState = {
   loggedMember: {},
@@ -25,15 +26,16 @@ export const RESET_STORE = 'AuthState/RESET_STORE';
 
 export const REMEMBER_LOGIN = 'AuthState/REMEMBER_LOGIN';
 
-export function memberLogin(token, navigation) {
+export function memberLogin(userData, navigation) {
+  const queryString = `sK=""&suid=${userData.Name}&spass=${userData.Password}&sip`;
+  const queryParams = new URLSearchParams(queryString);
   const params = {
-    url: 'endpoiturl',
-    data: {usertoken: token},
+    url: ENDPOINTURL.MemberLogin,
+    data: userData,
     token: '',
-    navigation: navigation,
-    screenName: 'LOGIN_SCREEN',
+    queryParams,
   };
-  return postRequest(params)
+  return getRequest(params)
     .then(response => {
       AsyncStorage.setItem('loggedUser', JSON.stringify(response));
       return response;
@@ -42,6 +44,26 @@ export function memberLogin(token, navigation) {
       throw error;
     });
 }
+
+export function memberRegister(userData, navigation) {
+  const queryString = `sK=token&namex=${userData.Name}&spass=${userData.Password}&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=${userData.ControllerId}&icustid=0`;
+  const queryParams = new URLSearchParams(queryString);
+  const params = {
+    url: ENDPOINTURL.MemberRegister,
+    data: userData,
+    token: '',
+    queryParams,
+  };
+
+  return getRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      throw error;
+    });
+}
+
 export const saveMemberDetails = userData => {
   return dispatch => {
     if (userData) {
@@ -77,6 +99,7 @@ export const rememberMe = (user, isRemember) => {
     });
   };
 };
+
 export function logoutSuccess() {
   clearAppData();
   return dispatch => {

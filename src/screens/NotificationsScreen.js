@@ -74,6 +74,7 @@ const NotificationsScreen = ({navigation, route}) => {
             <Card.Title
               title={notify.date}
               message={notify.subtitle}
+              header={notify.title}
               subtitle={notify.description}
               titleStyle={{fontSize: 18}}
               subtitleStyle={{fontSize: 16}}
@@ -92,6 +93,7 @@ const NotificationsScreen = ({navigation, route}) => {
                 />
               )}
             />
+            <Text>Hardware message:</Text>
           </Card>
         </View>
       </ScrollView>
