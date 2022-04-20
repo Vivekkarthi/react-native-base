@@ -18,7 +18,7 @@ import {loginSchema} from '../utils/ValidateSchema';
 
 import auth from '@react-native-firebase/auth';
 import {firebaseAuthErrors} from '../utils/Handlers';
-import {isEmpty} from 'lodash';
+import {findLastIndex, isEmpty} from 'lodash';
 import {rememberMe, saveMemberDetails} from '../redux/actions/AuthState';
 import {Loader} from '../components/Loader';
 import {useSelector} from 'react-redux';
@@ -110,6 +110,8 @@ const LoginScreen = ({navigation}) => {
           Email: rememberData.Email,
           Password: rememberData.Password,
         }));
+
+        setSelection(true);
       });
     }
   }, [rememberLogin, setValue]);
@@ -139,7 +141,7 @@ const LoginScreen = ({navigation}) => {
           <View style={{marginBottom: SIZES.base}}>
             <Text
               style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
-              Email Address
+              Login ID
             </Text>
             <FormInput
               autoFocus={true}
@@ -282,7 +284,7 @@ const LoginScreen = ({navigation}) => {
             justifyContent: 'center',
           }}>
           <Text style={styles.color_textPrivate}>
-            &#169; 2022 Door box, All rights reserved.
+            &#169; 2022 DOORBOX, All rights reserved.
           </Text>
         </View>
       </View>

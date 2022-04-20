@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import Feather from 'react-native-vector-icons/Feather';
 import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
 import {sliderData} from '../model/data';
 
@@ -30,7 +30,9 @@ const PackagesScreen = ({navigation}) => {
   const renderItem = ({item, index}, parallaxProps) => {
     return (
       <View style={styles.item}>
-        <Text style={{textAlign: 'center'}}>Packages</Text>
+        <Ionicons name="logo-dropbox" size={25} style={{paddingBottom: 10}}>
+          Packages
+        </Ionicons>
         <ParallaxImage
           source={{uri: item.illustration}}
           containerStyle={styles.imageContainer}
@@ -75,14 +77,13 @@ const styles = StyleSheet.create({
   },
   item: {
     width: screenWidth - 60,
-    height: 200,
+    height: 250,
   },
   imageContainer: {
     flex: 1,
     marginBottom: Platform.select({ios: 0, android: 1}), // Prevent a random Android rendering issue
     backgroundColor: 'white',
     borderRadius: 8,
-    top: 10,
   },
   image: {
     ...StyleSheet.absoluteFillObject,

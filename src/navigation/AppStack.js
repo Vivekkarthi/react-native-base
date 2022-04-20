@@ -83,7 +83,7 @@ const AuthStack = () => {
                 paddingRight: 10,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} />
+                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -120,7 +120,7 @@ const AuthStack = () => {
                 paddingRight: 10,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} />
+                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -157,7 +157,7 @@ const AuthStack = () => {
                 paddingRight: 10,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} />
+                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -194,7 +194,7 @@ const AuthStack = () => {
                 paddingRight: 10,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} />
+                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -231,7 +231,7 @@ const AuthStack = () => {
                 paddingRight: 10,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} />
+                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -268,7 +268,7 @@ const AuthStack = () => {
                 paddingRight: 10,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} />
+                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -305,7 +305,7 @@ const AuthStack = () => {
                 paddingRight: 10,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} />
+                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),

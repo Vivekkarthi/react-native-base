@@ -31,9 +31,9 @@ const CustomDrawer = props => {
     <View style={{flex: 1}}>
       <DrawerContentScrollView
         {...props}
-        contentContainerStyle={{backgroundColor: '#ffc14d'}}>
+        contentContainerStyle={{backgroundColor: '#ff651f'}}>
         <ImageBackground
-          source={require('../../assets/images/menu.jpg')}
+          source={require('../../assets/images/20001278.jpg')}
           style={{padding: 20}}>
           <Image
             source={require('../../assets/images/user.png')}
@@ -69,7 +69,7 @@ const CustomDrawer = props => {
           style={{paddingVertical: 15}}
           onPress={() => logoutUser()}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Ionicons name="exit-outline" size={22} />
+            <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
             <Text
               style={{
                 fontSize: 15,
