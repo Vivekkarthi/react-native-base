@@ -27,8 +27,7 @@ export const RESET_STORE = 'AuthState/RESET_STORE';
 export const REMEMBER_LOGIN = 'AuthState/REMEMBER_LOGIN';
 
 export function memberLogin(userData, navigation) {
-  const queryString = `sK=""&suid=${userData.Name}&spass=${userData.Password}&sip`;
-  const queryParams = new URLSearchParams(queryString);
+  const queryParams = `sK=token&suid=${userData.Email}&spass=${userData.Password}&sip=someipaddress`;
   const params = {
     url: ENDPOINTURL.MemberLogin,
     data: userData,
@@ -46,8 +45,7 @@ export function memberLogin(userData, navigation) {
 }
 
 export function memberRegister(userData, navigation) {
-  const queryString = `sK=token&namex=${userData.Name}&spass=${userData.Password}&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=${userData.ControllerId}&icustid=0`;
-  const queryParams = new URLSearchParams(queryString);
+  const queryParams = `sK=token&namex=${userData.Name}&spass=${userData.Password}&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=${userData.ControllerId}&icustid=0`;
   const params = {
     url: ENDPOINTURL.MemberRegister,
     data: userData,
