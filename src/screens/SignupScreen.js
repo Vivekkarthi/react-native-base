@@ -1,7 +1,6 @@
 import React, {useState, useRef} from 'react';
 import {
   View,
-  ScrollView,
   Text,
   TouchableOpacity,
   Platform,
@@ -274,70 +273,81 @@ const SignupScreen = ({navigation}) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={[styles.container]}>
-      {loader ? <Loader /> : null}
-      <Image
-        source={require('../../assets/images/icon.png')}
-        style={styles.logo}
-      />
+    <>
+      <FlatList
+        style={styles.container}
+        keyboardShouldPersistTaps="always"
+        showsVerticalScrollIndicator={false}
+        data={[{ID: '1'}]}
+        keyExtractor={item => `${item.ID}`}
+        renderItem={() => (
+          <View contentContainerStyle={[styles.container]}>
+            {loader ? <Loader /> : null}
+            <Image
+              source={require('../../assets/images/icon.png')}
+              style={styles.logo}
+            />
 
-      <View
-        style={{
-          backgroundColor: COLORS.lightGray,
-          width: '100%',
-          borderTopStartRadius: SIZES.radius * 2,
-          borderTopEndRadius: SIZES.radius * 2,
-          padding: SIZES.base * 2,
-        }}>
-        <Text style={styles.text}>Create Account</Text>
-
-        <KeyboardAvoidingView
-          style={{flex: 1}}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
-          <FlatList
-            style={{width: '100%'}}
-            keyboardShouldPersistTaps="always"
-            showsVerticalScrollIndicator={false}
-            data={[{ID: '1'}]}
-            keyExtractor={item => `${item.ID}`}
-            renderItem={renderItem}
-          />
-        </KeyboardAvoidingView>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginVertical: SIZES.base,
-          }}>
-          <Text
-            style={{
-              fontSize: 16,
-            }}>
-            Already have an account ?
-          </Text>
-          <TouchableOpacity
-            style={{
-              padding: 10,
-            }}
-            onPress={() => {
-              navigation.navigate('Login');
-            }}>
-            <Text
+            <View
               style={{
-                fontSize: 16,
-                fontWeight: 'bold',
-                marginLeft: SIZES.base,
-                color: COLORS.primary,
+                backgroundColor: COLORS.lightGray,
+                width: '100%',
+                borderTopStartRadius: SIZES.radius * 2,
+                borderTopEndRadius: SIZES.radius * 2,
+                padding: SIZES.base * 2,
               }}>
-              Sign In
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+              <Text style={styles.text}>Create Account</Text>
+
+              <KeyboardAvoidingView
+                style={{flex: 1}}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+                <FlatList
+                  style={{width: '100%'}}
+                  keyboardShouldPersistTaps="always"
+                  showsVerticalScrollIndicator={false}
+                  data={[{ID: '1'}]}
+                  keyExtractor={item => `${item.ID}`}
+                  renderItem={renderItem}
+                />
+              </KeyboardAvoidingView>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginVertical: SIZES.base,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                  }}>
+                  Already have an account ?
+                </Text>
+                <TouchableOpacity
+                  style={{
+                    padding: 10,
+                  }}
+                  onPress={() => {
+                    navigation.navigate('Login');
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      marginLeft: SIZES.base,
+                      color: COLORS.primary,
+                    }}>
+                    Sign In
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        )}
+      />
+    </>
   );
 };
 

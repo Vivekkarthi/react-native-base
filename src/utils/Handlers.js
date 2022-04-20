@@ -77,12 +77,8 @@ const firebaseAuthErrors = error => {
 };
 
 const getRequest = (props, cancelToken) => {
-  console.log(
-    '****************************',
-    `${Config.API_URL}${props.url}/?${props.queryParams}`,
-  );
   return axios
-    .get(`${Config.API_URL}${props.url}/?${props.queryParams}`)
+    .get(`${Config.API_URL}${props.url}?${props.queryParams}`)
     .then(response => {
       console.log('Success response ', response);
       if (response.data) {
