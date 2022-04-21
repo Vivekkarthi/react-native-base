@@ -27,7 +27,7 @@ export const RESET_STORE = 'AuthState/RESET_STORE';
 export const REMEMBER_LOGIN = 'AuthState/REMEMBER_LOGIN';
 
 export function memberLogin(userData, navigation) {
-  const queryParams = `sK=token&suid=${userData.Email}&spass=${userData.Password}&sip=someipaddress`;
+  const queryParams = `sK=token&suid=${userData.PhoneNumber}&spass=${userData.Password}&sip=someipaddress`;
   const params = {
     url: ENDPOINTURL.MemberLogin,
     data: userData,
@@ -35,11 +35,12 @@ export function memberLogin(userData, navigation) {
     queryParams,
   };
   return getRequest(params)
-    .then(response => {
-      AsyncStorage.setItem('loggedUser', JSON.stringify(response));
-      return response;
+    .then(userResp => {
+      console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&', userResp);
+      return userResp;
     })
     .catch(error => {
+      console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&', error);
       throw error;
     });
 }

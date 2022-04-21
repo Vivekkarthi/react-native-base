@@ -8,43 +8,42 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import FormInput from '../components/FormInput';
-import FormButton from '../components/FormButton';
 import {useDispatch} from 'react-redux';
 import {useForm, FormProvider} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
+import {isEmpty} from 'lodash';
+import {useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import FormInput from '../components/FormInput';
+import FormButton from '../components/FormButton';
 import {loginSchema} from '../utils/ValidateSchema';
-
-import auth from '@react-native-firebase/auth';
-import {firebaseAuthErrors} from '../utils/Handlers';
-import {findLastIndex, isEmpty} from 'lodash';
 import {
   memberLogin,
   rememberMe,
   saveMemberDetails,
 } from '../redux/actions/AuthState';
 import {Loader} from '../components/Loader';
-import {useSelector} from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {COLORS, SIZES} from '../constants';
 
 const LoginScreen = ({navigation}) => {
   const {rememberLogin} = useSelector(state => state.AuthState);
 
-  const [inputUser, setInputUser] = useState({Email: '', Password: ''});
+  const [inputUser, setInputUser] = useState({PhoneNumber: '', Password: ''});
   const [isSelected, setSelection] = useState(false);
   const [loader, setLoader] = useState(false);
   const [loginError, setLoginError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
 
-  const EmailRef = useRef(null);
+  //const EmailRef = useRef(null);
   const PasswordRef = useRef(null);
+  const PhoneNumberRef = useRef(null);
 
   const methods = useForm({
     defaultValues: {
-      Email: '',
+      //Email: '',
+      PhoneNumber: '',
       Password: '',
     },
     resolver: yupResolver(loginSchema),
@@ -62,48 +61,27 @@ const LoginScreen = ({navigation}) => {
       setLoginError(null);
       setLoader(true);
       const formData = {
-        Email: user.Email,
+        // Email: user.Email,
+        PhoneNumber: user.PhoneNumber,
         Password: user.Password,
       };
       setInputUser(() => formData);
       memberLogin(user, navigation)
         .then(async resp => {
-          console.log('0000000000000000', resp);
-          dispatch(rememberMe(user, isSelected));
-          dispatch(saveMemberDetails(resp));
-          // await auth()
-          //   .signInWithEmailAndPassword(user.Email, user.Password)
-          //   .then(authResponse => {
-          //     if (authResponse.user) {
-          //       authResponse.user
-          //         .getIdToken()
-          //         .then(token => {
-          //           console.log('Token: ', token);
-          //           dispatch(rememberMe(user, isSelected));
-          //           dispatch(saveMemberDetails(authResponse.user));
-          //           setLoader(false);
-          //           setInputUser(prevState => ({
-          //             ...prevState,
-          //             Email: '',
-          //             Password: '',
-          //           }));
-          //         })
-          //         .catch(error => {
-          //           setLoader(false);
-          //           console.log('CatchedTokenError', error);
-          //         });
-          //     }
-          //   })
-          //   //we need to catch the whole sign up process if it fails too.
-          //   .catch(error => {
-          //     const response = firebaseAuthErrors(error);
-          //     setLoader(false);
-          //     setLoginError(response);
-          //     console.log('CatchedTokenError2', response);
-          //   });
+          if (resp.USERRECORDID < 0 && AddlField1 === '') {
+          }
+          if (resp.AddlField1 === '') {
+            //Good
+            AsyncStorage.setItem('loggedUser', JSON.stringify(resp));
+            dispatch(rememberMe(user, isSelected));
+            dispatch(saveMemberDetails(resp));
+          } else {
+            // Not Good
+            setLoader(false);
+            setLoginError(resp.AddlField1);
+          }
         })
         .catch(error => {
-          console.log('eeeeeeeeeeeeeee', error);
           setLoader(false);
           setLoginError(error.message);
         });
@@ -117,12 +95,14 @@ const LoginScreen = ({navigation}) => {
     if (rememberLogin) {
       await AsyncStorage.getItem('rememberMe').then(value => {
         const rememberData = JSON.parse(value);
-        setValue('Email', rememberData.Email);
+        //setValue('Email', rememberData.Email);
+        setValue('PhoneNumber', rememberData.PhoneNumber);
         setValue('Password', rememberData.Password);
 
         setInputUser(prevState => ({
           ...prevState,
-          Email: rememberData.Email,
+          //Email: rememberData.Email,
+          PhoneNumber: rememberData.PhoneNumber,
           Password: rememberData.Password,
         }));
 
@@ -160,14 +140,14 @@ const LoginScreen = ({navigation}) => {
             </Text>
             <FormInput
               autoFocus={true}
-              iconType="mail"
-              defaultValues={inputUser.Email ? inputUser.Email : ''}
-              textLabel={'Email'}
+              iconType="phone"
+              defaultValues={inputUser.PhoneNumber ? inputUser.PhoneNumber : ''}
+              textLabel={'Mobile'}
               // placeHolder={'Email'}
-              textName={'Email'}
-              keyboardType="email-address"
+              textName={'PhoneNumber'}
+              keyboardType="default"
               errorobj={errors}
-              refs={EmailRef}
+              refs={PhoneNumberRef}
               refField={() => PasswordRef.current.focus()}
             />
           </View>

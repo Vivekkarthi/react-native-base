@@ -21,7 +21,7 @@ const CustomDrawer = props => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      await auth().signOut();
+      // await auth().signOut();
       dispatch(logoutSuccess());
     } catch (e) {
       console.log(e);

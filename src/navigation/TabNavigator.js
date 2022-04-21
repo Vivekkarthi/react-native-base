@@ -19,7 +19,7 @@ const HomeStack = ({navigation}) => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      await auth().signOut();
+      // await auth().signOut();
       dispatch(logoutSuccess());
     } catch (e) {
       console.log(e);
@@ -78,7 +78,7 @@ const SettingStack = ({navigation}) => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      await auth().signOut();
+      // await auth().signOut();
       dispatch(logoutSuccess());
     } catch (e) {
       console.log(e);
@@ -137,7 +137,7 @@ const PackageStack = ({navigation}) => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      await auth().signOut();
+      // await auth().signOut();
       dispatch(logoutSuccess());
     } catch (e) {
       console.log(e);
