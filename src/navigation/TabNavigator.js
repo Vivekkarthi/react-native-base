@@ -2,7 +2,6 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useDispatch} from 'react-redux';
-import auth from '@react-native-firebase/auth';
 
 import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -19,7 +18,6 @@ const HomeStack = ({navigation}) => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      // await auth().signOut();
       dispatch(logoutSuccess());
     } catch (e) {
       console.log(e);
@@ -78,7 +76,6 @@ const SettingStack = ({navigation}) => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      // await auth().signOut();
       dispatch(logoutSuccess());
     } catch (e) {
       console.log(e);
@@ -137,7 +134,6 @@ const PackageStack = ({navigation}) => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      // await auth().signOut();
       dispatch(logoutSuccess());
     } catch (e) {
       console.log(e);

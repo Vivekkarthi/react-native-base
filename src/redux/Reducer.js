@@ -22,7 +22,6 @@ const rootReducer = (state, action) => {
       state = undefined;
     }
   }
-  // console.log('statestate', state);
   return appReducer(state, action);
 };
 

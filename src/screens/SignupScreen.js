@@ -57,38 +57,32 @@ const SignupScreen = ({navigation}) => {
   const ControllerRef = useRef(null);
 
   const onRegisterSubmit = async user => {
-    try {
-      setRegisterError(null);
-      setLoader(true);
-      const formData = {
-        Name: user.Name,
-        Email: user.Email,
-        PhoneNumber: user.PhoneNumber,
-        Password: user.Password,
-        ControllerId: user.ControllerId,
-      };
-      setInputUser(() => formData);
-      memberRegister(user, navigation)
-        .then(async resp => {
-          if (resp === 'success') {
-            //Good
-            setLoader(false);
-            navigation.navigate('Login');
-          } else {
-            // Not Good
-            setLoader(false);
-            setRegisterError(resp);
-          }
-        })
-        .catch(error => {
-          console.log('eeeeeeeeeeeeeee', error);
+    setRegisterError(null);
+    setLoader(true);
+    const formData = {
+      Name: user.Name,
+      Email: user.Email,
+      PhoneNumber: user.PhoneNumber,
+      Password: user.Password,
+      ControllerId: user.ControllerId,
+    };
+    setInputUser(() => formData);
+    memberRegister(user, navigation)
+      .then(async resp => {
+        if (resp === 'success') {
+          //Good
           setLoader(false);
-          setRegisterError(error.message);
-        });
-    } catch (e) {
-      console.log(e);
-      setLoader(false);
-    }
+          navigation.navigate('Login');
+        } else {
+          // Not Good
+          setLoader(false);
+          setRegisterError(resp);
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        setRegisterError(error.message);
+      });
   };
 
   const renderItem = ({item, index}) => {
