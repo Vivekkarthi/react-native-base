@@ -18,7 +18,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import {loginSchema} from '../utils/ValidateSchema';
-import {notifyMessage} from '../utils/Handlers';
+import Toast from 'react-native-toast-message';
+
 import {
   memberLogin,
   rememberMe,
@@ -225,13 +226,20 @@ const LoginScreen = ({navigation}) => {
           //   }}>
           //   {loginError}
           // </Text>
-          <SnackBar
-            visible={true}
-            status="error"
-            message={loginError}
-            onDismissSnackBar={() => setLoginError(null)}
+          <Toast
+            type="error"
+            position="bottom"
+            text={loginError}
+            visibilityTime={5000}
+            autoHide={true}
           />
-        ) : null}
+        ) : // <SnackBar
+        //   visible={true}
+        //   status="error"
+        //   message={loginError}
+        //   onDismissSnackBar={() => setLoginError(null)}
+        // />
+        null}
 
         <FormButton
           buttonTitle="Sign In"
