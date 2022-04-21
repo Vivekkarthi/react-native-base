@@ -18,6 +18,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import {loginSchema} from '../utils/ValidateSchema';
+import Toast from 'react-native-toast-message';
+
 import {
   memberLogin,
   rememberMe,
@@ -25,6 +27,8 @@ import {
 } from '../redux/actions/AuthState';
 import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
+import SnackBar from '../components/SnackBar';
+import AppStatusBar from '../components/AppStatusBar';
 
 const LoginScreen = ({navigation}) => {
   const {rememberLogin} = useSelector(state => state.AuthState);
@@ -57,36 +61,31 @@ const LoginScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   const onLoginSubmit = async user => {
-    try {
-      setLoginError(null);
-      setLoader(true);
-      const formData = {
-        // Email: user.Email,
-        PhoneNumber: user.PhoneNumber,
-        Password: user.Password,
-      };
-      setInputUser(() => formData);
-      memberLogin(user, navigation)
-        .then(async resp => {
-          if (resp.USERRECORDID > 0 && resp.AddlField1 === '') {
-            //Good
-            AsyncStorage.setItem('loggedUser', JSON.stringify(resp));
-            dispatch(rememberMe(user, isSelected));
-            dispatch(saveMemberDetails(resp));
-          } else {
-            // Not Good
-            setLoader(false);
-            setLoginError(resp.AddlField1);
-          }
-        })
-        .catch(error => {
+    setLoginError(null);
+    setLoader(true);
+    const formData = {
+      // Email: user.Email,
+      PhoneNumber: user.PhoneNumber,
+      Password: user.Password,
+    };
+    setInputUser(() => formData);
+    memberLogin(user, navigation)
+      .then(async resp => {
+        if (resp.USERRECORDID > 0 && resp.AddlField1 === '') {
+          //Good
+          AsyncStorage.setItem('loggedUser', JSON.stringify(resp));
+          dispatch(rememberMe(user, isSelected));
+          dispatch(saveMemberDetails(resp));
+        } else {
+          // Not Good
           setLoader(false);
-          setLoginError(error.message);
-        });
-    } catch (e) {
-      console.log(e);
-      setLoader(false);
-    }
+          setLoginError(resp.AddlField1);
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        setLoginError(error.message);
+      });
   };
 
   const getRememberData = useCallback(async () => {
@@ -115,6 +114,7 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <ScrollView contentContainerStyle={[styles.container]}>
+      <AppStatusBar colorPalete="WHITE" />
       {loader ? <Loader /> : null}
       <Image
         source={require('../../assets/images/icon.png')}
@@ -214,20 +214,32 @@ const LoginScreen = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </FormProvider>
-
         {!isEmpty(loginError) ? (
-          <Text
-            style={{
-              paddingLeft: 15,
-              paddingRight: 15,
-              fontSize: 16,
-              textAlign: 'center',
-              fontFamily: 'Lato-Regular',
-              color: '#D83F50',
-            }}>
-            {loginError}
-          </Text>
-        ) : null}
+          // <Text
+          //   style={{
+          //     paddingLeft: 15,
+          //     paddingRight: 15,
+          //     fontSize: 16,
+          //     textAlign: 'center',
+          //     fontFamily: 'Lato-Regular',
+          //     color: '#D83F50',
+          //   }}>
+          //   {loginError}
+          // </Text>
+          <Toast
+            type="error"
+            position="bottom"
+            text={loginError}
+            visibilityTime={5000}
+            autoHide={true}
+          />
+        ) : // <SnackBar
+        //   visible={true}
+        //   status="error"
+        //   message={loginError}
+        //   onDismissSnackBar={() => setLoginError(null)}
+        // />
+        null}
 
         <FormButton
           buttonTitle="Sign In"
@@ -237,7 +249,6 @@ const LoginScreen = ({navigation}) => {
           }}
           onPress={handleSubmit(onLoginSubmit)}
         />
-
         <View
           style={{
             flexDirection: 'row',
@@ -269,7 +280,6 @@ const LoginScreen = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
-
         <View
           style={{
             flexDirection: 'row',

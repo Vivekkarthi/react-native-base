@@ -1,13 +1,6 @@
-import {
-  clearAppData,
-  getRequest,
-  postRequest,
-  putRequest,
-} from '../../utils/Handlers';
+import {clearAppData, getRequest, postRequest} from '../../utils/Handlers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {isEqual} from 'lodash';
-
-import auth from '@react-native-firebase/auth';
 import {ENDPOINTURL} from '../../utils/Constants';
 
 export const initialState = {
@@ -36,11 +29,10 @@ export function memberLogin(userData, navigation) {
   };
   return getRequest(params)
     .then(userResp => {
-      console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&', userResp);
       return userResp;
     })
     .catch(error => {
-      console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&', error);
+      console.log('################# Error #################', error);
       throw error;
     });
 }
@@ -71,14 +63,6 @@ export const saveMemberDetails = userData => {
         payload: userData,
       });
     } else {
-      auth()
-        .signOut()
-        .then(() => {
-          console.log('user sign out.....');
-        })
-        .catch(autherror => {
-          console.log('autherror', autherror);
-        });
       dispatch({
         type: LOGIN_FAILURE,
         payload: {},

@@ -12,16 +12,16 @@ import {
 } from '@react-navigation/drawer';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import auth from '@react-native-firebase/auth';
-import {useDispatch} from 'react-redux';
+
+import {useDispatch, useSelector} from 'react-redux';
 import {logoutSuccess} from '../redux/actions/AuthState';
+import {isEmpty} from 'lodash';
 
 const CustomDrawer = props => {
+  const {loggedMember} = useSelector(state => state.AuthState);
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      // await auth().signOut();
       dispatch(logoutSuccess());
     } catch (e) {
       console.log(e);
@@ -32,34 +32,30 @@ const CustomDrawer = props => {
       <DrawerContentScrollView
         {...props}
         contentContainerStyle={{backgroundColor: '#ff651f'}}>
-        <ImageBackground
-          source={require('../../assets/images/20001278.jpg')}
-          style={{padding: 20}}>
-          <Image
-            source={require('../../assets/images/user.png')}
-            style={{height: 80, width: 80, borderRadius: 40, marginBottom: 10}}
-          />
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 18,
-              fontFamily: 'Roboto-Medium',
-              marginBottom: 5,
-            }}>
-            Tom Holland
-          </Text>
-          {/* <View style={{flexDirection: 'row'}}>
+        {!isEmpty(loggedMember) && (
+          <ImageBackground
+            source={require('../../assets/images/20001278.jpg')}
+            style={{padding: 20}}>
+            <Image
+              source={require('../../assets/images/user.png')}
+              style={{
+                height: 80,
+                width: 80,
+                borderRadius: 40,
+                marginBottom: 10,
+              }}
+            />
             <Text
               style={{
                 color: '#fff',
-                fontFamily: 'Roboto-Regular',
-                marginRight: 5,
+                fontSize: 18,
+                fontFamily: 'Roboto-Medium',
+                marginBottom: 5,
               }}>
-              280 Coins
+              {loggedMember.LoginNAME}
             </Text>
-            <FontAwesome5 name="coins" size={14} color="#fff" />
-          </View> */}
-        </ImageBackground>
+          </ImageBackground>
+        )}
         <View style={{flex: 1, backgroundColor: '#fff', paddingTop: 10}}>
           <DrawerItemList {...props} />
         </View>

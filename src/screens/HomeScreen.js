@@ -38,15 +38,11 @@ export default function HomeScreen({navigation}) {
     var arr = homeDetails.notifications.length;
     var idx = notify.activeNotification;
 
-    console.log('initial: ' + idx);
-
     if (idx === 0) {
       var idx = arr - 1;
     } else {
       var idx = idx - 1;
     }
-
-    console.log('updated: ' + idx);
 
     setNotify({
       activeNotification: idx,

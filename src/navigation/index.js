@@ -1,6 +1,5 @@
-import React, {useCallback, useContext, useState, useEffect} from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import auth from '@react-native-firebase/auth';
 import {
   Provider as PaperProvider,
   DefaultTheme,
@@ -82,25 +81,6 @@ const theme = {
 
 const NavigateProviders = () => {
   const {loggedMember} = useSelector(state => state.AuthState);
-
-  const [initializing, setInitializing] = useState(true);
-
-  const onAuthStateChanged = useCallback(
-    user => {
-      if (user) {
-        console.log('MAINNNN', user);
-      }
-      if (initializing) setInitializing(false);
-    },
-    [initializing],
-  );
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, [onAuthStateChanged]);
-
-  if (initializing) return null;
 
   return (
     <PaperProvider theme={theme}>

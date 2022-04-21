@@ -4,7 +4,6 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import {useDispatch} from 'react-redux';
-import auth from '@react-native-firebase/auth';
 
 import TabNavigator from './TabNavigator';
 import NotificationsScreen from '../screens/NotificationsScreen';
@@ -23,7 +22,6 @@ const AuthStack = () => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      // await auth().signOut();
       dispatch(logoutSuccess());
     } catch (e) {
       console.log(e);

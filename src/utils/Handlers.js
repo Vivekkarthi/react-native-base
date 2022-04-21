@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {isEmpty} from 'lodash';
+import {Platform, ToastAndroid, AlertIOS} from 'react-native';
 import Config from 'react-native-config';
 
 const Headers = () => {
@@ -35,8 +36,21 @@ const getLocalUserDetails = async () => {
   });
 };
 
+const notifyMessage = msg => {
+  if (Platform.OS === 'android') {
+    ToastAndroid.showWithGravityAndOffset(
+      msg,
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM,
+      25,
+      50,
+    );
+  } else {
+    AlertIOS.alert(msg);
+  }
+};
+
 const firebaseAuthErrors = error => {
-  console.log('error.code+++', error.code);
   switch (error.code) {
     case 'auth/user-not-found':
       return 'There is no user record corresponding to this identifier. The user may have been deleted.';
@@ -155,6 +169,7 @@ export {
   AuthHeaders,
   getLocalUserDetails,
   firebaseAuthErrors,
+  notifyMessage,
   postRequest,
   putRequest,
   getRequest,

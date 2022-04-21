@@ -1,11 +1,6 @@
 import React from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
-import auth from '@react-native-firebase/auth';
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-} from '@react-navigation/drawer';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {logoutSuccess} from '../redux/actions/AuthState';
@@ -14,7 +9,6 @@ export default function CustomHeader({navigation}) {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      // await auth().signOut();
       dispatch(logoutSuccess());
     } catch (e) {
       console.log(e);
