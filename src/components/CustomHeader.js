@@ -14,7 +14,7 @@ export default function CustomHeader({navigation}) {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      await auth().signOut();
+      // await auth().signOut();
       dispatch(logoutSuccess());
     } catch (e) {
       console.log(e);

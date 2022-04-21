@@ -12,14 +12,11 @@ import {
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 
-import auth from '@react-native-firebase/auth';
-// import {useDispatch} from 'react-redux';
 import {memberRegister, saveMemberDetails} from '../redux/actions/AuthState';
 import {FormProvider, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {registerSchema} from '../utils/ValidateSchema';
 import {isEmpty} from 'lodash';
-import {firebaseAuthErrors} from '../utils/Handlers';
 import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
 
@@ -59,8 +56,6 @@ const SignupScreen = ({navigation}) => {
   const PasswordRef = useRef(null);
   const ControllerRef = useRef(null);
 
-  // const dispatch = useDispatch();
-
   const onRegisterSubmit = async user => {
     try {
       setRegisterError(null);
@@ -75,31 +70,15 @@ const SignupScreen = ({navigation}) => {
       setInputUser(() => formData);
       memberRegister(user, navigation)
         .then(async resp => {
-          console.log('00000000000000000000', resp);
-          await auth()
-            .createUserWithEmailAndPassword(user.Email, user.Password)
-            .then(authResponse => {
-              if (authResponse.user) {
-                // setInputUser({
-                //   ...inputUser,
-                //   Name: user.Name,
-                //   Email: user.Email,
-                //   PhoneNumber: user.PhoneNumber,
-                //   Password: user.Password,
-                //   ControllerId: user.ControllerId,
-                // });
-
-                setLoader(false);
-                navigation.navigate('Login');
-              }
-            })
-            //we need to catch the whole sign up process if it fails too.
-            .catch(error => {
-              setRegisterError(null);
-              const response = firebaseAuthErrors(error);
-              setFirebaseError(response);
-              setLoader(false);
-            });
+          if (resp === 'success') {
+            //Good
+            setLoader(false);
+            navigation.navigate('Login');
+          } else {
+            // Not Good
+            setLoader(false);
+            setRegisterError(resp);
+          }
         })
         .catch(error => {
           console.log('eeeeeeeeeeeeeee', error);

@@ -80,13 +80,11 @@ const getRequest = (props, cancelToken) => {
   return axios
     .get(`${Config.API_URL}${props.url}?${props.queryParams}`)
     .then(response => {
-      console.log('Success response ', response);
       if (response.data) {
         return response.data;
       }
     })
     .catch(error => {
-      console.log('===================== response:: ', error.response.data);
       // if (error.response.status === 500 || error.response.status === 403) {
       //   showUnderMaintain(props.navigation);
       // } else {
