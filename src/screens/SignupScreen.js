@@ -70,7 +70,7 @@ const SignupScreen = ({navigation}) => {
       setInputUser(() => formData);
       memberRegister(user, navigation)
         .then(async resp => {
-          if (resp === 'Success') {
+          if (resp === 'success') {
             //Good
             setLoader(false);
             navigation.navigate('Login');

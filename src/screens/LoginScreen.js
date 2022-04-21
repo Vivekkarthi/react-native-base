@@ -68,9 +68,7 @@ const LoginScreen = ({navigation}) => {
       setInputUser(() => formData);
       memberLogin(user, navigation)
         .then(async resp => {
-          if (resp.USERRECORDID < 0 && AddlField1 === '') {
-          }
-          if (resp.AddlField1 === '') {
+          if (resp.USERRECORDID > 0 && resp.AddlField1 === '') {
             //Good
             AsyncStorage.setItem('loggedUser', JSON.stringify(resp));
             dispatch(rememberMe(user, isSelected));
