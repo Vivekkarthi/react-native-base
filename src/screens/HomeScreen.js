@@ -24,7 +24,7 @@ export default function HomeScreen({navigation}) {
     homeDetails.Notifications,
   );
   const [notify, setNotify] = useState({
-    activeNotification: '',
+    activeNotification: 0,
     date: moment(new Date()).format('MMMM DD, YYYY'),
     title: 'No Message',
   });
@@ -141,26 +141,26 @@ export default function HomeScreen({navigation}) {
             <Card.Title
               title={notify.date}
               subtitle={notify.title}
-              titleStyle={{fontSize: 18, justifyContent: 'center'}}
-              subtitleStyle={{fontSize: 16, alignItems: 'center'}}
-              left={props => {
-                homeDetails.Notifications.length && (
-                  <Ionicons
-                    name="arrow-back-circle-outline"
-                    size={30}
-                    onPress={() => getPreviousNotify()}
-                  />
-                );
-              }}
-              right={props => {
-                homeDetails.Notifications.length && (
-                  <Ionicons
-                    name="arrow-forward-circle-outline"
-                    size={30}
-                    onPress={() => getNextNotify()}
-                  />
-                );
-              }}
+              titleStyle={{fontSize: 18}}
+              subtitleStyle={{fontSize: 16}}
+              left={props => (
+                <Ionicons
+                  name="arrow-back-circle-outline"
+                  size={30}
+                  onPress={() =>
+                    homeDetails.Notifications.length && getPreviousNotify()
+                  }
+                />
+              )}
+              right={props => (
+                <Ionicons
+                  name="arrow-forward-circle-outline"
+                  size={30}
+                  onPress={() =>
+                    homeDetails.Notifications.length && getNextNotify()
+                  }
+                />
+              )}
             />
           </Card>
         </View>
