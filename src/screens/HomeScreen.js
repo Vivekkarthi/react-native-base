@@ -9,6 +9,7 @@ import {Card, Title, Paragraph} from 'react-native-paper';
 
 import {COLORS} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
+import {memberhome} from '../redux/actions/AuthState';
 
 export default function HomeScreen({navigation}) {
   const dispatch = useDispatch();

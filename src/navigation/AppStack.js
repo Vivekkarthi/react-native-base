@@ -115,7 +115,7 @@ const AppStack = () => {
           headerRight: () => (
             <View
               style={{
-                paddingRight: 10,
+                paddingRight: 23,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
                 <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
@@ -152,7 +152,7 @@ const AppStack = () => {
           headerRight: () => (
             <View
               style={{
-                paddingRight: 10,
+                paddingRight: 23,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
                 <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
@@ -189,7 +189,7 @@ const AppStack = () => {
           headerRight: () => (
             <View
               style={{
-                paddingRight: 10,
+                paddingRight: 23,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
                 <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
@@ -226,7 +226,7 @@ const AppStack = () => {
           headerRight: () => (
             <View
               style={{
-                paddingRight: 10,
+                paddingRight: 23,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
                 <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
@@ -263,7 +263,7 @@ const AppStack = () => {
           headerRight: () => (
             <View
               style={{
-                paddingRight: 10,
+                paddingRight: 23,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
                 <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
@@ -300,7 +300,7 @@ const AppStack = () => {
           headerRight: () => (
             <View
               style={{
-                paddingRight: 10,
+                paddingRight: 23,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
                 <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
