@@ -16,8 +16,13 @@ import {Loader} from '../components/Loader';
 export default function HomeScreen({navigation}) {
   const dispatch = useDispatch();
   const toast = useToast();
+  const [loader, setLoader] = useState(true);
   const {loggedMember} = useSelector(state => state.AuthState);
   const {homeDetails} = useSelector(state => state.HomeState);
+  console.log(
+    '+++++++++++++++++++++++++++++++++++++++++++++++++++',
+    homeDetails.Notifications,
+  );
   const [notify, setNotify] = useState({
     activeNotification: '',
     date: moment(new Date()).format('MMMM DD, YYYY'),
@@ -60,8 +65,10 @@ export default function HomeScreen({navigation}) {
         if (resp.LastSyncDate) {
           //Good
           dispatch(saveMemberHomeDetails(resp));
+          setLoader(false);
         } else {
           // Not Good
+          setLoader(false);
           toast.show(resp, {
             type: 'custom_type',
             animationDuration: 100,
@@ -73,6 +80,7 @@ export default function HomeScreen({navigation}) {
         }
       })
       .catch(error => {
+        setLoader(false);
         toast.show(error.message, {
           type: 'custom_type',
           animationDuration: 100,
@@ -89,6 +97,7 @@ export default function HomeScreen({navigation}) {
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
         <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+        {loader ? <Loader /> : null}
         <Ionicons name="home" size={23}>
           <Text>Home</Text>
         </Ionicons>
@@ -131,28 +140,27 @@ export default function HomeScreen({navigation}) {
           <Card style={{paddingRight: 14}}>
             <Card.Title
               title={notify.date}
-              message={notify.subtitle}
-              subtitle={notify.description}
-              titleStyle={{fontSize: 18}}
-              subtitleStyle={{fontSize: 16}}
-              left={props =>
-                homeDetails.Notifications && (
+              subtitle={notify.title}
+              titleStyle={{fontSize: 18, justifyContent: 'center'}}
+              subtitleStyle={{fontSize: 16, alignItems: 'center'}}
+              left={props => {
+                homeDetails.Notifications.length && (
                   <Ionicons
                     name="arrow-back-circle-outline"
                     size={30}
                     onPress={() => getPreviousNotify()}
                   />
-                )
-              }
-              right={props =>
-                homeDetails.Notifications && (
+                );
+              }}
+              right={props => {
+                homeDetails.Notifications.length && (
                   <Ionicons
                     name="arrow-forward-circle-outline"
                     size={30}
                     onPress={() => getNextNotify()}
                   />
-                )
-              }
+                );
+              }}
             />
           </Card>
         </View>
