@@ -18,48 +18,39 @@ export default function HomeScreen({navigation}) {
   const toast = useToast();
   const {loggedMember} = useSelector(state => state.AuthState);
   const {homeDetails} = useSelector(state => state.HomeState);
-  console.log('+++++++++++++++++++++++++++++++', homeDetails);
   const [notify, setNotify] = useState({
     activeNotification: '',
-    date: homeDetails.Notifications.length
-      ? homeDetails.Notifications[0].Datex
-      : moment(new Date()).format('MMMM DD, YYYY'),
-    title: homeDetails.Notifications.length
-      ? homeDetails.Notifications[0].Messagex
-      : 'No Message',
+    date: moment(new Date()).format('MMMM DD, YYYY'),
+    title: 'No Message',
   });
 
   const getNextNotify = () => {
     const arr = homeDetails.Notifications.length;
-    if (arr) {
-      let idx = notify.activeNotification + 1;
-      idx = idx % arr;
+    let idx = notify.activeNotification + 1;
+    idx = idx % arr;
 
-      setNotify({
-        activeNotification: idx,
-        date: homeDetails.Notifications[idx].Datex,
-        title: homeDetails.Notifications[idx].Messagex,
-      });
-    }
+    setNotify({
+      activeNotification: idx,
+      date: homeDetails.Notifications[idx].Datex,
+      title: homeDetails.Notifications[idx].Messagex,
+    });
   };
 
   const getPreviousNotify = () => {
     const arr = homeDetails.Notifications.length;
-    if (arr) {
-      let idx = notify.activeNotification;
+    let idx = notify.activeNotification;
 
-      if (idx === 0) {
-        idx = arr - 1;
-      } else {
-        idx = idx - 1;
-      }
-
-      setNotify({
-        activeNotification: idx,
-        date: homeDetails.Notifications[idx].Datex,
-        title: homeDetails.Notifications[idx].Messagex,
-      });
+    if (idx === 0) {
+      idx = arr - 1;
+    } else {
+      idx = idx - 1;
     }
+
+    setNotify({
+      activeNotification: idx,
+      date: homeDetails.Notifications[idx].Datex,
+      title: homeDetails.Notifications[idx].Messagex,
+    });
   };
 
   useEffect(() => {
@@ -144,20 +135,24 @@ export default function HomeScreen({navigation}) {
               subtitle={notify.description}
               titleStyle={{fontSize: 18}}
               subtitleStyle={{fontSize: 16}}
-              left={props => (
-                <Ionicons
-                  name="arrow-back-circle-outline"
-                  size={30}
-                  onPress={() => getPreviousNotify()}
-                />
-              )}
-              right={props => (
-                <Ionicons
-                  name="arrow-forward-circle-outline"
-                  size={30}
-                  onPress={() => getNextNotify()}
-                />
-              )}
+              left={props =>
+                homeDetails.Notifications && (
+                  <Ionicons
+                    name="arrow-back-circle-outline"
+                    size={30}
+                    onPress={() => getPreviousNotify()}
+                  />
+                )
+              }
+              right={props =>
+                homeDetails.Notifications && (
+                  <Ionicons
+                    name="arrow-forward-circle-outline"
+                    size={30}
+                    onPress={() => getNextNotify()}
+                  />
+                )
+              }
             />
           </Card>
         </View>
