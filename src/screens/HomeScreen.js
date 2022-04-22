@@ -3,10 +3,12 @@ import {View, SafeAreaView, Text, Image, ScrollView} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 
-import CustomHeader from '../components/CustomHeader';
 import {useSelector, useDispatch} from 'react-redux';
 import {fetchHomeData} from '../redux/actions/HomeState';
 import {Card, Title, Paragraph} from 'react-native-paper';
+
+import {COLORS} from '../constants';
+import AppStatusBar from '../components/AppStatusBar';
 
 export default function HomeScreen({navigation}) {
   const dispatch = useDispatch();
@@ -61,7 +63,7 @@ export default function HomeScreen({navigation}) {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
-        {/* <CustomHeader navigation={navigation} /> */}
+        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
         <Ionicons name="home" size={23}>
           <Text>Home</Text>
         </Ionicons>

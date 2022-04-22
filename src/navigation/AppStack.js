@@ -18,7 +18,7 @@ import {logoutSuccess} from '../redux/actions/AuthState';
 
 const Drawer = createDrawerNavigator();
 
-const AuthStack = () => {
+const AppStack = () => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
@@ -312,4 +312,4 @@ const AuthStack = () => {
     </Drawer.Navigator>
   );
 };
-export default AuthStack;
+export default AppStack;

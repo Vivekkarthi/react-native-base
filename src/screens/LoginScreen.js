@@ -4,21 +4,21 @@ import {
   Text,
   Image,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  FlatList,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import {useDispatch} from 'react-redux';
 import {useForm, FormProvider} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {isEmpty} from 'lodash';
 import {useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import {loginSchema} from '../utils/ValidateSchema';
-import Toast from 'react-native-toast-message';
+import {useToast} from 'react-native-toast-notifications';
 
 import {
   memberLogin,
@@ -31,21 +31,17 @@ import AppStatusBar from '../components/AppStatusBar';
 
 const LoginScreen = ({navigation}) => {
   const {rememberLogin} = useSelector(state => state.AuthState);
-
   const [inputUser, setInputUser] = useState({PhoneNumber: '', Password: ''});
   const [isSelected, setSelection] = useState(false);
   const [loader, setLoader] = useState(false);
-  const [loginError, setLoginError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
-
-  //const EmailRef = useRef(null);
+  const toast = useToast();
   const PasswordRef = useRef(null);
   const PhoneNumberRef = useRef(null);
 
   const methods = useForm({
     defaultValues: {
-      //Email: '',
       PhoneNumber: '',
       Password: '',
     },
@@ -60,37 +56,50 @@ const LoginScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   const onLoginSubmit = async user => {
-    setLoginError(null);
     setLoader(true);
     const formData = {
-      // Email: user.Email,
       PhoneNumber: user.PhoneNumber,
       Password: user.Password,
     };
     setInputUser(() => formData);
     memberLogin(user, navigation)
       .then(async resp => {
-        if (resp.USERRECORDID > 0 && resp.AddlField1 === '') {
+        if (resp.USERRECORDID !== 0 && resp.AddlField1 === '') {
           //Good
+          toast.show(`${resp.LoginNAME} you have logged in successfully.`, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'success',
+              title: 'Success',
+            },
+          });
           AsyncStorage.setItem('loggedUser', JSON.stringify(resp));
           dispatch(rememberMe(user, isSelected));
           dispatch(saveMemberDetails(resp));
         } else {
           // Not Good
           setLoader(false);
-          setLoginError(resp.AddlField1);
-          // Toast.show({
-          //   type: 'error',
-          //   position: 'top',
-          //   text: 'resp.AddlField1',
-          //   visibilityTime: 5000,
-          //   autoHide: true,
-          // });
+          toast.show(resp.AddlField1, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'error',
+              title: 'Invalid login',
+            },
+          });
         }
       })
       .catch(error => {
         setLoader(false);
-        setLoginError(error.message);
+        toast.show(error.message, {
+          type: 'custom_type',
+          animationDuration: 100,
+          data: {
+            type: 'error',
+            title: 'Invalid login',
+          },
+        });
       });
   };
 
@@ -98,13 +107,11 @@ const LoginScreen = ({navigation}) => {
     if (rememberLogin) {
       await AsyncStorage.getItem('rememberMe').then(value => {
         const rememberData = JSON.parse(value);
-        //setValue('Email', rememberData.Email);
         setValue('PhoneNumber', rememberData.PhoneNumber);
         setValue('Password', rememberData.Password);
 
         setInputUser(prevState => ({
           ...prevState,
-          //Email: rememberData.Email,
           PhoneNumber: rememberData.PhoneNumber,
           Password: rememberData.Password,
         }));
@@ -119,181 +126,200 @@ const LoginScreen = ({navigation}) => {
   }, [getRememberData]);
 
   return (
-    <ScrollView contentContainerStyle={[styles.container]}>
-      <AppStatusBar colorPalete="WHITE" bg={COLORS.lightGray} />
-      {loader ? <Loader /> : null}
-      <Image
-        source={require('../../assets/images/icon.png')}
-        style={styles.logo}
-      />
+    <FlatList
+      style={styles.container}
+      keyboardShouldPersistTaps="always"
+      showsVerticalScrollIndicator={false}
+      data={[{ID: '1'}]}
+      keyExtractor={item => `${item.ID}`}
+      renderItem={() => (
+        <View contentContainerStyle={[styles.container]}>
+          <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+          {loader ? <Loader /> : null}
+          <Image
+            source={require('../../assets/images/icon.png')}
+            style={styles.logo}
+          />
 
-      <View
-        style={{
-          backgroundColor: COLORS.lightGray,
-          width: '100%',
-          borderTopStartRadius: SIZES.radius * 2,
-          borderTopEndRadius: SIZES.radius * 2,
-          padding: SIZES.base * 2,
-        }}>
-        <Text style={styles.text}>Login</Text>
-        <FormProvider {...methods}>
-          <View style={{marginBottom: SIZES.base}}>
-            <Text
-              style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
-              Login ID
-            </Text>
-            <FormInput
-              autoFocus={true}
-              iconType="phone"
-              defaultValues={inputUser.PhoneNumber ? inputUser.PhoneNumber : ''}
-              textLabel={'Mobile'}
-              // placeHolder={'Email'}
-              textName={'PhoneNumber'}
-              keyboardType="default"
-              errorobj={errors}
-              refs={PhoneNumberRef}
-              refField={() => PasswordRef.current.focus()}
-            />
-          </View>
+          <View
+            style={{
+              backgroundColor: COLORS.lightGray,
+              width: '100%',
+              borderTopStartRadius: SIZES.radius * 2,
+              borderTopEndRadius: SIZES.radius * 2,
+              padding: SIZES.base * 2,
+            }}>
+            <Text style={styles.text}>Login</Text>
 
-          <View style={{marginBottom: SIZES.base}}>
-            <Text
-              style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
-              Password
-            </Text>
+            <KeyboardAvoidingView
+              style={{flex: 1}}
+              behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+              keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+              <FlatList
+                style={{width: '100%'}}
+                keyboardShouldPersistTaps="always"
+                showsVerticalScrollIndicator={false}
+                data={[{ID: '1'}]}
+                keyExtractor={item => `${item.ID}`}
+                renderItem={() => (
+                  <>
+                    <FormProvider {...methods}>
+                      <View style={{marginBottom: SIZES.base}}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            opacity: 0.5,
+                            marginBottom: SIZES.base,
+                          }}>
+                          Login ID
+                        </Text>
+                        <FormInput
+                          autoFocus={true}
+                          iconType="phone"
+                          defaultValues={
+                            inputUser.PhoneNumber ? inputUser.PhoneNumber : ''
+                          }
+                          textLabel={'Login ID'}
+                          textName={'PhoneNumber'}
+                          keyboardType="default"
+                          errorobj={errors}
+                          refs={PhoneNumberRef}
+                          refField={() => PasswordRef.current.focus()}
+                        />
+                      </View>
+
+                      <View style={{marginBottom: SIZES.base}}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            opacity: 0.5,
+                            marginBottom: SIZES.base,
+                          }}>
+                          Password
+                        </Text>
+                        <View
+                          style={{
+                            position: 'relative',
+                            justifyContent: 'center',
+                          }}>
+                          <FormInput
+                            iconType="lock"
+                            defaultValues={
+                              inputUser.Password ? inputUser.Password : ''
+                            }
+                            textLabel={'Password'}
+                            // placeHolder={'Password'}
+                            textName={'Password'}
+                            keyboardType="default"
+                            errorobj={errors}
+                            showHidePassword={() => {
+                              setPwdVisible(!pwdVisible);
+                              setShowPassword(!showPassword);
+                            }}
+                            showPassword={showPassword}
+                            pwdVisible={pwdVisible}
+                            refs={PasswordRef}
+                          />
+                        </View>
+                      </View>
+                      <View style={{flexDirection: 'row'}}>
+                        <CheckBox
+                          value={isSelected}
+                          onValueChange={setSelection}
+                          style={{alignSelf: 'center', borderColor: 'red'}}
+                        />
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            opacity: 0.8,
+                            marginTop: 8,
+                            paddingRight: 20,
+                            textAlign: 'left',
+                          }}>
+                          Remember me ?
+                        </Text>
+
+                        <TouchableOpacity
+                          style={{
+                            marginTop: 8,
+                            paddingLeft: 30,
+                            textAlign: 'right',
+                          }}
+                          onPress={() => {
+                            navigation.navigate('ResetScreen');
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              opacity: 0.8,
+                              textAlign: 'right',
+                              fontWeight: 'bold',
+                              color: COLORS.primary,
+                            }}>
+                            Forgot Password?
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </FormProvider>
+
+                    <FormButton
+                      buttonTitle="Sign In"
+                      isPrimary={true}
+                      style={{
+                        marginVertical: SIZES.base * 2,
+                      }}
+                      onPress={handleSubmit(onLoginSubmit)}
+                    />
+                  </>
+                )}
+              />
+            </KeyboardAvoidingView>
+
             <View
               style={{
-                position: 'relative',
+                flexDirection: 'row',
                 justifyContent: 'center',
-              }}>
-              <FormInput
-                iconType="lock"
-                defaultValues={inputUser.Password ? inputUser.Password : ''}
-                textLabel={'Password'}
-                // placeHolder={'Password'}
-                textName={'Password'}
-                keyboardType="default"
-                errorobj={errors}
-                showHidePassword={() => {
-                  setPwdVisible(!pwdVisible);
-                  setShowPassword(!showPassword);
-                }}
-                showPassword={showPassword}
-                pwdVisible={pwdVisible}
-                refs={PasswordRef}
-              />
-            </View>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <CheckBox
-              value={isSelected}
-              onValueChange={setSelection}
-              style={{alignSelf: 'center', borderColor: 'red'}}
-            />
-            <Text
-              style={{
-                fontSize: 12,
-                opacity: 0.8,
-                marginTop: 8,
-                paddingRight: 20,
-                textAlign: 'left',
-              }}>
-              Remember me ?
-            </Text>
-
-            <TouchableOpacity
-              style={{
-                marginTop: 8,
-                paddingLeft: 30,
-                textAlign: 'right',
-              }}
-              onPress={() => {
-                navigation.navigate('ResetScreen');
+                alignItems: 'center',
+                marginVertical: SIZES.base,
               }}>
               <Text
                 style={{
                   fontSize: 16,
-                  opacity: 0.8,
-                  textAlign: 'right',
-                  fontWeight: 'bold',
-                  color: COLORS.primary,
                 }}>
-                Forgot Password?
+                Don't have an account ?
               </Text>
-            </TouchableOpacity>
-          </View>
-        </FormProvider>
-        {!isEmpty(loginError) ? (
-          // <Text
-          //   style={{
-          //     paddingLeft: 15,
-          //     paddingRight: 15,
-          //     fontSize: 16,
-          //     textAlign: 'center',
-          //     fontFamily: 'Lato-Regular',
-          //     color: '#D83F50',
-          //   }}>
-          //   {loginError}
-          // </Text>
-          <Toast
-            type="error"
-            position="top"
-            visibilityTime={5000}
-            text={loginError}
-          />
-        ) : null}
-
-        <FormButton
-          buttonTitle="Sign In"
-          isPrimary={true}
-          style={{
-            marginVertical: SIZES.base * 2,
-          }}
-          onPress={handleSubmit(onLoginSubmit)}
-        />
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginVertical: SIZES.base,
-          }}>
-          <Text
-            style={{
-              fontSize: 16,
-            }}>
-            Don't have an account ?
-          </Text>
-          <TouchableOpacity
-            style={{
-              padding: 10,
-            }}
-            onPress={() => {
-              navigation.navigate('Signup');
-            }}>
-            <Text
+              <TouchableOpacity
+                style={{
+                  padding: 10,
+                }}
+                onPress={() => {
+                  navigation.navigate('Signup');
+                }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    marginLeft: SIZES.base,
+                    color: COLORS.primary,
+                  }}>
+                  Create Account
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View
               style={{
-                fontSize: 16,
-                fontWeight: 'bold',
-                marginLeft: SIZES.base,
-                color: COLORS.primary,
+                flexDirection: 'row',
+                textAlign: 'center',
+                justifyContent: 'center',
               }}>
-              Create Account
-            </Text>
-          </TouchableOpacity>
+              <Text style={styles.color_textPrivate}>
+                &#169; 2022 DOORBOX, All rights reserved.
+              </Text>
+            </View>
+          </View>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            textAlign: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text style={styles.color_textPrivate}>
-            &#169; 2022 DOORBOX, All rights reserved.
-          </Text>
-        </View>
-      </View>
-    </ScrollView>
+      )}
+    />
   );
 };
 

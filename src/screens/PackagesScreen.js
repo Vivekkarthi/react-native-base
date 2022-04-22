@@ -12,6 +12,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
 import {sliderData} from '../model/data';
+import AppStatusBar from '../components/AppStatusBar';
+import {COLORS} from '../constants';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -50,6 +52,7 @@ const PackagesScreen = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
+        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
         <View style={styles.container}>
           {/* <Ionicons
             name="arrow-forward-circle-outline"
