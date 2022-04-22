@@ -36,20 +36,6 @@ const getLocalUserDetails = async () => {
   });
 };
 
-const notifyMessage = msg => {
-  if (Platform.OS === 'android') {
-    ToastAndroid.showWithGravityAndOffset(
-      msg,
-      ToastAndroid.SHORT,
-      ToastAndroid.BOTTOM,
-      25,
-      50,
-    );
-  } else {
-    AlertIOS.alert(msg);
-  }
-};
-
 const firebaseAuthErrors = error => {
   switch (error.code) {
     case 'auth/user-not-found':
@@ -169,7 +155,6 @@ export {
   AuthHeaders,
   getLocalUserDetails,
   firebaseAuthErrors,
-  notifyMessage,
   postRequest,
   putRequest,
   getRequest,

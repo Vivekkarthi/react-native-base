@@ -7,12 +7,12 @@ const AppStatusBar = props => {
     case 'WHITE':
       return (
         <View
-          style={Platform.OS === 'ios' ? {backgroundColor: '#F9F9F7'} : null}>
+          style={Platform.OS === 'ios' ? {backgroundColor: props.bg} : null}>
           <View style={{height: STATUSBAR_HEIGHT}}>
             <StatusBar
               translucent={true}
               animated={true}
-              backgroundColor="#F9F9F7"
+              backgroundColor={props.bg}
               barStyle="dark-content"
             />
           </View>
@@ -22,12 +22,12 @@ const AppStatusBar = props => {
     case 'BLACK':
       return (
         <View
-          style={Platform.OS === 'ios' ? {backgroundColor: '#161616'} : null}>
+          style={Platform.OS === 'ios' ? {backgroundColor: props.bg} : null}>
           <View style={{height: STATUSBAR_HEIGHT}}>
             <StatusBar
               translucent={true}
               animated={true}
-              backgroundColor="#161616"
+              backgroundColor={props.bg}
               barStyle="light-content"
             />
           </View>

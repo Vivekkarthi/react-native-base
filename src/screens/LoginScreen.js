@@ -27,7 +27,6 @@ import {
 } from '../redux/actions/AuthState';
 import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
-import SnackBar from '../components/SnackBar';
 import AppStatusBar from '../components/AppStatusBar';
 
 const LoginScreen = ({navigation}) => {
@@ -80,6 +79,13 @@ const LoginScreen = ({navigation}) => {
           // Not Good
           setLoader(false);
           setLoginError(resp.AddlField1);
+          // Toast.show({
+          //   type: 'error',
+          //   position: 'top',
+          //   text: 'resp.AddlField1',
+          //   visibilityTime: 5000,
+          //   autoHide: true,
+          // });
         }
       })
       .catch(error => {
@@ -114,7 +120,7 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <ScrollView contentContainerStyle={[styles.container]}>
-      <AppStatusBar colorPalete="WHITE" />
+      <AppStatusBar colorPalete="WHITE" bg={COLORS.lightGray} />
       {loader ? <Loader /> : null}
       <Image
         source={require('../../assets/images/icon.png')}
@@ -194,25 +200,28 @@ const LoginScreen = ({navigation}) => {
               }}>
               Remember me ?
             </Text>
-          </View>
 
-          <TouchableOpacity
-            style={{
-              padding: 10,
-            }}
-            onPress={() => {
-              navigation.navigate('ResetScreen');
-            }}>
-            <Text
+            <TouchableOpacity
               style={{
-                fontSize: 16,
-                opacity: 0.8,
+                marginTop: 8,
+                paddingLeft: 30,
                 textAlign: 'right',
-                fontWeight: 'bold',
+              }}
+              onPress={() => {
+                navigation.navigate('ResetScreen');
               }}>
-              Forgot Password?
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  fontSize: 16,
+                  opacity: 0.8,
+                  textAlign: 'right',
+                  fontWeight: 'bold',
+                  color: COLORS.primary,
+                }}>
+                Forgot Password?
+              </Text>
+            </TouchableOpacity>
+          </View>
         </FormProvider>
         {!isEmpty(loginError) ? (
           // <Text
@@ -228,18 +237,11 @@ const LoginScreen = ({navigation}) => {
           // </Text>
           <Toast
             type="error"
-            position="bottom"
-            text={loginError}
+            position="top"
             visibilityTime={5000}
-            autoHide={true}
+            text={loginError}
           />
-        ) : // <SnackBar
-        //   visible={true}
-        //   status="error"
-        //   message={loginError}
-        //   onDismissSnackBar={() => setLoginError(null)}
-        // />
-        null}
+        ) : null}
 
         <FormButton
           buttonTitle="Sign In"
