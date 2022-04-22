@@ -2,62 +2,94 @@ import React, {useState, useEffect} from 'react';
 import {View, SafeAreaView, Text, Image, ScrollView} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
+import {useToast} from 'react-native-toast-notifications';
 
 import {useSelector, useDispatch} from 'react-redux';
-import {fetchHomeData} from '../redux/actions/HomeState';
+import {fetchHomeData, saveMemberHomeDetails} from '../redux/actions/HomeState';
 import {Card, Title, Paragraph} from 'react-native-paper';
 
 import {COLORS} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
-import {memberhome} from '../redux/actions/AuthState';
+import Config from 'react-native-config';
+import {Loader} from '../components/Loader';
 
 export default function HomeScreen({navigation}) {
   const dispatch = useDispatch();
+  const toast = useToast();
+  const [loader, setLoader] = useState(true);
+  const {loggedMember} = useSelector(state => state.AuthState);
   const {homeDetails} = useSelector(state => state.HomeState);
+  console.log(
+    '+++++++++++++++++++++++++++++++++++++++++++++++++++',
+    homeDetails.Notifications,
+  );
   const [notify, setNotify] = useState({
-    notifications: homeDetails.notifications,
     activeNotification: '',
     date: moment(new Date()).format('MMMM DD, YYYY'),
-    title: 'Notifications',
-    subtitle: 'Notification title',
-    description: 'Notification not found',
+    title: 'No Message',
   });
 
   const getNextNotify = () => {
-    var arr = homeDetails.notifications.length;
-    var idx = notify.activeNotification + 1;
-    var idx = idx % arr;
+    const arr = homeDetails.Notifications.length;
+    let idx = notify.activeNotification + 1;
+    idx = idx % arr;
 
     setNotify({
       activeNotification: idx,
-      date: homeDetails.notifications[idx].date,
-      title: homeDetails.notifications[idx].title,
-      description: homeDetails.notifications[idx].description,
-      subtitle: homeDetails.notifications[idx].subtitle,
+      date: homeDetails.Notifications[idx].Datex,
+      title: homeDetails.Notifications[idx].Messagex,
     });
   };
 
   const getPreviousNotify = () => {
-    var arr = homeDetails.notifications.length;
-    var idx = notify.activeNotification;
+    const arr = homeDetails.Notifications.length;
+    let idx = notify.activeNotification;
 
     if (idx === 0) {
-      var idx = arr - 1;
+      idx = arr - 1;
     } else {
-      var idx = idx - 1;
+      idx = idx - 1;
     }
 
     setNotify({
       activeNotification: idx,
-      date: homeDetails.notifications[idx].date,
-      title: homeDetails.notifications[idx].title,
-      description: homeDetails.notifications[idx].description,
-      subtitle: homeDetails.notifications[idx].subtitle,
+      date: homeDetails.Notifications[idx].Datex,
+      title: homeDetails.Notifications[idx].Messagex,
     });
   };
 
   useEffect(() => {
-    dispatch(fetchHomeData());
+    // dispatch(fetchHomeData(loggedMember.ControllerID));
+    fetchHomeData('newcontroller2')
+      .then(async resp => {
+        if (resp.LastSyncDate) {
+          //Good
+          dispatch(saveMemberHomeDetails(resp));
+          setLoader(false);
+        } else {
+          // Not Good
+          setLoader(false);
+          toast.show(resp, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'error',
+              title: 'Invalid data',
+            },
+          });
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        toast.show(error.message, {
+          type: 'custom_type',
+          animationDuration: 100,
+          data: {
+            type: 'error',
+            title: 'Invalid data',
+          },
+        });
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -65,6 +97,7 @@ export default function HomeScreen({navigation}) {
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
         <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+        {loader ? <Loader /> : null}
         <Ionicons name="home" size={23}>
           <Text>Home</Text>
         </Ionicons>
@@ -76,30 +109,30 @@ export default function HomeScreen({navigation}) {
           }}>
           <Card>
             <Card.Cover
-              style={{width: 178, height: 180}}
+              style={{width: 200, height: 180}}
               source={
-                homeDetails.isLock
+                homeDetails.PackageState === 1
                   ? require('../../assets/images/new_lock.png')
                   : require('../../assets/images/unlock.jpg')
               }
             />
             <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-              Date: {notify.date}
+              Date: {homeDetails.LastSyncDate}
             </Text>
             <Text style={{textAlign: 'center'}}>
-              State:{homeDetails.packageMessage}
+              {homeDetails.PackageState === 1 ? 'Locked' : 'UnLocked'}
             </Text>
           </Card>
-          <Card style={{width: 190, height: 220}}>
+          <Card style={{width: 150, height: 220}}>
             <Image
-              style={{width: 180, height: 120, top: 30}}
+              style={{width: 150, height: 120, top: 30}}
               source={{
-                uri: 'https://controller5.s3.us-west-1.amazonaws.com/images/env1.jpg',
+                uri: `${Config.IMAGE_URL}/${homeDetails.photo1}`,
               }}
             />
             {/* <Title>Status</Title>
               <Paragraph>{homeDetails.packageMessage}</Paragraph> */}
-            <Text style={{textAlign: 'center', top: 60}}>last updated</Text>
+            <Text style={{textAlign: 'center', top: 60}}>Last updated</Text>
           </Card>
         </View>
 
@@ -107,24 +140,27 @@ export default function HomeScreen({navigation}) {
           <Card style={{paddingRight: 14}}>
             <Card.Title
               title={notify.date}
-              message={notify.subtitle}
-              subtitle={notify.description}
-              titleStyle={{fontSize: 18}}
-              subtitleStyle={{fontSize: 16}}
-              left={props => (
-                <Ionicons
-                  name="arrow-back-circle-outline"
-                  size={30}
-                  onPress={() => getPreviousNotify()}
-                />
-              )}
-              right={props => (
-                <Ionicons
-                  name="arrow-forward-circle-outline"
-                  size={30}
-                  onPress={() => getNextNotify()}
-                />
-              )}
+              subtitle={notify.title}
+              titleStyle={{fontSize: 18, justifyContent: 'center'}}
+              subtitleStyle={{fontSize: 16, alignItems: 'center'}}
+              left={props => {
+                homeDetails.Notifications.length && (
+                  <Ionicons
+                    name="arrow-back-circle-outline"
+                    size={30}
+                    onPress={() => getPreviousNotify()}
+                  />
+                );
+              }}
+              right={props => {
+                homeDetails.Notifications.length && (
+                  <Ionicons
+                    name="arrow-forward-circle-outline"
+                    size={30}
+                    onPress={() => getNextNotify()}
+                  />
+                );
+              }}
             />
           </Card>
         </View>

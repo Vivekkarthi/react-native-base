@@ -23,7 +23,6 @@ export function memberLogin(userData, navigation) {
   const queryParams = `sK=token&suid=${userData.PhoneNumber}&spass=${userData.Password}&sip=someipaddress`;
   const params = {
     url: ENDPOINTURL.MemberLogin,
-    data: userData,
     token: '',
     queryParams,
   };
@@ -41,7 +40,6 @@ export function memberRegister(userData, navigation) {
   const queryParams = `sK=token&namex=${userData.Name}&spass=${userData.Password}&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=${userData.ControllerId}&icustid=0`;
   const params = {
     url: ENDPOINTURL.MemberRegister,
-    data: userData,
     token: '',
     queryParams,
   };
