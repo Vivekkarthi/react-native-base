@@ -9,16 +9,16 @@ import {
   FlatList,
   Image,
 } from 'react-native';
-import FormInput from '../components/FormInput';
-import FormButton from '../components/FormButton';
-
-import {memberRegister, saveMemberDetails} from '../redux/actions/AuthState';
 import {FormProvider, useForm} from 'react-hook-form';
+import {useToast} from 'react-native-toast-notifications';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {registerSchema} from '../utils/ValidateSchema';
-import {isEmpty} from 'lodash';
 import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
+import {registerSchema} from '../utils/ValidateSchema';
+import {memberRegister} from '../redux/actions/AuthState';
+import FormInput from '../components/FormInput';
+import FormButton from '../components/FormButton';
+import AppStatusBar from '../components/AppStatusBar';
 
 const SignupScreen = ({navigation}) => {
   const [inputUser, setInputUser] = useState({
@@ -29,11 +29,11 @@ const SignupScreen = ({navigation}) => {
     ControllerId: '',
   });
   const [loader, setLoader] = useState(false);
-  const [registerError, setRegisterError] = useState(null);
 
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
-  const [firebaseError, setFirebaseError] = useState(null);
+
+  const toast = useToast();
 
   const methods = useForm({
     defaultValues: {
@@ -57,7 +57,6 @@ const SignupScreen = ({navigation}) => {
   const ControllerRef = useRef(null);
 
   const onRegisterSubmit = async user => {
-    setRegisterError(null);
     setLoader(true);
     const formData = {
       Name: user.Name,
@@ -71,17 +70,39 @@ const SignupScreen = ({navigation}) => {
       .then(async resp => {
         if (resp === 'success') {
           //Good
+          toast.show('You have registered successfully.', {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'success',
+              title: 'Success',
+            },
+          });
           setLoader(false);
           navigation.navigate('Login');
         } else {
           // Not Good
           setLoader(false);
-          setRegisterError(resp);
+          toast.show(resp, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'error',
+              title: 'Failure',
+            },
+          });
         }
       })
       .catch(error => {
         setLoader(false);
-        setRegisterError(error.message);
+        toast.show(error.message, {
+          type: 'custom_type',
+          animationDuration: 100,
+          data: {
+            type: 'error',
+            title: 'Failure',
+          },
+        });
       });
   };
 
@@ -103,7 +124,6 @@ const SignupScreen = ({navigation}) => {
               textName={'Name'}
               keyboardType="default"
               errorobj={errors}
-              validationError={registerError}
               refs={NameRef}
               refField={() => EmailRef.current.focus()}
             />
@@ -122,7 +142,6 @@ const SignupScreen = ({navigation}) => {
               textName={'Email'}
               keyboardType="email-address"
               errorobj={errors}
-              validationError={registerError}
               refs={EmailRef}
               refField={() => PhoneNumberRef.current.focus()}
             />
@@ -140,7 +159,6 @@ const SignupScreen = ({navigation}) => {
               textName={'PhoneNumber'}
               keyboardType="phone-pad"
               errorobj={errors}
-              validationError={registerError}
               refs={PhoneNumberRef}
               refField={() => PasswordRef.current.focus()}
             />
@@ -159,7 +177,6 @@ const SignupScreen = ({navigation}) => {
               textName={'Password'}
               keyboardType="default"
               errorobj={errors}
-              validationError={registerError}
               showHidePassword={() => {
                 setPwdVisible(!pwdVisible);
                 setShowPassword(!showPassword);
@@ -184,39 +201,10 @@ const SignupScreen = ({navigation}) => {
               textName={'ControllerId'}
               keyboardType="default"
               errorobj={errors}
-              validationError={registerError}
               refs={ControllerRef}
             />
           </View>
         </FormProvider>
-
-        {!isEmpty(firebaseError) ? (
-          <Text
-            style={{
-              paddingLeft: 15,
-              paddingRight: 15,
-              fontSize: 16,
-              textAlign: 'center',
-              fontFamily: 'Lato-Regular',
-              color: '#D83F50',
-            }}>
-            {firebaseError}
-          </Text>
-        ) : null}
-
-        {!isEmpty(registerError) ? (
-          <Text
-            style={{
-              paddingLeft: 15,
-              paddingRight: 15,
-              fontSize: 16,
-              textAlign: 'center',
-              fontFamily: 'Lato-Regular',
-              color: '#D83F50',
-            }}>
-            {registerError}
-          </Text>
-        ) : null}
 
         <FormButton
           buttonTitle="Create Account"
@@ -255,6 +243,7 @@ const SignupScreen = ({navigation}) => {
         keyExtractor={item => `${item.ID}`}
         renderItem={() => (
           <View contentContainerStyle={[styles.container]}>
+            <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
             {loader ? <Loader /> : null}
             <Image
               source={require('../../assets/images/icon.png')}

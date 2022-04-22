@@ -7,6 +7,8 @@ import moment from 'moment';
 import {useSelector, useDispatch} from 'react-redux';
 import {fetchHomeData} from '../redux/actions/HomeState';
 import {Card, Title, Paragraph} from 'react-native-paper';
+import AppStatusBar from '../components/AppStatusBar';
+import {COLORS} from '../constants';
 
 const NotificationsScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -60,6 +62,7 @@ const NotificationsScreen = ({navigation, route}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
+        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Text>Notifications Screen</Text>
           <Text>{route.params?.title}</Text>

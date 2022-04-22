@@ -3,11 +3,14 @@ import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import {DataTable} from 'react-native-paper';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AppStatusBar from '../components/AppStatusBar';
+import {COLORS} from '../constants';
 
 const UsersScreen = ({navigation, route}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
+        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
         <Ionicons name="arrow-back" size={22} style={{left: 310}} />
         <Ionicons name="add" size={22} style={{left: 350, bottom: 25}} />
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>

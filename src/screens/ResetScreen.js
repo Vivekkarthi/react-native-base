@@ -20,6 +20,8 @@ import {resetPassSchema} from '../utils/ValidateSchema';
 import {isEmpty} from 'lodash';
 import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
+import AppStatusBar from '../components/AppStatusBar';
+import {Appbar} from 'react-native-paper';
 
 const ResetScreen = ({navigation}) => {
   const [inputUser, setInputUser] = useState({Email: '', Password: ''});
@@ -59,13 +61,14 @@ const ResetScreen = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.background,
-        position: 'relative',
-      }}>
-      <AntDesignIcon
+    <>
+      {/* <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: COLORS.background,
+          position: 'relative',
+        }}> */}
+      {/* <AntDesignIcon
         name="arrowleft"
         style={{
           fontSize: 30,
@@ -75,8 +78,18 @@ const ResetScreen = ({navigation}) => {
         onPress={() => {
           navigation.goBack();
         }}
-      />
+      /> */}
+      <Appbar.Header statusBarHeight={20}>
+        <Appbar.BackAction
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+        <Appbar.Content title="Restore Password" />
+      </Appbar.Header>
       <ScrollView contentContainerStyle={[styles.container]}>
+        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+
         {loader ? <Loader /> : null}
         <Image
           source={require('../../assets/images/icon.png')}
@@ -95,7 +108,11 @@ const ResetScreen = ({navigation}) => {
           <FormProvider {...methods}>
             <View style={{marginBottom: SIZES.base}}>
               <Text
-                style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
+                style={{
+                  fontSize: 16,
+                  opacity: 0.5,
+                  marginBottom: SIZES.base,
+                }}>
                 Email Address
               </Text>
               <FormInput
@@ -117,19 +134,6 @@ const ResetScreen = ({navigation}) => {
               You will receive email with password reset link.
             </Text>
           </FormProvider>
-          {!isEmpty(loginError) ? (
-            <Text
-              style={{
-                paddingLeft: 15,
-                paddingRight: 15,
-                fontSize: 16,
-                textAlign: 'center',
-                fontFamily: 'Lato-Regular',
-                color: '#D83F50',
-              }}>
-              {loginError}
-            </Text>
-          ) : null}
 
           <FormButton
             buttonTitle="Sign In"
@@ -157,7 +161,8 @@ const ResetScreen = ({navigation}) => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+      {/* </SafeAreaView> */}
+    </>
   );
 };
 

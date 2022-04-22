@@ -1,13 +1,7 @@
 import * as yup from 'yup';
 
 const loginSchema = yup.object().shape({
-  //Email: yup.string().email().required(),
-  PhoneNumber: yup
-    .string()
-    //.matches(/^\d+$/, 'Please Enter Valid Mobile Number')
-    //.matches(/^\d{3}\d{3}\d{4}$/, 'Mobile number needs to be 10 digits')
-    .required('Mobile is required'),
-  // Password: yup.string().min(6).max(24).required(),
+  PhoneNumber: yup.string().required('Login ID is required'),
   Password: yup.string().required(),
 });
 

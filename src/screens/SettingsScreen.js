@@ -2,11 +2,14 @@ import React from 'react';
 import {View, SafeAreaView, ScrollView} from 'react-native';
 import {List} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AppStatusBar from '../components/AppStatusBar';
+import {COLORS} from '../constants';
 
 const SettingsScreen = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
+        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
         <View style={{flex: 1}}>
           <List.Section>
             <Ionicons name="settings" size={25}>

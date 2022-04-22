@@ -13,6 +13,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
 import CustomHeader from '../components/CustomHeader';
 import {sliderData} from '../model/data';
+import AppStatusBar from '../components/AppStatusBar';
+import {COLORS} from '../constants';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -48,6 +50,7 @@ const CameraScreen = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
+        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
         <Text style={{textAlign: 'center'}}>Intenal Camera</Text>
         <View style={styles.container}>
           {/* <Ionicons
