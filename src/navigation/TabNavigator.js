@@ -10,6 +10,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Image, TouchableOpacity, View} from 'react-native';
 import {logoutSuccess} from '../redux/actions/AuthState';
+import {COLORS} from '../constants';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -52,7 +53,7 @@ const HomeStack = ({navigation}) => {
                 paddingLeft: 10,
               }}>
               <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                <Ionicons name="menu" size={30} />
+                <Ionicons name="menu" size={30} color={COLORS.primary} />
               </TouchableOpacity>
             </View>
           ),
@@ -110,7 +111,7 @@ const SettingStack = ({navigation}) => {
                 paddingLeft: 10,
               }}>
               <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                <Ionicons name="menu" size={30} />
+                <Ionicons name="menu" size={30} color={COLORS.primary} />
               </TouchableOpacity>
             </View>
           ),
@@ -168,7 +169,7 @@ const PackageStack = ({navigation}) => {
                 paddingLeft: 10,
               }}>
               <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                <Ionicons name="menu" size={30} />
+                <Ionicons name="menu" size={30} color={COLORS.primary} />
               </TouchableOpacity>
             </View>
           ),

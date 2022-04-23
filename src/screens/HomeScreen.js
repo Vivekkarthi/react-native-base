@@ -19,10 +19,6 @@ export default function HomeScreen({navigation}) {
   const [loader, setLoader] = useState(true);
   const {loggedMember} = useSelector(state => state.AuthState);
   const {homeDetails} = useSelector(state => state.HomeState);
-  console.log(
-    '+++++++++++++++++++++++++++++++++++++++++++++++++++',
-    homeDetails.Notifications,
-  );
   const [notify, setNotify] = useState({
     activeNotification: 0,
     date: moment(new Date()).format('MMMM DD, YYYY'),

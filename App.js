@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import SplashScreen from 'react-native-splash-screen';
+import RNBootSplash from 'react-native-bootsplash';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Network} from './src/components/Network';
@@ -20,7 +20,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    SplashScreen.hide();
+    RNBootSplash.hide({fade: true});
     internetCheck();
   }, []);
 
