@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {isEmpty} from 'lodash';
-import {Platform, ToastAndroid, AlertIOS} from 'react-native';
+import {Alert} from 'react-native';
 // import Config from 'react-native-config';
 import {CONFIG} from './Config';
 
@@ -77,7 +77,7 @@ const firebaseAuthErrors = error => {
   }
 };
 
-const getRequest = (props, cancelToken) => {
+const getRequest = props => {
   return axios
     .get(`${CONFIG.API_URL}${props.url}?${props.queryParams}`)
     .then(response => {
@@ -86,12 +86,13 @@ const getRequest = (props, cancelToken) => {
       }
     })
     .catch(error => {
+      console.log('error+++++++++++error: ', error.message);
       // if (error.response.status === 500 || error.response.status === 403) {
       //   showUnderMaintain(props.navigation);
       // } else {
       //   throw error.response.data;
       // }
-      throw error.response.data;
+      throw error.message;
     });
 };
 
