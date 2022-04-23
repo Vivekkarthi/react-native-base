@@ -1,21 +1,19 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef} from 'react';
 import {
   View,
-  TouchableOpacity,
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  Text,
   Dimensions,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
 import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
-import {sliderData} from '../model/data';
+
 import AppStatusBar from '../components/AppStatusBar';
 import {COLORS} from '../constants';
 import {useSelector} from 'react-redux';
-import Config from 'react-native-config';
+// import Config from 'react-native-config';
+import {CONFIG} from '../utils/Config';
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -68,19 +66,19 @@ const PackagesScreen = ({navigation}) => {
             itemWidth={500}
             data={[
               {
-                image: `${Config.IMAGE_URL}/${homeDetails.photo1}`,
+                image: `${CONFIG.IMAGE_URL}/${homeDetails.photo1}`,
               },
               {
-                image: `${Config.IMAGE_URL}/${homeDetails.photo2}`,
+                image: `${CONFIG.IMAGE_URL}/${homeDetails.photo2}`,
               },
               {
-                image: `${Config.IMAGE_URL}/${homeDetails.photo3}`,
+                image: `${CONFIG.IMAGE_URL}/${homeDetails.photo3}`,
               },
               {
-                image: `${Config.IMAGE_URL}/${homeDetails.photo4}`,
+                image: `${CONFIG.IMAGE_URL}/${homeDetails.photo4}`,
               },
               {
-                image: `${Config.IMAGE_URL}/${homeDetails.photo5}`,
+                image: `${CONFIG.IMAGE_URL}/${homeDetails.photo5}`,
               },
             ]}
             renderItem={renderItem}

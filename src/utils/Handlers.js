@@ -2,7 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {isEmpty} from 'lodash';
 import {Platform, ToastAndroid, AlertIOS} from 'react-native';
-import Config from 'react-native-config';
+// import Config from 'react-native-config';
+import {CONFIG} from './Config';
 
 const Headers = () => {
   const axiosConfig = {
@@ -78,7 +79,7 @@ const firebaseAuthErrors = error => {
 
 const getRequest = (props, cancelToken) => {
   return axios
-    .get(`${Config.API_URL}${props.url}?${props.queryParams}`)
+    .get(`${CONFIG.API_URL}${props.url}?${props.queryParams}`)
     .then(response => {
       if (response.data) {
         return response.data;
@@ -97,7 +98,7 @@ const getRequest = (props, cancelToken) => {
 const postRequest = (props, cancelToken) => {
   return axios
     .post(
-      Config.API_URL + props.url,
+      CONFI.API_URL + props.url,
       props.data,
       AuthHeaders(props.token, cancelToken),
     )
@@ -119,7 +120,7 @@ const postRequest = (props, cancelToken) => {
 };
 const putRequest = props => {
   return axios
-    .put(Config.API_URL + props.url, props.data, AuthHeaders(props.token))
+    .put(CONFIG.API_URL + props.url, props.data, AuthHeaders(props.token))
     .then(response => {
       if (response.data) {
         return response.data;

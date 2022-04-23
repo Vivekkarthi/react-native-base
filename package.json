@@ -8,6 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
+    "android:dev-release": "react-native run-android --variant=developmentrelease",
     "android:release": "cd android && ./gradlew assembleRelease && cd ../",
     "android:clean": "cd android && ./gradlew clean && cd ../",
     "add-splash": "yarn react-native generate-bootsplash assets/bootsplash_logo_original.png --background-color=FFFFFF --logo-width=100 --assets-path=assets --flavor=main"

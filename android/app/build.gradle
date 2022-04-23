@@ -85,9 +85,9 @@ project.ext.react = [
 apply from: "../../node_modules/react-native/react.gradle"
 
 project.ext.envConfigFiles = [
-    debug: ".env",
-    release: ".env",
-    anothercustombuild: ".env",
+    developmentrelease: ".env.development",
+    developmentdebug: ".env.development",
+    anothercustombuild: ".env.development",
 ]
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 /**
@@ -241,6 +241,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug', 'release']
         }
         release {
             shrinkResources true
@@ -300,6 +301,7 @@ dependencies {
     implementation "androidx.core:core-splashscreen:1.0.0-beta01"
 
     implementation project(':react-native-vector-icons')
+    implementation project(':react-native-config')
     
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
     
