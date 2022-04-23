@@ -14,6 +14,7 @@ export const fetchHomeData = controllerId => {
   const queryParams = `sK=token&hardwareid=${controllerId}&snotifyfrom=${moment().format(
     'YYYY-MM-DD',
   )}`;
+
   const params = {
     url: ENDPOINTURL.MemberHome,
     token: '',
