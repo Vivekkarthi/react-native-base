@@ -241,6 +241,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug', 'release']
         }
         release {
             shrinkResources true
@@ -300,6 +301,7 @@ dependencies {
     implementation "androidx.core:core-splashscreen:1.0.0-beta01"
 
     implementation project(':react-native-vector-icons')
+    implementation project(':react-native-config')
     
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
     

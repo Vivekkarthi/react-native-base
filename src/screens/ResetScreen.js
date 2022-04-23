@@ -79,7 +79,7 @@ const ResetScreen = ({navigation}) => {
           navigation.goBack();
         }}
       /> */}
-      <Appbar.Header statusBarHeight={20}>
+      <Appbar.Header statusBarHeight={38}>
         <Appbar.BackAction
           onPress={() => {
             navigation.goBack();

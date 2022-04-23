@@ -66,6 +66,7 @@ const LoginScreen = ({navigation}) => {
       .then(async resp => {
         if (resp.USERRECORDID !== 0 && resp.AddlField1 === '') {
           //Good
+          setLoader(false);
           toast.show(`${resp.LoginNAME} you have logged in successfully.`, {
             type: 'custom_type',
             animationDuration: 100,

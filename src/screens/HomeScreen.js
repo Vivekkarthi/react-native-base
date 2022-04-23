@@ -10,8 +10,9 @@ import {Card, Title, Paragraph} from 'react-native-paper';
 
 import {COLORS} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
-import Config from 'react-native-config';
+// import Config from 'react-native-config';
 import {Loader} from '../components/Loader';
+import {CONFIG} from '../utils/Config';
 
 export default function HomeScreen({navigation}) {
   const dispatch = useDispatch();
@@ -123,7 +124,7 @@ export default function HomeScreen({navigation}) {
             <Image
               style={{width: 150, height: 120, top: 30}}
               source={{
-                uri: `${Config.IMAGE_URL}/${homeDetails.photo1}`,
+                uri: `${CONFIG.IMAGE_URL}/${homeDetails.photo1}`,
               }}
             />
             {/* <Title>Status</Title>

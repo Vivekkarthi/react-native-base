@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Network} from './src/components/Network';
 import NavigateProviders from './src/navigation';
-import NetInfo from '@react-native-community/netinfo';
+import NetInfo, {ipAddress} from '@react-native-community/netinfo';
 import {persistor, store} from './src/redux/Store';
 import {View, ActivityIndicator} from 'react-native';
 
