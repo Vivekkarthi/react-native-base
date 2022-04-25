@@ -2,6 +2,7 @@ import React, {useRef} from 'react';
 import {
   View,
   StyleSheet,
+  Text,
   ScrollView,
   SafeAreaView,
   Dimensions,
@@ -51,8 +52,12 @@ const PackagesScreen = ({navigation}) => {
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 20}}>
         <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
-        <Ionicons name="logo-dropbox" size={25} style={{paddingBottom: 10}}>
-          Packages
+        <Ionicons
+          name="logo-dropbox"
+          size={25}
+          color={'#002060'}
+          style={{paddingBottom: 10}}>
+          <Text style={{color: '#002060'}}> Packages</Text>
         </Ionicons>
         <View style={styles.container}>
           {/* <Ionicons

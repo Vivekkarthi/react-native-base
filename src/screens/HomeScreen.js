@@ -92,11 +92,11 @@ export default function HomeScreen({navigation}) {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
-      <ScrollView style={{padding: 20}}>
+      <ScrollView style={{padding: 10}}>
         <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
         {loader ? <Loader /> : null}
-        <Ionicons name="home" size={23}>
-          <Text>Home</Text>
+        <Ionicons name="home" size={23} color={'#002060'}>
+          <Text style={{color: '#002060'}}> Home</Text>
         </Ionicons>
         <View
           style={{
