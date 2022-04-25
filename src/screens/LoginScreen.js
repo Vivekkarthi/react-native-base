@@ -234,28 +234,33 @@ const LoginScreen = ({navigation}) => {
                           />
                         </View>
                       </View>
-                      <View style={{flexDirection: 'row'}}>
-                        <CheckBox
-                          value={isSelected}
-                          onValueChange={setSelection}
-                          style={{alignSelf: 'center', borderColor: 'red'}}
-                        />
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            opacity: 0.8,
-                            marginTop: 8,
-                            paddingRight: 20,
-                            textAlign: 'left',
-                            color: '#0d8e8a',
-                          }}>
-                          Remember me ?
-                        </Text>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-around',
+                        }}>
+                        <View style={{flexDirection: 'row'}}>
+                          <CheckBox
+                            value={isSelected}
+                            onValueChange={setSelection}
+                          />
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              opacity: 0.8,
+                              marginTop: 8,
+                              paddingRight: 20,
+                              textAlign: 'left',
+                              color: '#0d8e8a',
+                            }}>
+                            Remember me ?
+                          </Text>
+                        </View>
 
                         <TouchableOpacity
                           style={{
                             marginTop: 8,
-                            paddingLeft: 30,
+                            paddingLeft: 20,
                             textAlign: 'right',
                           }}
                           onPress={() => {
@@ -265,13 +270,11 @@ const LoginScreen = ({navigation}) => {
                             style={{
                               fontSize: 16,
                               opacity: 0.8,
-                              textAlign: 'left',
                               fontWeight: 'bold',
                               color: COLORS.primary,
-                              alignSelf: 'flex-end',
-                              left: 45,
+                              // left: 45,
                             }}>
-                            Forgot Password?
+                            Forgot Password ?
                           </Text>
                         </TouchableOpacity>
                       </View>

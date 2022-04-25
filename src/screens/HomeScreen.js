@@ -138,9 +138,7 @@ export default function HomeScreen({navigation}) {
                 }
               />
               <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-                {moment(homeDetails.LastSyncDate).format(
-                  'MMMM DD, YYYY hh:mm:ss',
-                )}
+                {moment(homeDetails.LastSyncDate).format('YYYY-MM-DD hh:mm:ss')}
               </Text>
               <Text style={{textAlign: 'center'}}>
                 {homeDetails.PackageState === 1 ? 'Locked' : 'UnLocked'}

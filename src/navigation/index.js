@@ -77,7 +77,7 @@ const theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: COLORS.primary,
-    accent: 'yellow',
+    accent: '#f17012',
   },
   fonts: configureFonts(fontConfig),
 };
