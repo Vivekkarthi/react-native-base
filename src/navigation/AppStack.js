@@ -74,7 +74,7 @@ const AppStack = () => {
         },
       }}>
       <Drawer.Screen
-        name="Home"
+        name="HomeTab"
         component={BottomTabNavigator}
         options={{
           headerShown: false,
