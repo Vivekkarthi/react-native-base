@@ -6,7 +6,7 @@ import {Network} from './src/components/Network';
 import NavigateProviders from './src/navigation';
 import NetInfo, {ipAddress} from '@react-native-community/netinfo';
 import {persistor, store} from './src/redux/Store';
-import {View, ActivityIndicator, BackHandler} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import {
   notificationListener,
   requestUserPermission,
@@ -28,27 +28,6 @@ export default function App() {
     notificationListener();
     RNBootSplash.hide({fade: true});
     internetCheck();
-  }, []);
-
-  useEffect(() => {
-    const backAction = () => {
-      Alert.alert('Hold on!', 'Are you sure you want to exit?', [
-        {
-          text: 'Cancel',
-          onPress: () => null,
-          style: 'cancel',
-        },
-        {text: 'YES', onPress: () => BackHandler.exitApp()},
-      ]);
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-
-    return () => backHandler.remove();
   }, []);
 
   return (

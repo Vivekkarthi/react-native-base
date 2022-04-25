@@ -195,7 +195,8 @@ const BottomTabNavigator = () => {
   }, []);
   return (
     <Tab.Navigator
-      initialRouteName="HomeStack"
+      backBehavior="HomeStack"
+      initialRouteName={'HomeStack'}
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
@@ -213,6 +214,7 @@ const BottomTabNavigator = () => {
           ),
         }}
       />
+
       <Tab.Screen
         name="HomeStack"
         component={HomeStack}
