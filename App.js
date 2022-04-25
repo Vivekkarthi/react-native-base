@@ -8,7 +8,7 @@ import NetInfo, {ipAddress} from '@react-native-community/netinfo';
 import {persistor, store} from './src/redux/Store';
 import {View, ActivityIndicator} from 'react-native';
 
-const App = () => {
+export default function App() {
   const [isInternetReachable, setIsInternetReachable] = useState(true);
   const internetCheck = () => {
     const unsubscribe = NetInfo.addEventListener(state => {
@@ -52,6 +52,4 @@ const App = () => {
       </PersistGate>
     </Provider>
   );
-};
-
-export default App;
+}

@@ -88,7 +88,7 @@ const NavigateProviders = () => {
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer>
-        <ToastProvider
+        {/* <ToastProvider
           placement="bottom"
           dangerIcon={<MaterialCommunityIcons name="close" color="#fff" />}
           successIcon={
@@ -164,9 +164,9 @@ const NavigateProviders = () => {
                 </TouchableOpacity>
               </View>
             ),
-          }}>
-          {!isEmpty(loggedMember) ? <AppStack /> : <AuthStack />}
-        </ToastProvider>
+          }}> */}
+        {!isEmpty(loggedMember) ? <AppStack /> : <AuthStack />}
+        {/* </ToastProvider> */}
       </NavigationContainer>
     </PaperProvider>
   );

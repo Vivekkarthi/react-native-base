@@ -15,8 +15,41 @@ import AboutScreen from '../screens/AboutScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import CustomDrawer from '../components/CustomDrawer';
 import {logoutSuccess} from '../redux/actions/AuthState';
+import {createStackNavigator} from '@react-navigation/stack';
+import {COLORS} from '../constants';
+import UserDetailScreen from '../screens/UserDetailScreen';
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
+const UserStack = ({navigation}) => {
+  const dispatch = useDispatch();
+  const logoutUser = async () => {
+    try {
+      dispatch(logoutSuccess());
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Users"
+        component={UsersScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="UserDetails"
+        component={UserDetailScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
 
 const AppStack = () => {
   const dispatch = useDispatch();
@@ -89,7 +122,7 @@ const AppStack = () => {
       />
       <Drawer.Screen
         name="Users"
-        component={UsersScreen}
+        component={UserStack}
         options={{
           headerShown: true,
           drawerIcon: ({color}) => (
@@ -278,7 +311,7 @@ const AppStack = () => {
         options={{
           headerShown: true,
           drawerIcon: ({color}) => (
-            <Feather name="info" size={22} color={color} />
+            <Feather name="alert-circle" size={22} color={color} />
           ),
           headerTitle: () => (
             <View

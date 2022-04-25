@@ -95,51 +95,81 @@ export default function HomeScreen({navigation}) {
       <ScrollView style={{padding: 10}}>
         <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
         {loader ? <Loader /> : null}
-        <Ionicons name="home" size={23} color={'#002060'}>
-          <Text style={{color: '#002060'}}> Home</Text>
+        <Ionicons
+          name="ios-home-outline"
+          size={23}
+          color={'#002060'}
+          style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontFamily: 'Lato-Regular',
+              color: '#002060',
+            }}>
+            Home
+          </Text>
         </Ionicons>
+
         <View
           style={{
-            marginVertical: 25,
+            paddingTop: 10,
+            paddingBottom: 10,
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            alignSelf: 'center',
           }}>
-          <Card>
-            <Card.Cover
-              style={{width: 200, height: 180}}
-              source={
-                homeDetails.PackageState === 1
-                  ? require('../../assets/images/new_lock.png')
-                  : require('../../assets/images/unlock.jpg')
-              }
-            />
-            <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-              Date: {homeDetails.LastSyncDate}
-            </Text>
-            <Text style={{textAlign: 'center'}}>
-              {homeDetails.PackageState === 1 ? 'Locked' : 'UnLocked'}
-            </Text>
-          </Card>
-          <Card style={{width: 150, height: 220}}>
-            <Image
-              style={{width: 150, height: 120, top: 30}}
-              source={{
-                uri: `${CONFIG.IMAGE_URL}/${homeDetails.photo1}`,
-              }}
-            />
-            {/* <Title>Status</Title>
-              <Paragraph>{homeDetails.packageMessage}</Paragraph> */}
-            <Text style={{textAlign: 'center', top: 60}}>Last updated</Text>
-          </Card>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Card
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}>
+              <Card.Cover
+                style={{alignSelf: 'center', width: 160, height: 150}}
+                source={
+                  homeDetails.PackageState === 1
+                    ? require('../../assets/images/new_lock.png')
+                    : require('../../assets/images/unlock.jpg')
+                }
+              />
+              <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                {moment(homeDetails.LastSyncDate).format(
+                  'MMMM DD, YYYY hh:mm:ss',
+                )}
+              </Text>
+              <Text style={{textAlign: 'center'}}>
+                {homeDetails.PackageState === 1 ? 'Locked' : 'UnLocked'}
+              </Text>
+            </Card>
+            <Card
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}>
+              <Card.Cover
+                style={{alignSelf: 'center', width: 160, height: 150}}
+                source={{
+                  uri: `${CONFIG.IMAGE_URL}/${homeDetails.photo1}`,
+                }}
+              />
+              <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                Last Updated
+              </Text>
+            </Card>
+          </View>
         </View>
 
         <View style={{flex: 1}}>
-          <Card style={{paddingRight: 14}}>
+          <Card>
             <Card.Title
               title={notify.date}
               subtitle={notify.title}
-              titleStyle={{fontSize: 18}}
-              subtitleStyle={{fontSize: 16}}
+              titleStyle={{fontSize: 18, alignSelf: 'center'}}
+              subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
               left={props => (
                 <Ionicons
                   name="arrow-back-circle-outline"
@@ -151,6 +181,7 @@ export default function HomeScreen({navigation}) {
               )}
               right={props => (
                 <Ionicons
+                  style={{paddingRight: 12}}
                   name="arrow-forward-circle-outline"
                   size={30}
                   onPress={() =>

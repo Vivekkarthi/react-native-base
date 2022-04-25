@@ -1,96 +1,123 @@
-import React, {useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   StyleSheet,
-  Text,
-  ScrollView,
   SafeAreaView,
   Dimensions,
+  TouchableOpacity,
+  FlatList,
+  Image,
+  Text,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
 
 import AppStatusBar from '../components/AppStatusBar';
-import {COLORS} from '../constants';
-import {useSelector} from 'react-redux';
-// import Config from 'react-native-config';
 import {CONFIG} from '../utils/Config';
 
-const {width: screenWidth} = Dimensions.get('window');
+import {COLORS} from '../constants';
+import {useSelector} from 'react-redux';
+
+const {width, height} = Dimensions.get('window');
+const viewConfigRef = {viewAreaCoveragePercentThreshold: 95};
 
 const PackagesScreen = ({navigation}) => {
+  const flatListRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const {homeDetails} = useSelector(state => state.HomeState);
-  // const [entries, setEntries] = useState();
-  const carouselRef = useRef(null);
 
-  const goForward = () => {
-    carouselRef.current.snapToNext();
+  const carouselItems = [
+    {
+      title: 'Photo 1',
+      image: `${CONFIG.IMAGE_URL}/${homeDetails.photo1}`,
+    },
+    {
+      title: 'Photo 2',
+      image: `${CONFIG.IMAGE_URL}/${homeDetails.photo2}`,
+    },
+    {
+      title: 'Photo 3',
+      image: `${CONFIG.IMAGE_URL}/${homeDetails.photo3}`,
+    },
+    {
+      title: 'Photo 4',
+      image: `${CONFIG.IMAGE_URL}/${homeDetails.photo4}`,
+    },
+    {
+      title: 'Photo 5',
+      image: `${CONFIG.IMAGE_URL}/${homeDetails.photo5}`,
+    },
+  ];
+
+  const onViewRef = useRef(({changed}) => {
+    if (changed[0].isViewable) {
+      setCurrentIndex(changed[0].index);
+    }
+  });
+
+  const scrollToIndex = index => {
+    flatListRef.current?.scrollToIndex({animated: true, index: index});
   };
 
-  // useEffect(() => {
-  //   setEntries(sliderData);
-  // }, []);
-
-  const renderItem = ({item, index}, parallaxProps) => {
+  const renderItem = ({item, index}) => {
     return (
-      <View style={styles.item}>
-        <ParallaxImage
-          source={{uri: item.image}}
-          containerStyle={styles.imageContainer}
+      <TouchableOpacity onPress={() => {}} activeOpacity={1}>
+        <Image
           style={styles.image}
-          parallaxFactor={0.4}
-          {...parallaxProps}
+          source={{
+            uri: item.image,
+          }}
         />
-        {/* <Text style={styles.title} numberOfLines={2}>
-          {item.title}
-        </Text> */}
-      </View>
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>{item.title}</Text>
+          <Text style={styles.footerText}>{item.title}</Text>
+        </View>
+      </TouchableOpacity>
     );
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
-      <ScrollView style={{padding: 20}}>
-        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
-        <Ionicons
-          name="logo-dropbox"
-          size={25}
-          color={'#002060'}
-          style={{paddingBottom: 10}}>
-          <Text style={{color: '#002060'}}> Packages</Text>
-        </Ionicons>
-        <View style={styles.container}>
-          {/* <Ionicons
-            name="arrow-forward-circle-outline"
-            size={30}
-            onPress={goForward}
-          /> */}
-          <Carousel
-            ref={carouselRef}
-            sliderWidth={screenWidth - 40}
-            itemWidth={500}
-            data={[
-              {
-                image: `${CONFIG.IMAGE_URL}/${homeDetails.photo1}`,
-              },
-              {
-                image: `${CONFIG.IMAGE_URL}/${homeDetails.photo2}`,
-              },
-              {
-                image: `${CONFIG.IMAGE_URL}/${homeDetails.photo3}`,
-              },
-              {
-                image: `${CONFIG.IMAGE_URL}/${homeDetails.photo4}`,
-              },
-              {
-                image: `${CONFIG.IMAGE_URL}/${homeDetails.photo5}`,
-              },
-            ]}
-            renderItem={renderItem}
-            hasParallaxImages={true}
-          />
+    <SafeAreaView style={{flex: 1, padding: 10, backgroundColor: '#dfe1eb'}}>
+      <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+      <Ionicons
+        name="logo-dropbox"
+        size={23}
+        color={'#002060'}
+        style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+        <Text
+          style={{fontSize: 18, fontFamily: 'Lato-Regular', color: '#002060'}}>
+          Packages
+        </Text>
+      </Ionicons>
+      <View style={styles.container}>
+        <FlatList
+          data={carouselItems}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderItem}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled
+          ref={ref => {
+            flatListRef.current = ref;
+          }}
+          style={styles.carousel}
+          viewabilityConfig={viewConfigRef}
+          onViewableItemsChanged={onViewRef.current}
+        />
+
+        <View style={styles.dotView}>
+          {carouselItems.map(({}, index) => (
+            <TouchableOpacity
+              key={index.toString()}
+              style={[
+                styles.circle,
+                {
+                  backgroundColor: index === currentIndex ? 'black' : 'grey',
+                },
+              ]}
+              onPress={() => scrollToIndex(index)}></TouchableOpacity>
+          ))}
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -99,19 +126,39 @@ export default PackagesScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // backgroundColor: '#FFFFFF',
   },
-  item: {
-    width: screenWidth - 60,
-    height: 250,
-  },
-  imageContainer: {
-    flex: 1,
-    marginBottom: Platform.select({ios: 0, android: 1}), // Prevent a random Android rendering issue
-    backgroundColor: 'white',
-    borderRadius: 8,
+  carousel: {
+    maxHeight: 300,
   },
   image: {
-    ...StyleSheet.absoluteFillObject,
+    width: width - 20,
+    height: 250,
     resizeMode: 'cover',
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: 50,
+    paddingHorizontal: 40,
+    alignItems: 'center',
+    backgroundColor: '#000000',
+  },
+  footerText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  dotView: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 20,
+  },
+  circle: {
+    width: 10,
+    height: 10,
+    backgroundColor: 'grey',
+    borderRadius: 50,
+    marginHorizontal: 5,
   },
 });
