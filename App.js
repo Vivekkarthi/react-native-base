@@ -7,6 +7,10 @@ import NavigateProviders from './src/navigation';
 import NetInfo, {ipAddress} from '@react-native-community/netinfo';
 import {persistor, store} from './src/redux/Store';
 import {View, ActivityIndicator} from 'react-native';
+import {
+  notificationListener,
+  requestUserPermission,
+} from './src/utils/NotificationServices';
 
 export default function App() {
   const [isInternetReachable, setIsInternetReachable] = useState(true);
@@ -20,6 +24,8 @@ export default function App() {
   };
 
   useEffect(() => {
+    requestUserPermission();
+    notificationListener();
     RNBootSplash.hide({fade: true});
     internetCheck();
   }, []);

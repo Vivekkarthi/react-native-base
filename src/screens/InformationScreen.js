@@ -13,8 +13,14 @@ const InformationScreen = ({navigation}) => {
         <Ionicons
           name="help-circle-outline"
           size={23}
+          color={'#002060'}
           style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-          <Text style={{fontSize: 18, fontFamily: 'Lato-Regular'}}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontFamily: 'Lato-Regular',
+              color: '#002060',
+            }}>
             Information
           </Text>
         </Ionicons>

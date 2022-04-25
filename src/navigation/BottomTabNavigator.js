@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useDispatch} from 'react-redux';
@@ -8,7 +8,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import PackagesScreen from '../screens/PackagesScreen';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Image, TouchableOpacity, View, BackHandler, Alert} from 'react-native';
 import {logoutSuccess} from '../redux/actions/AuthState';
 import {COLORS} from '../constants';
 
@@ -24,10 +24,11 @@ const HomeStack = ({navigation}) => {
       console.log(e);
     }
   };
+
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="HomeScreen"
+        name="Home"
         component={HomeScreen}
         options={{
           headerTitleAlign: 'center',
@@ -79,7 +80,7 @@ const SettingStack = ({navigation}) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="SettingScreen"
+        name="Settings"
         component={SettingsScreen}
         options={{
           headerTitleAlign: 'center',
@@ -131,7 +132,7 @@ const PackageStack = ({navigation}) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="PackageScreen"
+        name="Packages"
         component={PackagesScreen}
         options={{
           headerTitleAlign: 'center',
@@ -171,34 +172,52 @@ const PackageStack = ({navigation}) => {
   );
 };
 
-const TabNavigator = () => {
+const BottomTabNavigator = () => {
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to exit?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="HomeStack"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
         tabBarStyle: {backgroundColor: '#002060'},
         tabBarInactiveTintColor: '#fff',
-        tabBarActiveTintColor: '#f17012',
+        tabBarActiveTintColor: 'yellow',
       }}>
       <Tab.Screen
-        name="Settings"
+        name="SettingStack"
         component={SettingStack}
         options={{
+          tabBarLabel: 'Settings',
           tabBarIcon: ({color, size}) => (
             <Feather name="settings" color={color} size={size} />
           ),
         }}
       />
       <Tab.Screen
-        name="Home"
+        name="HomeStack"
         component={HomeStack}
         options={({route}) => ({
           tabBarLabel: 'Home',
-          tabBarStyle: {
-            backgroundColor: '#002060',
-          },
           tabBarIcon: ({color, size}) => (
             <Feather name="home" color={color} size={size} />
           ),
@@ -206,9 +225,10 @@ const TabNavigator = () => {
       />
 
       <Tab.Screen
-        name="Packages"
+        name="PackageStack"
         component={PackageStack}
         options={{
+          tabBarLabel: 'Packages',
           tabBarIcon: ({color, size}) => (
             <Feather name="package" color={color} size={size} />
           ),
@@ -218,4 +238,4 @@ const TabNavigator = () => {
   );
 };
 
-export default TabNavigator;
+export default BottomTabNavigator;

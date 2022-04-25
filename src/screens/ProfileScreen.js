@@ -12,8 +12,14 @@ const ProfileScreen = ({navigation}) => {
         <Ionicons
           name="ios-person-circle-outline"
           size={23}
+          color={'#002060'}
           style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-          <Text style={{fontSize: 18, fontFamily: 'Lato-Regular'}}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontFamily: 'Lato-Regular',
+              color: '#002060',
+            }}>
             Profile
           </Text>
         </Ionicons>

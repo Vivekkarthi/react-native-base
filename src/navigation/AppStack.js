@@ -5,7 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import {useDispatch} from 'react-redux';
 
-import TabNavigator from './TabNavigator';
+import BottomTabNavigator from './BottomTabNavigator';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import UsersScreen from '../screens/UsersScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -74,8 +74,8 @@ const AppStack = () => {
         },
       }}>
       <Drawer.Screen
-        name="Home"
-        component={TabNavigator}
+        name="HomeTab"
+        component={BottomTabNavigator}
         options={{
           headerShown: false,
           drawerIcon: ({color}) => (
@@ -91,27 +91,21 @@ const AppStack = () => {
           drawerIcon: ({color}) => (
             <Ionicons name="notifications" size={22} color={color} />
           ),
+          headerTitleAlign: 'center',
           headerTitle: () => (
-            <View
+            <Image
+              source={require('../../assets/images/icon.png')}
               style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/icon.png')}
-                style={{
-                  width: 185,
-                  height: 88,
-                }}
-                imageStyle={{borderRadius: 25}}
-              />
-            </View>
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
           ),
           headerRight: () => (
             <View
               style={{
-                paddingRight: 10,
+                paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
                 <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
@@ -128,30 +122,24 @@ const AppStack = () => {
           drawerIcon: ({color}) => (
             <Feather name="users" size={22} color={color} />
           ),
+          headerTitleAlign: 'center',
           headerTitle: () => (
-            <View
+            <Image
+              source={require('../../assets/images/icon.png')}
               style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/icon.png')}
-                style={{
-                  width: 185,
-                  height: 88,
-                }}
-                imageStyle={{borderRadius: 25}}
-              />
-            </View>
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
           ),
           headerRight: () => (
             <View
               style={{
-                paddingRight: 23,
+                paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -165,30 +153,24 @@ const AppStack = () => {
           drawerIcon: ({color}) => (
             <Feather name="settings" size={22} color={color} />
           ),
+          headerTitleAlign: 'center',
           headerTitle: () => (
-            <View
+            <Image
+              source={require('../../assets/images/icon.png')}
               style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/icon.png')}
-                style={{
-                  width: 185,
-                  height: 88,
-                }}
-                imageStyle={{borderRadius: 25}}
-              />
-            </View>
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
           ),
           headerRight: () => (
             <View
               style={{
-                paddingRight: 23,
+                paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -202,30 +184,24 @@ const AppStack = () => {
           drawerIcon: ({color}) => (
             <Feather name="camera" size={22} color={color} />
           ),
+          headerTitleAlign: 'center',
           headerTitle: () => (
-            <View
+            <Image
+              source={require('../../assets/images/icon.png')}
               style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/icon.png')}
-                style={{
-                  width: 185,
-                  height: 88,
-                }}
-                imageStyle={{borderRadius: 25}}
-              />
-            </View>
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
           ),
           headerRight: () => (
             <View
               style={{
-                paddingRight: 23,
+                paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -239,30 +215,24 @@ const AppStack = () => {
           drawerIcon: ({color}) => (
             <Feather name="user" size={22} color={color} />
           ),
+          headerTitleAlign: 'center',
           headerTitle: () => (
-            <View
+            <Image
+              source={require('../../assets/images/icon.png')}
               style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/icon.png')}
-                style={{
-                  width: 185,
-                  height: 88,
-                }}
-                imageStyle={{borderRadius: 25}}
-              />
-            </View>
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
           ),
           headerRight: () => (
             <View
               style={{
-                paddingRight: 23,
+                paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -276,30 +246,24 @@ const AppStack = () => {
           drawerIcon: ({color}) => (
             <Feather name="info" size={22} color={color} />
           ),
+          headerTitleAlign: 'center',
           headerTitle: () => (
-            <View
+            <Image
+              source={require('../../assets/images/icon.png')}
               style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/icon.png')}
-                style={{
-                  width: 185,
-                  height: 88,
-                }}
-                imageStyle={{borderRadius: 25}}
-              />
-            </View>
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
           ),
           headerRight: () => (
             <View
               style={{
-                paddingRight: 23,
+                paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -313,30 +277,24 @@ const AppStack = () => {
           drawerIcon: ({color}) => (
             <Feather name="alert-circle" size={22} color={color} />
           ),
+          headerTitleAlign: 'center',
           headerTitle: () => (
-            <View
+            <Image
+              source={require('../../assets/images/icon.png')}
               style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/icon.png')}
-                style={{
-                  width: 185,
-                  height: 88,
-                }}
-                imageStyle={{borderRadius: 25}}
-              />
-            </View>
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
           ),
           headerRight: () => (
             <View
               style={{
-                paddingRight: 23,
+                paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),

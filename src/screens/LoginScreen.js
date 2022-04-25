@@ -265,9 +265,11 @@ const LoginScreen = ({navigation}) => {
                             style={{
                               fontSize: 16,
                               opacity: 0.8,
-                              textAlign: 'right',
+                              textAlign: 'left',
                               fontWeight: 'bold',
                               color: COLORS.primary,
+                              alignSelf: 'flex-end',
+                              left: 45,
                             }}>
                             Forgot Password?
                           </Text>

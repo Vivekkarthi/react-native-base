@@ -127,6 +127,7 @@ export default function HomeScreen({navigation}) {
               style={{
                 flexDirection: 'column',
                 justifyContent: 'center',
+                width: '48%',
               }}>
               <Card.Cover
                 style={{alignSelf: 'center', width: 160, height: 150}}
@@ -149,6 +150,7 @@ export default function HomeScreen({navigation}) {
               style={{
                 flexDirection: 'column',
                 justifyContent: 'center',
+                width: '48%',
               }}>
               <Card.Cover
                 style={{alignSelf: 'center', width: 160, height: 150}}

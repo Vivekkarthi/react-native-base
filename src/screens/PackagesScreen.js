@@ -85,6 +85,7 @@ const PackagesScreen = ({navigation}) => {
         style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
         <Text
           style={{fontSize: 18, fontFamily: 'Lato-Regular', color: '#002060'}}>
+          {' '}
           Packages
         </Text>
       </Ionicons>
@@ -126,6 +127,7 @@ export default PackagesScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 10,
     // backgroundColor: '#FFFFFF',
   },
   carousel: {

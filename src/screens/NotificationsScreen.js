@@ -52,12 +52,18 @@ const NotificationsScreen = ({navigation, route}) => {
         <Ionicons
           name="ios-notifications-outline"
           size={23}
+          color={'#002060'}
           style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-          <Text style={{fontSize: 18, fontFamily: 'Lato-Regular'}}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontFamily: 'Lato-Regular',
+              color: '#002060',
+            }}>
             Notifications
           </Text>
         </Ionicons>
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, paddingTop: 10}}>
           <Card style={{paddingRight: 14}}>
             <Card.Title
               title={notify.date}
