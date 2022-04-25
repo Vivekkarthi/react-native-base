@@ -5,7 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import {useDispatch} from 'react-redux';
 
-import TabNavigator from './TabNavigator';
+import BottomTabNavigator from './BottomTabNavigator';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import UsersScreen from '../screens/UsersScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -74,8 +74,8 @@ const AppStack = () => {
         },
       }}>
       <Drawer.Screen
-        name="Home"
-        component={TabNavigator}
+        name="HomeTab"
+        component={BottomTabNavigator}
         options={{
           headerShown: false,
           drawerIcon: ({color}) => (

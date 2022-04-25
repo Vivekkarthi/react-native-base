@@ -106,7 +106,6 @@ export default function HomeScreen({navigation}) {
               fontFamily: 'Lato-Regular',
               color: '#002060',
             }}>
-            {' '}
             Home
           </Text>
         </Ionicons>
@@ -128,6 +127,7 @@ export default function HomeScreen({navigation}) {
               style={{
                 flexDirection: 'column',
                 justifyContent: 'center',
+                width: '48%',
               }}>
               <Card.Cover
                 style={{alignSelf: 'center', width: 160, height: 150}}
@@ -138,7 +138,9 @@ export default function HomeScreen({navigation}) {
                 }
               />
               <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-                {moment(homeDetails.LastSyncDate).format('YYYY-MM-DD hh:mm:ss')}
+                {moment(homeDetails.LastSyncDate).format(
+                  'MMMM DD, YYYY hh:mm:ss',
+                )}
               </Text>
               <Text style={{textAlign: 'center'}}>
                 {homeDetails.PackageState === 1 ? 'Locked' : 'UnLocked'}
@@ -148,6 +150,7 @@ export default function HomeScreen({navigation}) {
               style={{
                 flexDirection: 'column',
                 justifyContent: 'center',
+                width: '48%',
               }}>
               <Card.Cover
                 style={{alignSelf: 'center', width: 160, height: 150}}
