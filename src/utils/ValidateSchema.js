@@ -20,12 +20,12 @@ const registerSchema = yup.object().shape({
     .required('Mobile is required'),
   Password: yup
     .string()
-    .min(6)
-    .max(24)
-    .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/,
-      'Must Contain 8 Characters, \nOne Uppercase, One Lowercase, \nOne Number and one special case Character',
-    )
+    // .min(6)
+    // .max(24)
+    // .matches(
+    //   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/,
+    //   'Must Contain 8 Characters, \nOne Uppercase, One Lowercase, \nOne Number and one special case Character',
+    // )
     .required(),
   ControllerId: yup.string().required('Controller ID is required'),
 });

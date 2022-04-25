@@ -81,7 +81,7 @@ const AppStack = () => {
                 paddingRight: 10,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),

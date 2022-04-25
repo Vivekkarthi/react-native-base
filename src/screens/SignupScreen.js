@@ -112,7 +112,12 @@ const SignupScreen = ({navigation}) => {
         <FormProvider {...methods}>
           <View style={{marginBottom: SIZES.base}}>
             <Text
-              style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
+              style={{
+                fontSize: 16,
+                opacity: 0.5,
+                marginBottom: SIZES.base,
+                color: '#0d8e8a',
+              }}>
               Name
             </Text>
             <FormInput
@@ -131,7 +136,12 @@ const SignupScreen = ({navigation}) => {
 
           <View style={{marginBottom: SIZES.base}}>
             <Text
-              style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
+              style={{
+                fontSize: 16,
+                opacity: 0.5,
+                marginBottom: SIZES.base,
+                color: '#0d8e8a',
+              }}>
               Email
             </Text>
             <FormInput
@@ -149,7 +159,12 @@ const SignupScreen = ({navigation}) => {
 
           <View style={{marginBottom: SIZES.base}}>
             <Text
-              style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
+              style={{
+                fontSize: 16,
+                opacity: 0.5,
+                marginBottom: SIZES.base,
+                color: '#0d8e8a',
+              }}>
               Mobile
             </Text>
             <FormInput
@@ -166,7 +181,12 @@ const SignupScreen = ({navigation}) => {
 
           <View style={{marginBottom: SIZES.base}}>
             <Text
-              style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
+              style={{
+                fontSize: 16,
+                opacity: 0.5,
+                marginBottom: SIZES.base,
+                color: '#0d8e8a',
+              }}>
               Password
             </Text>
             <FormInput
@@ -190,7 +210,12 @@ const SignupScreen = ({navigation}) => {
 
           <View style={{marginBottom: SIZES.base}}>
             <Text
-              style={{fontSize: 16, opacity: 0.5, marginBottom: SIZES.base}}>
+              style={{
+                fontSize: 16,
+                opacity: 0.5,
+                marginBottom: SIZES.base,
+                color: '#0d8e8a',
+              }}>
               Controller ID
             </Text>
             <FormInput

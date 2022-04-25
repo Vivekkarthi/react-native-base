@@ -150,7 +150,7 @@ const LoginScreen = ({navigation}) => {
               borderTopEndRadius: SIZES.radius * 2,
               padding: SIZES.base * 2,
             }}>
-            <Text style={styles.text}>Login</Text>
+            <Text style={styles.text}>Enter your credentials.</Text>
 
             <KeyboardAvoidingView
               style={{flex: 1}}
@@ -171,6 +171,7 @@ const LoginScreen = ({navigation}) => {
                             fontSize: 16,
                             opacity: 0.5,
                             marginBottom: SIZES.base,
+                            color: '#0d8e8a',
                           }}>
                           Login ID
                         </Text>
@@ -195,6 +196,7 @@ const LoginScreen = ({navigation}) => {
                             fontSize: 16,
                             opacity: 0.5,
                             marginBottom: SIZES.base,
+                            color: '#0d8e8a',
                           }}>
                           Password
                         </Text>
@@ -236,6 +238,7 @@ const LoginScreen = ({navigation}) => {
                             marginTop: 8,
                             paddingRight: 20,
                             textAlign: 'left',
+                            color: '#0d8e8a',
                           }}>
                           Remember me ?
                         </Text>

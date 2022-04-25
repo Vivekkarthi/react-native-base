@@ -55,8 +55,8 @@ const OnboardingScreen = ({navigation}) => {
               source={require('../../assets/images/onboarding-img1.png')}
             />
           ),
-          title: 'Secure Combination Lock',
-          subtitle: 'To receive multiple deliveries',
+          title: "WORLD's No. 1 Package Delivery Box",
+          subtitle: 'With Anti-Theft Alarm Protection.',
         },
         {
           backgroundColor: '#fdeb93',
@@ -65,8 +65,8 @@ const OnboardingScreen = ({navigation}) => {
               source={require('../../assets/images/onboarding-img2.png')}
             />
           ),
-          title: 'Lock Assembly',
-          subtitle: 'That fits all types of doorknobs, guardrails and posts',
+          title: 'Secured & Not Removable',
+          subtitle: 'No More Stolen Packages Or Missed Deliveries.',
         },
         {
           backgroundColor: '#e9bcbe',
@@ -75,8 +75,9 @@ const OnboardingScreen = ({navigation}) => {
               source={require('../../assets/images/onboarding-img3.png')}
             />
           ),
-          title: 'Anti Theft Audible Alarm',
-          subtitle: 'A 125-decibe; audible alarm',
+          title: 'Weatherproof & Water Repellent',
+          subtitle:
+            'Made of premium High-Quality Water Repellent Polymer Material.',
         },
       ]}
     />
