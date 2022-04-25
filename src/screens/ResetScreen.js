@@ -112,6 +112,7 @@ const ResetScreen = ({navigation}) => {
                   fontSize: 16,
                   opacity: 0.5,
                   marginBottom: SIZES.base,
+                  color: '#0d8e8a',
                 }}>
                 Email Address
               </Text>
