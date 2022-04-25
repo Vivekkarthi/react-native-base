@@ -47,13 +47,16 @@ const NotificationsScreen = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
-      <ScrollView style={{padding: 20}}>
+      <ScrollView style={{padding: 10}}>
         <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text>Notifications Screen</Text>
-          <Text>{route.params?.title}</Text>
-        </View>
-
+        <Ionicons
+          name="ios-notifications-outline"
+          size={23}
+          style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+          <Text style={{fontSize: 18, fontFamily: 'Lato-Regular'}}>
+            Notifications
+          </Text>
+        </Ionicons>
         <View style={{flex: 1}}>
           <Card style={{paddingRight: 14}}>
             <Card.Title

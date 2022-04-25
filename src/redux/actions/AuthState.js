@@ -1,6 +1,8 @@
 import {clearAppData, getRequest, postRequest} from '../../utils/Handlers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {isEqual} from 'lodash';
+import {NetworkInfo} from 'react-native-network-info';
+import DeviceInfo from 'react-native-device-info';
 import {ENDPOINTURL} from '../../utils/Constants';
 
 export const initialState = {
@@ -19,8 +21,10 @@ export const RESET_STORE = 'AuthState/RESET_STORE';
 
 export const REMEMBER_LOGIN = 'AuthState/REMEMBER_LOGIN';
 
-export function memberLogin(userData, navigation) {
-  const queryParams = `sK=token&suid=${userData.PhoneNumber}&spass=${userData.Password}&sip=someipaddress`;
+export async function memberLogin(userData, navigation) {
+  // Get Local IP
+  const ipAddress = await DeviceInfo.getIpAddress().then(ip => ip);
+  const queryParams = `sK=token&suid=${userData.PhoneNumber}&spass=${userData.Password}&sip=${ipAddress}`;
   const params = {
     url: ENDPOINTURL.MemberLogin,
     token: '',

@@ -18,7 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import {loginSchema} from '../utils/ValidateSchema';
-import {useToast} from 'react-native-toast-notifications';
+// import {useToast} from 'react-native-toast-notifications';
 
 import {
   memberLogin,
@@ -28,15 +28,17 @@ import {
 import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
+import {isEmpty} from 'lodash';
 
 const LoginScreen = ({navigation}) => {
   const {rememberLogin} = useSelector(state => state.AuthState);
   const [inputUser, setInputUser] = useState({PhoneNumber: '', Password: ''});
+  const [loginError, setLoginError] = useState('');
   const [isSelected, setSelection] = useState(false);
   const [loader, setLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
-  const toast = useToast();
+  // const toast = useToast();
   const PasswordRef = useRef(null);
   const PhoneNumberRef = useRef(null);
 
@@ -67,40 +69,42 @@ const LoginScreen = ({navigation}) => {
         if (resp.USERRECORDID !== 0 && resp.AddlField1 === '') {
           //Good
           setLoader(false);
-          toast.show(`${resp.LoginNAME} you have logged in successfully.`, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'success',
-              title: 'Success',
-            },
-          });
+          // toast.show(`${resp.LoginNAME} you have logged in successfully.`, {
+          //   type: 'custom_type',
+          //   animationDuration: 100,
+          //   data: {
+          //     type: 'success',
+          //     title: 'Success',
+          //   },
+          // });
           AsyncStorage.setItem('loggedUser', JSON.stringify(resp));
           dispatch(rememberMe(user, isSelected));
           dispatch(saveMemberDetails(resp));
         } else {
           // Not Good
           setLoader(false);
-          toast.show(resp.AddlField1, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid login',
-            },
-          });
+          setLoginError(resp.AddlField1);
+          // toast.show(resp.AddlField1, {
+          //   type: 'custom_type',
+          //   animationDuration: 100,
+          //   data: {
+          //     type: 'error',
+          //     title: 'Invalid login',
+          //   },
+          // });
         }
       })
       .catch(error => {
         setLoader(false);
-        toast.show(error.message, {
-          type: 'custom_type',
-          animationDuration: 100,
-          data: {
-            type: 'error',
-            title: 'Invalid login',
-          },
-        });
+        setLoginError(error.message);
+        // toast.show(error.message, {
+        //   type: 'custom_type',
+        //   animationDuration: 100,
+        //   data: {
+        //     type: 'error',
+        //     title: 'Invalid login',
+        //   },
+        // });
       });
   };
 
@@ -139,7 +143,12 @@ const LoginScreen = ({navigation}) => {
           {loader ? <Loader /> : null}
           <Image
             source={require('../../assets/images/icon.png')}
-            style={styles.logo}
+            style={{
+              alignSelf: 'center',
+              height: 150,
+              width: 280,
+            }}
+            resizeMode="stretch"
           />
 
           <View
@@ -266,6 +275,18 @@ const LoginScreen = ({navigation}) => {
                       </View>
                     </FormProvider>
 
+                    {!isEmpty(loginError) ? (
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontFamily: 'Lato-Regular',
+                          textAlign: 'center',
+                          color: '#D83F50',
+                        }}>
+                        {loginError}
+                      </Text>
+                    ) : null}
+
                     <FormButton
                       buttonTitle="Sign In"
                       isPrimary={true}
@@ -334,12 +355,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
     padding: SIZES.base * 2,
     position: 'relative',
-  },
-  logo: {
-    height: 150,
-    width: 350,
-    left: 10,
-    resizeMode: 'cover',
   },
   text: {
     fontSize: 22,

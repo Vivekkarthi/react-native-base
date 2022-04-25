@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native';
 import {FormProvider, useForm} from 'react-hook-form';
-import {useToast} from 'react-native-toast-notifications';
+// import {useToast} from 'react-native-toast-notifications';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
@@ -19,6 +19,7 @@ import {memberRegister} from '../redux/actions/AuthState';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import AppStatusBar from '../components/AppStatusBar';
+import {isEmpty} from 'lodash';
 
 const SignupScreen = ({navigation}) => {
   const [inputUser, setInputUser] = useState({
@@ -29,11 +30,11 @@ const SignupScreen = ({navigation}) => {
     ControllerId: '',
   });
   const [loader, setLoader] = useState(false);
-
+  const [registrationError, setRegistrationError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
 
-  const toast = useToast();
+  // const toast = useToast();
 
   const methods = useForm({
     defaultValues: {
@@ -70,39 +71,41 @@ const SignupScreen = ({navigation}) => {
       .then(async resp => {
         if (resp === 'success') {
           //Good
-          toast.show('You have registered successfully.', {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'success',
-              title: 'Success',
-            },
-          });
+          // toast.show('You have registered successfully.', {
+          //   type: 'custom_type',
+          //   animationDuration: 100,
+          //   data: {
+          //     type: 'success',
+          //     title: 'Success',
+          //   },
+          // });
           setLoader(false);
           navigation.navigate('Login');
         } else {
           // Not Good
           setLoader(false);
-          toast.show(resp, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Failure',
-            },
-          });
+          setRegistrationError(resp);
+          // toast.show(resp, {
+          //   type: 'custom_type',
+          //   animationDuration: 100,
+          //   data: {
+          //     type: 'error',
+          //     title: 'Failure',
+          //   },
+          // });
         }
       })
       .catch(error => {
         setLoader(false);
-        toast.show(error.message, {
-          type: 'custom_type',
-          animationDuration: 100,
-          data: {
-            type: 'error',
-            title: 'Failure',
-          },
-        });
+        setRegistrationError(error.message);
+        // toast.show(error.message, {
+        //   type: 'custom_type',
+        //   animationDuration: 100,
+        //   data: {
+        //     type: 'error',
+        //     title: 'Failure',
+        //   },
+        // });
       });
   };
 
@@ -231,6 +234,18 @@ const SignupScreen = ({navigation}) => {
           </View>
         </FormProvider>
 
+        {!isEmpty(registrationError) ? (
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: 'Lato-Regular',
+              textAlign: 'center',
+              color: '#D83F50',
+            }}>
+            {registrationError}
+          </Text>
+        ) : null}
+
         <FormButton
           buttonTitle="Create Account"
           isPrimary={true}
@@ -272,7 +287,12 @@ const SignupScreen = ({navigation}) => {
             {loader ? <Loader /> : null}
             <Image
               source={require('../../assets/images/icon.png')}
-              style={styles.logo}
+              style={{
+                alignSelf: 'center',
+                height: 150,
+                width: 280,
+              }}
+              resizeMode="stretch"
             />
 
             <View
@@ -345,12 +365,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
     padding: SIZES.base * 2,
     position: 'relative',
-  },
-  logo: {
-    height: 150,
-    width: 350,
-    left: 10,
-    resizeMode: 'cover',
   },
   text: {
     fontSize: 22,
