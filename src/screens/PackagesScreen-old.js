@@ -51,7 +51,11 @@ const PackagesScreen = ({navigation}) => {
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
       <ScrollView style={{padding: 10}}>
         <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
-        <Ionicons name="logo-dropbox" size={25} style={{paddingBottom: 10}}>
+        <Ionicons
+          name="logo-dropbox"
+          size={25}
+          style={{paddingBottom: 10}}
+          color={'#002060'}>
           Packages
         </Ionicons>
         <View style={styles.container}>

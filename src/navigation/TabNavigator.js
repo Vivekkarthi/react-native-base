@@ -30,22 +30,16 @@ const HomeStack = ({navigation}) => {
         name="HomeScreen"
         component={HomeScreen}
         options={{
+          headerTitleAlign: 'center',
           headerTitle: () => (
-            <View
+            <Image
+              source={require('../../assets/images/icon.png')}
               style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/icon.png')}
-                style={{
-                  width: 185,
-                  height: 88,
-                }}
-                imageStyle={{borderRadius: 25}}
-              />
-            </View>
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
           ),
           headerLeft: () => (
             <View
@@ -60,10 +54,10 @@ const HomeStack = ({navigation}) => {
           headerRight: () => (
             <View
               style={{
-                paddingRight: 23,
+                paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -88,22 +82,16 @@ const SettingStack = ({navigation}) => {
         name="SettingScreen"
         component={SettingsScreen}
         options={{
+          headerTitleAlign: 'center',
           headerTitle: () => (
-            <View
+            <Image
+              source={require('../../assets/images/icon.png')}
               style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/icon.png')}
-                style={{
-                  width: 185,
-                  height: 88,
-                }}
-                imageStyle={{borderRadius: 25}}
-              />
-            </View>
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
           ),
           headerLeft: () => (
             <View
@@ -118,10 +106,10 @@ const SettingStack = ({navigation}) => {
           headerRight: () => (
             <View
               style={{
-                paddingRight: 23,
+                paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),
@@ -146,22 +134,16 @@ const PackageStack = ({navigation}) => {
         name="PackageScreen"
         component={PackagesScreen}
         options={{
+          headerTitleAlign: 'center',
           headerTitle: () => (
-            <View
+            <Image
+              source={require('../../assets/images/icon.png')}
               style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/icon.png')}
-                style={{
-                  width: 185,
-                  height: 88,
-                }}
-                imageStyle={{borderRadius: 25}}
-              />
-            </View>
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
           ),
           headerLeft: () => (
             <View
@@ -176,10 +158,10 @@ const PackageStack = ({navigation}) => {
           headerRight: () => (
             <View
               style={{
-                paddingRight: 23,
+                paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
               </TouchableOpacity>
             </View>
           ),

@@ -12,8 +12,16 @@ const AboutScreen = ({navigation}) => {
         <Ionicons
           name="information-circle-outline"
           size={23}
+          color={'#002060'}
           style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-          <Text style={{fontSize: 18, fontFamily: 'Lato-Regular'}}>About</Text>
+          <Text
+            style={{
+              fontSize: 18,
+              fontFamily: 'Lato-Regular',
+              color: '#002060',
+            }}>
+            About
+          </Text>
         </Ionicons>
       </ScrollView>
     </SafeAreaView>
