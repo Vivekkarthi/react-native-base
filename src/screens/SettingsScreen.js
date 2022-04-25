@@ -20,6 +20,7 @@ const SettingsScreen = ({navigation}) => {
               fontFamily: 'Lato-Regular',
               color: '#002060',
             }}>
+            {' '}
             Settings
           </Text>
         </Ionicons>

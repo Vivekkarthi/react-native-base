@@ -106,6 +106,7 @@ export default function HomeScreen({navigation}) {
               fontFamily: 'Lato-Regular',
               color: '#002060',
             }}>
+            {' '}
             Home
           </Text>
         </Ionicons>

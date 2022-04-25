@@ -180,7 +180,7 @@ const TabNavigator = () => {
         tabBarShowLabel: true,
         tabBarStyle: {backgroundColor: '#002060'},
         tabBarInactiveTintColor: '#fff',
-        tabBarActiveTintColor: 'yellow',
+        tabBarActiveTintColor: '#f17012',
       }}>
       <Tab.Screen
         name="Settings"

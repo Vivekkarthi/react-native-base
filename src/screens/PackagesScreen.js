@@ -85,6 +85,7 @@ const PackagesScreen = ({navigation}) => {
         style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
         <Text
           style={{fontSize: 18, fontFamily: 'Lato-Regular', color: '#002060'}}>
+          {' '}
           Packages
         </Text>
       </Ionicons>
