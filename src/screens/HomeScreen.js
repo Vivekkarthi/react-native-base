@@ -1,8 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {View, SafeAreaView, Text, Image, ScrollView} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import {useToast} from 'react-native-toast-notifications';
+import PackagesScreen from '../screens/PackagesScreen';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {fetchHomeData, saveMemberHomeDetails} from '../redux/actions/HomeState';
@@ -92,7 +100,7 @@ export default function HomeScreen({navigation}) {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
-      <ScrollView style={{padding: 10}}>
+      <ScrollView style={{padding: 10, marginTop: -15}}>
         <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
         {loader ? <Loader /> : null}
         <Ionicons
@@ -106,6 +114,7 @@ export default function HomeScreen({navigation}) {
               fontFamily: 'Lato-Regular',
               color: '#002060',
             }}>
+            {' '}
             Home
           </Text>
         </Ionicons>
@@ -134,7 +143,7 @@ export default function HomeScreen({navigation}) {
                 source={
                   homeDetails.PackageState === 1
                     ? require('../../assets/images/new_lock.png')
-                    : require('../../assets/images/unlock.jpg')
+                    : require('../../assets/images/new_unlock.jpg')
                 }
               />
               <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
@@ -152,13 +161,14 @@ export default function HomeScreen({navigation}) {
               }}>
               <Card.Cover
                 style={{alignSelf: 'center', width: 160, height: 150}}
+                onPress={() => navigation.navigate('PackagesScreen')}
                 source={{
                   uri: `${CONFIG.IMAGE_URL}/${homeDetails.photo1}`,
                 }}
               />
-              <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+              {/* <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
                 Last Updated
-              </Text>
+              </Text> */}
             </Card>
           </View>
         </View>

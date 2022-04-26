@@ -175,7 +175,7 @@ const PackageStack = ({navigation}) => {
 const BottomTabNavigator = () => {
   useEffect(() => {
     const backAction = () => {
-      Alert.alert('Hold on!', 'Are you sure you want to exit?', [
+      Alert.alert('DOORBOX App!', 'Are you sure you want to exit?', [
         {
           text: 'Cancel',
           onPress: () => null,

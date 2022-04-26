@@ -76,7 +76,13 @@ const PackagesScreen = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, padding: 10, backgroundColor: '#dfe1eb'}}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        padding: 10,
+        marginTop: -15,
+        backgroundColor: '#dfe1eb',
+      }}>
       <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
       <Ionicons
         name="logo-dropbox"

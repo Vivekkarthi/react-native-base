@@ -181,6 +181,7 @@ const LoginScreen = ({navigation}) => {
                             opacity: 0.5,
                             marginBottom: SIZES.base,
                             color: '#0d8e8a',
+                            fontWeight: 'bold',
                           }}>
                           Login ID
                         </Text>
@@ -206,6 +207,7 @@ const LoginScreen = ({navigation}) => {
                             opacity: 0.5,
                             marginBottom: SIZES.base,
                             color: '#0d8e8a',
+                            fontWeight: 'bold',
                           }}>
                           Password
                         </Text>

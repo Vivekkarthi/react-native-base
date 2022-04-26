@@ -120,6 +120,7 @@ const SignupScreen = ({navigation}) => {
                 opacity: 0.5,
                 marginBottom: SIZES.base,
                 color: '#0d8e8a',
+                fontWeight: 'bold',
               }}>
               Name
             </Text>
@@ -144,6 +145,7 @@ const SignupScreen = ({navigation}) => {
                 opacity: 0.5,
                 marginBottom: SIZES.base,
                 color: '#0d8e8a',
+                fontWeight: 'bold',
               }}>
               Email
             </Text>
@@ -167,6 +169,7 @@ const SignupScreen = ({navigation}) => {
                 opacity: 0.5,
                 marginBottom: SIZES.base,
                 color: '#0d8e8a',
+                fontWeight: 'bold',
               }}>
               Mobile
             </Text>
@@ -189,6 +192,7 @@ const SignupScreen = ({navigation}) => {
                 opacity: 0.5,
                 marginBottom: SIZES.base,
                 color: '#0d8e8a',
+                fontWeight: 'bold',
               }}>
               Password
             </Text>
@@ -218,6 +222,7 @@ const SignupScreen = ({navigation}) => {
                 opacity: 0.5,
                 marginBottom: SIZES.base,
                 color: '#0d8e8a',
+                fontWeight: 'bold',
               }}>
               Controller ID
             </Text>
