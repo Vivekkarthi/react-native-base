@@ -114,6 +114,7 @@ const Inputs = props => {
       return (
         <TextInput
           selectionColor={'#CD9BF0'}
+          caretHidden={false}
           autoFocus={props.autoFocus}
           style={props.style ? props.style : [styles.input]}
           onBlur={props.onBlur}
