@@ -28,44 +28,12 @@ export default function HomeScreen({navigation}) {
   const [loader, setLoader] = useState(true);
   const {loggedMember} = useSelector(state => state.AuthState);
   const {homeDetails} = useSelector(state => state.HomeState);
-  const [notify, setNotify] = useState({
-    activeNotification: 0,
-    date: moment(new Date()).format('MMMM DD, YYYY'),
-    title: 'No Message',
-  });
 
-  const getNextNotify = () => {
-    const arr = homeDetails.Notifications.length;
-    let idx = notify.activeNotification + 1;
-    idx = idx % arr;
+  const [notifyDate, setNotifyDate] = useState(new Date());
 
-    setNotify({
-      activeNotification: idx,
-      date: homeDetails.Notifications[idx].Datex,
-      title: homeDetails.Notifications[idx].Messagex,
-    });
-  };
-
-  const getPreviousNotify = () => {
-    const arr = homeDetails.Notifications.length;
-    let idx = notify.activeNotification;
-
-    if (idx === 0) {
-      idx = arr - 1;
-    } else {
-      idx = idx - 1;
-    }
-
-    setNotify({
-      activeNotification: idx,
-      date: homeDetails.Notifications[idx].Datex,
-      title: homeDetails.Notifications[idx].Messagex,
-    });
-  };
-
-  useEffect(() => {
-    // dispatch(fetchHomeData(loggedMember.ControllerID));
-    fetchHomeData(loggedMember.LoginID, loggedMember.ControllerID)
+  const getHomeData = currentDate => {
+    const convertDate = moment(currentDate).format('YYYY-MM-DD');
+    fetchHomeData(loggedMember.LoginID, loggedMember.ControllerID, convertDate)
       .then(async resp => {
         if (resp.LastSyncDate) {
           //Good
@@ -95,6 +63,20 @@ export default function HomeScreen({navigation}) {
           },
         });
       });
+  };
+
+  const getNextNotify = () => {
+    setNotifyDate(moment(new Date(notifyDate)).add(1, 'days'));
+    getHomeData(moment(new Date(notifyDate)).add(1, 'days'));
+  };
+
+  const getPreviousNotify = () => {
+    setNotifyDate(moment(new Date(notifyDate)).subtract(1, 'days'));
+    getHomeData(moment(new Date(notifyDate)).subtract(1, 'days'));
+  };
+
+  useEffect(() => {
+    getHomeData(new Date());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -114,7 +96,6 @@ export default function HomeScreen({navigation}) {
               fontFamily: 'Lato-Regular',
               color: '#002060',
             }}>
-            {' '}
             Home
           </Text>
         </Ionicons>
@@ -139,7 +120,7 @@ export default function HomeScreen({navigation}) {
                 width: '48%',
               }}>
               <Card.Cover
-                style={{alignSelf: 'center', width: 160, height: 150}}
+                style={{alignSelf: 'center', width: 100, height: 100}}
                 source={
                   homeDetails.PackageState === 1
                     ? require('../../assets/images/new_lock.png')
@@ -159,34 +140,35 @@ export default function HomeScreen({navigation}) {
                 justifyContent: 'center',
                 width: '48%',
               }}>
-              <Card.Cover
-                style={{alignSelf: 'center', width: 160, height: 150}}
-                onPress={() => navigation.navigate('PackagesScreen')}
-                source={{
-                  uri: `${CONFIG.IMAGE_URL}/${homeDetails.Photos}`,
-                }}
-              />
-              {/* <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-                Last Updated
-              </Text> */}
+              {homeDetails.Photos && (
+                <Card.Cover
+                  style={{
+                    alignSelf: 'center',
+                    width: '100%',
+                    height: 150,
+                  }}
+                  onPress={() => navigation.navigate('PackagesScreen')}
+                  source={{
+                    uri: `${CONFIG.IMAGE_URL}/${homeDetails.Photos[0].Filename}`,
+                  }}
+                />
+              )}
             </Card>
           </View>
         </View>
 
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, paddingBottom: 5}}>
           <Card>
             <Card.Title
-              title={notify.date}
-              subtitle={notify.title}
+              title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
+              // subtitle={'subtitle'}
               titleStyle={{fontSize: 18, alignSelf: 'center'}}
               subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
               left={props => (
                 <Ionicons
                   name="arrow-back-circle-outline"
                   size={30}
-                  onPress={() =>
-                    homeDetails.Notifications.length && getPreviousNotify()
-                  }
+                  onPress={() => getPreviousNotify()}
                 />
               )}
               right={props => (
@@ -194,13 +176,32 @@ export default function HomeScreen({navigation}) {
                   style={{paddingRight: 12}}
                   name="arrow-forward-circle-outline"
                   size={30}
-                  onPress={() =>
-                    homeDetails.Notifications.length && getNextNotify()
-                  }
+                  onPress={() => getNextNotify()}
                 />
               )}
             />
           </Card>
+        </View>
+        <View>
+          {homeDetails.Notifications.length ? (
+            homeDetails.Notifications.map((notification, index) => (
+              <View style={{flex: 1, paddingBottom: 5}} key={index}>
+                <Card style={{backgroundColor: '#fab9b9'}}>
+                  <Card.Title
+                    title={notification.Messagex}
+                    titleStyle={{fontSize: 18, alignSelf: 'center'}}
+                  />
+                </Card>
+              </View>
+            ))
+          ) : (
+            <Card style={{backgroundColor: '#fab9b9'}}>
+              <Card.Title
+                title={'No notification message.'}
+                titleStyle={{fontSize: 14, alignSelf: 'center'}}
+              />
+            </Card>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>

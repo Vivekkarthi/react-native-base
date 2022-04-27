@@ -10,10 +10,8 @@ export const initialState = {
 export const HOME_SUCCESS = 'HomeState/HOME_SUCCESS';
 export const HOME_FAILURE = 'HomeState/HOME_FAILURE';
 
-export const fetchHomeData = (LoginId, controllerId) => {
-  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=${LoginId}&snotifyfrom=${moment().format(
-    'YYYY-MM-DD',
-  )}`;
+export const fetchHomeData = (LoginId, controllerId, getDate) => {
+  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=${LoginId}&snotifyfrom=${getDate}`;
 
   const params = {
     url: ENDPOINTURL.MemberHome,
