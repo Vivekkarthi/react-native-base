@@ -65,7 +65,7 @@ export default function HomeScreen({navigation}) {
 
   useEffect(() => {
     // dispatch(fetchHomeData(loggedMember.ControllerID));
-    fetchHomeData('newcontroller2')
+    fetchHomeData(loggedMember.LoginID, loggedMember.ControllerID)
       .then(async resp => {
         if (resp.LastSyncDate) {
           //Good
@@ -163,7 +163,7 @@ export default function HomeScreen({navigation}) {
                 style={{alignSelf: 'center', width: 160, height: 150}}
                 onPress={() => navigation.navigate('PackagesScreen')}
                 source={{
-                  uri: `${CONFIG.IMAGE_URL}/${homeDetails.photo1}`,
+                  uri: `${CONFIG.IMAGE_URL}/${homeDetails.Photos}`,
                 }}
               />
               {/* <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
