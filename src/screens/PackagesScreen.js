@@ -44,10 +44,24 @@ const PackagesScreen = ({navigation}) => {
             uri: `${CONFIG.IMAGE_URL}/${item.Filename}`,
           }}
         />
+
         {/* <View style={styles.footer}>
           <Text style={styles.footerText}>{item.title}</Text>
           <Text style={styles.footerText}>{item.title}</Text>
         </View> */}
+        <View style={styles.dotView}>
+          {homeDetails.Photos.map(({}, index) => (
+            <TouchableOpacity
+              key={index.toString()}
+              style={[
+                styles.circle,
+                {
+                  backgroundColor: index === currentIndex ? 'black' : 'grey',
+                },
+              ]}
+              onPress={() => scrollToIndex(index)}></TouchableOpacity>
+          ))}
+        </View>
       </TouchableOpacity>
     );
   };
@@ -83,24 +97,9 @@ const PackagesScreen = ({navigation}) => {
           ref={ref => {
             flatListRef.current = ref;
           }}
-          style={styles.carousel}
           viewabilityConfig={viewConfigRef}
           onViewableItemsChanged={onViewRef.current}
         />
-
-        <View style={styles.dotView}>
-          {homeDetails.Photos.map(({}, index) => (
-            <TouchableOpacity
-              key={index.toString()}
-              style={[
-                styles.circle,
-                {
-                  backgroundColor: index === currentIndex ? 'black' : 'grey',
-                },
-              ]}
-              onPress={() => scrollToIndex(index)}></TouchableOpacity>
-          ))}
-        </View>
       </View>
     </SafeAreaView>
   );
@@ -113,10 +112,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     // backgroundColor: '#FFFFFF',
   },
-  carousel: {
-    maxHeight: 300,
-  },
   image: {
+    borderRadius: 8,
     width: width - 20,
     height: 250,
     resizeMode: 'cover',
