@@ -136,6 +136,7 @@ export default function HomeScreen({navigation}) {
               </Text>
             </Card>
             <Card
+              onPress={() => navigation.navigate('Packages')}
               style={{
                 flexDirection: 'column',
                 justifyContent: 'center',
@@ -148,7 +149,6 @@ export default function HomeScreen({navigation}) {
                     width: '100%',
                     height: 150,
                   }}
-                  onPress={() => navigation.navigate('PackagesScreen')}
                   source={{
                     uri: `${CONFIG.IMAGE_URL}/${homeDetails.Photos[0].Filename}`,
                   }}

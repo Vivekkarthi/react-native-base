@@ -1,97 +1,110 @@
-import React, {useState} from 'react';
-import {View, Text, SafeAreaView, ScrollView} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
-
+import React from 'react';
+import {View, Text, SafeAreaView, ScrollView, FlatList} from 'react-native';
+import {Avatar} from 'react-native-paper';
 import {useSelector} from 'react-redux';
-import {Card, Title, Paragraph} from 'react-native-paper';
 import AppStatusBar from '../components/AppStatusBar';
 import {COLORS} from '../constants';
 
 const NotificationsScreen = ({navigation, route}) => {
   const {homeDetails} = useSelector(state => state.HomeState);
-  const [notify, setNotify] = useState({
-    activeNotification: 0,
-    date: moment(new Date()).format('MMMM DD, YYYY'),
-    title: 'No Message',
-  });
-
-  const getNextNotify = () => {
-    const arr = homeDetails.Notifications.length;
-    let idx = notify.activeNotification + 1;
-    idx = idx % arr;
-
-    setNotify({
-      activeNotification: idx,
-      date: homeDetails.Notifications[idx].Datex,
-      title: homeDetails.Notifications[idx].Messagex,
-    });
-  };
-
-  const getPreviousNotify = () => {
-    const arr = homeDetails.Notifications.length;
-    let idx = notify.activeNotification;
-
-    if (idx === 0) {
-      idx = arr - 1;
-    } else {
-      idx = idx - 1;
-    }
-
-    setNotify({
-      activeNotification: idx,
-      date: homeDetails.Notifications[idx].Datex,
-      title: homeDetails.Notifications[idx].Messagex,
-    });
-  };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb', marginTop: -15}}>
-      <ScrollView style={{padding: 10}}>
-        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
-        <Ionicons
-          name="ios-notifications-outline"
-          size={23}
-          color={'#002060'}
-          style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-          <Text
+    <SafeAreaView
+      style={{
+        flex: 1,
+        padding: 5,
+        backgroundColor: '#dfe1eb',
+      }}>
+      <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+      <View style={{flex: 1, paddingTop: 10}}>
+        {homeDetails.Notifications.length ? (
+          <FlatList
+            data={homeDetails.Notifications}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={notification => (
+              <View
+                style={{
+                  maxWidth: '100%',
+                  paddingHorizontal: 15,
+                  paddingVertical: 10,
+                  backgroundColor: '#fff',
+                  marginVertical: 4,
+                  borderRadius: 4,
+                  borderLeftColor: '#ff3300',
+                  borderLeftWidth: 6,
+                  justifyContent: 'center',
+                  paddingLeft: 16,
+                }}>
+                <View style={{flex: 1, flexDirection: 'row'}}>
+                  <Avatar.Icon
+                    size={42}
+                    color={COLORS.white}
+                    icon="notification-clear-all"
+                    style={{backgroundColor: '#ff3300'}}
+                  />
+                  <View
+                    style={{
+                      flexDirection: 'column',
+                      marginLeft: 10,
+                      width: '75%',
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: '#333',
+                        fontWeight: 'bold',
+                      }}>
+                      {moment(notification.item.Datex).format('MMMM DD, YYYY')}
+                    </Text>
+                    <Text
+                      style={{fontSize: 16, color: '#a3a3a3', marginTop: 2}}>
+                      {notification.item.Messagex}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      alignSelf: 'center',
+                      marginLeft: 10,
+                      backgroundColor: '#0DA728',
+                      borderRadius: 50,
+                      height: 10,
+                      width: 10,
+                    }}></View>
+                </View>
+              </View>
+            )}
+          />
+        ) : (
+          <View
             style={{
-              fontSize: 18,
-              fontFamily: 'Lato-Regular',
-              color: '#002060',
+              maxWidth: '100%',
+              paddingHorizontal: 15,
+              paddingVertical: 10,
+              backgroundColor: '#fff',
+              marginVertical: 4,
+              borderRadius: 4,
+              borderLeftColor: '#ff3300',
+              borderLeftWidth: 6,
+              justifyContent: 'center',
+              paddingLeft: 16,
             }}>
-            Notifications
-          </Text>
-        </Ionicons>
-        <View style={{flex: 1, paddingTop: 10}}>
-          <Card style={{paddingRight: 14}}>
-            <Card.Title
-              title={notify.date}
-              subtitle={notify.title}
-              titleStyle={{fontSize: 18}}
-              subtitleStyle={{fontSize: 16}}
-              left={props => (
-                <Ionicons
-                  name="arrow-back-circle-outline"
-                  size={30}
-                  onPress={() =>
-                    homeDetails.Notifications.length && getPreviousNotify()
-                  }
-                />
-              )}
-              right={props => (
-                <Ionicons
-                  name="arrow-forward-circle-outline"
-                  size={30}
-                  onPress={() =>
-                    homeDetails.Notifications.length && getNextNotify()
-                  }
-                />
-              )}
-            />
-          </Card>
-        </View>
-      </ScrollView>
+            <View style={{flexDirection: 'row'}}>
+              <Avatar.Icon
+                size={42}
+                color={COLORS.white}
+                icon="notification-clear-all"
+                style={{backgroundColor: COLORS.primary}}
+              />
+              <View style={{alignSelf: 'center', marginLeft: 10}}>
+                <Text style={{fontSize: 16, color: '#a3a3a3', marginTop: 2}}>
+                  No notifications found.
+                </Text>
+              </View>
+            </View>
+          </View>
+        )}
+      </View>
     </SafeAreaView>
   );
 };
