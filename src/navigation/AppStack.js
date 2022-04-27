@@ -13,6 +13,7 @@ import CameraScreen from '../screens/CameraScreen';
 import InformationScreen from '../screens/InformationScreen';
 import AboutScreen from '../screens/AboutScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import PackagesScreen from '../screens/PackagesScreen';
 import CustomDrawer from '../components/CustomDrawer';
 import {logoutSuccess} from '../redux/actions/AuthState';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -270,12 +271,12 @@ const AppStack = () => {
         }}
       />
       <Drawer.Screen
-        name="Information"
-        component={InformationScreen}
+        name="Packages"
+        component={PackagesScreen}
         options={{
           headerShown: true,
           drawerIcon: ({color}) => (
-            <Feather name="alert-circle" size={22} color={color} />
+            <Feather name="package" size={22} color={color} />
           ),
           headerTitleAlign: 'center',
           headerTitle: () => (

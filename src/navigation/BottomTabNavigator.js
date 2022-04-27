@@ -175,7 +175,7 @@ const PackageStack = ({navigation}) => {
 const BottomTabNavigator = () => {
   useEffect(() => {
     const backAction = () => {
-      Alert.alert('Hold on!', 'Are you sure you want to exit?', [
+      Alert.alert('DOORBOX App!', 'Are you sure you want to exit?', [
         {
           text: 'Cancel',
           onPress: () => null,
@@ -195,7 +195,8 @@ const BottomTabNavigator = () => {
   }, []);
   return (
     <Tab.Navigator
-      initialRouteName="HomeStack"
+      backBehavior="HomeStack"
+      initialRouteName={'HomeStack'}
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
@@ -213,6 +214,7 @@ const BottomTabNavigator = () => {
           ),
         }}
       />
+
       <Tab.Screen
         name="HomeStack"
         component={HomeStack}

@@ -46,7 +46,7 @@ const NotificationsScreen = ({navigation, route}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb', marginTop: -15}}>
       <ScrollView style={{padding: 10}}>
         <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
         <Ionicons

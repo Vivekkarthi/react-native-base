@@ -7,7 +7,7 @@ import {COLORS} from '../constants';
 const SettingsScreen = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
-      <ScrollView style={{padding: 10}}>
+      <ScrollView style={{padding: 10, marginTop: -15}}>
         <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
         <Ionicons
           name="settings-outline"

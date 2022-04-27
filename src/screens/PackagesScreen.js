@@ -25,29 +25,6 @@ const PackagesScreen = ({navigation}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const {homeDetails} = useSelector(state => state.HomeState);
 
-  const carouselItems = [
-    {
-      title: 'Photo 1',
-      image: `${CONFIG.IMAGE_URL}/${homeDetails.photo1}`,
-    },
-    {
-      title: 'Photo 2',
-      image: `${CONFIG.IMAGE_URL}/${homeDetails.photo2}`,
-    },
-    {
-      title: 'Photo 3',
-      image: `${CONFIG.IMAGE_URL}/${homeDetails.photo3}`,
-    },
-    {
-      title: 'Photo 4',
-      image: `${CONFIG.IMAGE_URL}/${homeDetails.photo4}`,
-    },
-    {
-      title: 'Photo 5',
-      image: `${CONFIG.IMAGE_URL}/${homeDetails.photo5}`,
-    },
-  ];
-
   const onViewRef = useRef(({changed}) => {
     if (changed[0].isViewable) {
       setCurrentIndex(changed[0].index);
@@ -64,19 +41,25 @@ const PackagesScreen = ({navigation}) => {
         <Image
           style={styles.image}
           source={{
-            uri: item.image,
+            uri: `${CONFIG.IMAGE_URL}/${item.Filename}`,
           }}
         />
-        <View style={styles.footer}>
+        {/* <View style={styles.footer}>
           <Text style={styles.footerText}>{item.title}</Text>
           <Text style={styles.footerText}>{item.title}</Text>
-        </View>
+        </View> */}
       </TouchableOpacity>
     );
   };
 
   return (
-    <SafeAreaView style={{flex: 1, padding: 10, backgroundColor: '#dfe1eb'}}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        padding: 10,
+        marginTop: -15,
+        backgroundColor: '#dfe1eb',
+      }}>
       <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
       <Ionicons
         name="logo-dropbox"
@@ -91,7 +74,7 @@ const PackagesScreen = ({navigation}) => {
       </Ionicons>
       <View style={styles.container}>
         <FlatList
-          data={carouselItems}
+          data={homeDetails.Photos}
           keyExtractor={(item, index) => index.toString()}
           renderItem={renderItem}
           horizontal
@@ -106,7 +89,7 @@ const PackagesScreen = ({navigation}) => {
         />
 
         <View style={styles.dotView}>
-          {carouselItems.map(({}, index) => (
+          {homeDetails.Photos.map(({}, index) => (
             <TouchableOpacity
               key={index.toString()}
               style={[
