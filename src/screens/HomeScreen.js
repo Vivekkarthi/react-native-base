@@ -32,6 +32,7 @@ export default function HomeScreen({navigation}) {
   const [notifyDate, setNotifyDate] = useState(new Date());
 
   const getHomeData = currentDate => {
+    setLoader(true);
     const convertDate = moment(currentDate).format('YYYY-MM-DD');
     fetchHomeData(loggedMember.LoginID, loggedMember.ControllerID, convertDate)
       .then(async resp => {
@@ -183,7 +184,7 @@ export default function HomeScreen({navigation}) {
           </Card>
         </View>
         <View>
-          {homeDetails.Notifications.length ? (
+          {homeDetails.Notifications && homeDetails.Notifications.length ? (
             homeDetails.Notifications.map((notification, index) => (
               <View style={{flex: 1, paddingBottom: 5}} key={index}>
                 <Card style={{backgroundColor: '#fab9b9'}}>
