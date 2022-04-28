@@ -1,24 +1,22 @@
 import React, {useRef, useState, useEffect} from 'react';
 import {
   View,
-  TouchableOpacity,
   StyleSheet,
   ScrollView,
   SafeAreaView,
   Text,
   Dimensions,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
-import CustomHeader from '../components/CustomHeader';
 import {sliderData} from '../model/data';
+import StaticBottomTabs from '../components/StaticBottomTabs';
 import AppStatusBar from '../components/AppStatusBar';
 import {COLORS} from '../constants';
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const CameraScreen = ({navigation}) => {
+const CameraScreen = ({navigation, route}) => {
   const [entries, setEntries] = useState([]);
   const carouselRef = useRef(null);
 
@@ -48,38 +46,41 @@ const CameraScreen = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
-      <ScrollView style={{padding: 10}}>
-        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
-        <Text style={{textAlign: 'center'}}>Intenal Camera</Text>
-        <View style={styles.container}>
-          <Carousel
-            ref={carouselRef}
-            sliderWidth={screenWidth - 40}
-            itemWidth={500}
-            data={entries}
-            renderItem={renderItem}
-            hasParallaxImages={true}
-          />
-        </View>
-        <Text style={{textAlign: 'center', top: 10}}>External Camera</Text>
-        <View style={styles.container}>
-          {/* <Ionicons
+    <>
+      <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
+        <ScrollView style={{padding: 10}}>
+          <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+          <Text style={{textAlign: 'center'}}>Intenal Camera</Text>
+          <View style={styles.container}>
+            <Carousel
+              ref={carouselRef}
+              sliderWidth={screenWidth - 40}
+              itemWidth={500}
+              data={entries}
+              renderItem={renderItem}
+              hasParallaxImages={true}
+            />
+          </View>
+          <Text style={{textAlign: 'center', top: 10}}>External Camera</Text>
+          <View style={styles.container}>
+            {/* <Ionicons
             name="arrow-forward-circle-outline"
             size={30}
             onPress={goForward}
           /> */}
-          <Carousel
-            ref={carouselRef}
-            sliderWidth={screenWidth - 40}
-            itemWidth={500}
-            data={entries}
-            renderItem={renderItem}
-            hasParallaxImages={true}
-          />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+            <Carousel
+              ref={carouselRef}
+              sliderWidth={screenWidth - 40}
+              itemWidth={500}
+              data={entries}
+              renderItem={renderItem}
+              hasParallaxImages={true}
+            />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+      <StaticBottomTabs navigation={navigation} routeName={route.name} />
+    </>
   );
 };
 
