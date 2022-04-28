@@ -127,24 +127,24 @@ export default function HomeScreen({navigation}) {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
-      <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
-      {loader ? <Loader /> : null}
-      <Ionicons
-        name="ios-home-outline"
-        size={23}
-        color={'#002060'}
-        style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-        <Text
-          style={{
-            fontSize: 18,
-            fontFamily: 'Lato-Regular',
-            color: '#002060',
-          }}>
-          {' '}
-          Home
-        </Text>
-      </Ionicons>
       <View style={{flex: 1, padding: 15, marginTop: -15}}>
+        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+        {loader ? <Loader /> : null}
+        <Ionicons
+          name="ios-home-outline"
+          size={23}
+          color={'#002060'}
+          style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontFamily: 'Lato-Regular',
+              color: '#002060',
+            }}>
+            Home
+          </Text>
+        </Ionicons>
+
         <View
           style={{
             paddingTop: 10,
