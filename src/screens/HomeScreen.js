@@ -83,7 +83,7 @@ export default function HomeScreen({navigation}) {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
-      <ScrollView style={{padding: 10, marginTop: -15}}>
+      <ScrollView style={{padding: 15, marginTop: -15}}>
         <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
         {loader ? <Loader /> : null}
         <Ionicons
@@ -97,6 +97,7 @@ export default function HomeScreen({navigation}) {
               fontFamily: 'Lato-Regular',
               color: '#002060',
             }}>
+            {' '}
             Home
           </Text>
         </Ionicons>
@@ -121,17 +122,19 @@ export default function HomeScreen({navigation}) {
                 width: '48%',
               }}>
               <Card.Cover
-                style={{alignSelf: 'center', width: 100, height: 100}}
+                style={{alignSelf: 'center', width: 80, height: 80, top: 10}}
                 source={
                   homeDetails.PackageState === 1
                     ? require('../../assets/images/new_lock.png')
                     : require('../../assets/images/new_unlock.jpg')
                 }
               />
-              <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
-                {moment(homeDetails.LastSyncDate).format('YYYY-MM-DD hh:mm:ss')}
+              <Text style={{textAlign: 'center', fontWeight: 'bold', top: 10}}>
+                {moment(homeDetails.LastSyncDate).format(
+                  'MMMM DD, YYYY hh:mm:ss',
+                )}
               </Text>
-              <Text style={{textAlign: 'center'}}>
+              <Text style={{textAlign: 'center', top: 10, fontWeight: 'bold'}}>
                 {homeDetails.PackageState === 1 ? 'Locked' : 'UnLocked'}
               </Text>
             </Card>
@@ -141,6 +144,7 @@ export default function HomeScreen({navigation}) {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 width: '48%',
+                padding: 10,
               }}>
               {homeDetails.Photos && (
                 <Card.Cover
@@ -187,19 +191,19 @@ export default function HomeScreen({navigation}) {
           {homeDetails.Notifications && homeDetails.Notifications.length ? (
             homeDetails.Notifications.map((notification, index) => (
               <View style={{flex: 1, paddingBottom: 5}} key={index}>
-                <Card style={{backgroundColor: '#fab9b9'}}>
+                <Card style={{backgroundColor: '#eef1f6'}}>
                   <Card.Title
                     title={notification.Messagex}
-                    titleStyle={{fontSize: 18, alignSelf: 'center'}}
+                    titleStyle={{fontSize: 16}}
                   />
                 </Card>
               </View>
             ))
           ) : (
-            <Card style={{backgroundColor: '#fab9b9'}}>
+            <Card style={{backgroundColor: '#eef1f6'}}>
               <Card.Title
                 title={'No notification message.'}
-                titleStyle={{fontSize: 14, alignSelf: 'center'}}
+                titleStyle={{fontSize: 14}}
               />
             </Card>
           )}
