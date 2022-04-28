@@ -141,6 +141,7 @@ export default function HomeScreen({navigation}) {
               fontFamily: 'Lato-Regular',
               color: '#002060',
             }}>
+            {' '}
             Home
           </Text>
         </Ionicons>
@@ -186,6 +187,7 @@ export default function HomeScreen({navigation}) {
                   color: '#000000',
                   fontWeight: 'bold',
                   top: 10,
+                  lineHeight: 35,
                 }}>
                 {moment(homeDetails.LastSyncDate).format(
                   'MMMM DD, YYYY hh:mm:ss',
