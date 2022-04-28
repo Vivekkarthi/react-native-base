@@ -15,7 +15,22 @@ export const fetchHomeData = (LoginId, controllerId, getDate) => {
 
   const params = {
     url: ENDPOINTURL.MemberHome,
-    token: '',
+    queryParams,
+  };
+  return getRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      throw error;
+    });
+};
+
+export const callOpenCloseBox = (LoginId, controllerId, PkgLock) => {
+  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=${LoginId}&pkgstate=${PkgLock}`;
+
+  const params = {
+    url: ENDPOINTURL.MemberLock,
     queryParams,
   };
   return getRequest(params)
