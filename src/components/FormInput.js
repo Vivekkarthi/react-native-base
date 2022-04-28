@@ -113,7 +113,7 @@ const Inputs = props => {
     default:
       return (
         <TextInput
-          selectionColor={'#CD9BF0'}
+          selectionColor={'#f17012'}
           caretHidden={false}
           autoFocus={props.autoFocus}
           style={props.style ? props.style : [styles.input]}
