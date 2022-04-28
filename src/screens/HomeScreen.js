@@ -165,9 +165,14 @@ export default function HomeScreen({navigation, route}) {
                   toggleLockTheBox(homeDetails.PackageState === 1 ? 2 : 1)
                 }
                 style={{
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  width: '48%',
+                  textAlign: 'center',
+                  color: '#000000',
+                  fontWeight: 'bold',
+                  top: 10,
+                  lineHeight: 35,
+                  // flexDirection: 'column',
+                  // justifyContent: 'center',
+                  // width: '48%',
                 }}>
                 <Card.Cover
                   style={{

@@ -88,8 +88,7 @@ const PackagesScreen = ({navigation, route}) => {
               fontFamily: 'Lato-Regular',
               color: '#002060',
             }}>
-            {' '}
-            Packages
+            Photos
           </Text>
         </Ionicons>
         <View style={styles.container}>
