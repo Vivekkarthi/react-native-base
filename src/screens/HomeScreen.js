@@ -165,14 +165,9 @@ export default function HomeScreen({navigation, route}) {
                   toggleLockTheBox(homeDetails.PackageState === 1 ? 2 : 1)
                 }
                 style={{
-                  textAlign: 'center',
-                  color: '#000000',
-                  fontWeight: 'bold',
-                  top: 10,
-                  lineHeight: 35,
-                  // flexDirection: 'column',
-                  // justifyContent: 'center',
-                  // width: '48%',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  width: '48%',
                 }}>
                 <Card.Cover
                   style={{
@@ -193,6 +188,7 @@ export default function HomeScreen({navigation, route}) {
                     color: '#000000',
                     fontWeight: 'bold',
                     top: 10,
+                    lineHeight: 35,
                   }}>
                   {moment(homeDetails.LastSyncDate).format(
                     'MMMM DD, YYYY hh:mm:ss',
