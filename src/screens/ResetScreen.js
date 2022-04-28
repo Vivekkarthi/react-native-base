@@ -123,7 +123,7 @@ const ResetScreen = ({navigation}) => {
                 textLabel={'Email'}
                 // placeHolder={'Email'}
                 textName={'Email'}
-                keyboardType="email-address"
+                keyboardType="default"
                 errorobj={errors}
                 refs={EmailRef}
               />

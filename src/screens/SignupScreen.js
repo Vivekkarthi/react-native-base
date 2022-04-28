@@ -155,7 +155,7 @@ const SignupScreen = ({navigation}) => {
               textLabel={'Email'}
               // placeHolder={'Email'}
               textName={'Email'}
-              keyboardType="email-address"
+              keyboardType="default"
               errorobj={errors}
               refs={EmailRef}
               refField={() => PhoneNumberRef.current.focus()}
