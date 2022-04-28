@@ -170,8 +170,8 @@ export default function HomeScreen({navigation}) {
               <Card.Cover
                 style={{
                   alignSelf: 'center',
-                  width: 80,
-                  height: 80,
+                  width: 90,
+                  height: 85,
                   top: 10,
                 }}
                 source={
@@ -183,6 +183,7 @@ export default function HomeScreen({navigation}) {
               <Text
                 style={{
                   textAlign: 'center',
+                  color: '#000000',
                   fontWeight: 'bold',
                   top: 10,
                 }}>
@@ -194,6 +195,7 @@ export default function HomeScreen({navigation}) {
                 style={{
                   textAlign: 'center',
                   top: 10,
+                  color: homeDetails.PackageState === 1 ? '#0DA728' : '#D83F50',
                   fontWeight: 'bold',
                 }}>
                 {homeDetails.PackageState === 1 ? 'Locked' : 'UnLocked'}
