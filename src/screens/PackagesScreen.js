@@ -16,11 +16,12 @@ import {CONFIG} from '../utils/Config';
 
 import {COLORS} from '../constants';
 import {useSelector} from 'react-redux';
+import StaticBottomTabs from '../components/StaticBottomTabs';
 
 const {width, height} = Dimensions.get('window');
 const viewConfigRef = {viewAreaCoveragePercentThreshold: 95};
 
-const PackagesScreen = ({navigation}) => {
+const PackagesScreen = ({navigation, route}) => {
   const flatListRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const {homeDetails} = useSelector(state => state.HomeState);
@@ -67,41 +68,47 @@ const PackagesScreen = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        padding: 10,
-        marginTop: -15,
-        backgroundColor: '#dfe1eb',
-      }}>
-      <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
-      <Ionicons
-        name="logo-dropbox"
-        size={23}
-        color={'#002060'}
-        style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-        <Text
-          style={{fontSize: 18, fontFamily: 'Lato-Regular', color: '#002060'}}>
-          {' '}
-          Packages
-        </Text>
-      </Ionicons>
-      <View style={styles.container}>
-        <FlatList
-          data={homeDetails.Photos}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={renderItem}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          ref={ref => {
-            flatListRef.current = ref;
-          }}
-          viewabilityConfig={viewConfigRef}
-          onViewableItemsChanged={onViewRef.current}
-        />
-      </View>
-    </SafeAreaView>
+    <>
+      <SafeAreaView
+        style={{
+          flex: 1,
+          padding: 10,
+          marginTop: -15,
+          backgroundColor: '#dfe1eb',
+        }}>
+        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+        <Ionicons
+          name="logo-dropbox"
+          size={23}
+          color={'#002060'}
+          style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontFamily: 'Lato-Regular',
+              color: '#002060',
+            }}>
+            Photos
+          </Text>
+        </Ionicons>
+        <View style={styles.container}>
+          <FlatList
+            data={homeDetails.Photos}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderItem}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            ref={ref => {
+              flatListRef.current = ref;
+            }}
+            viewabilityConfig={viewConfigRef}
+            onViewableItemsChanged={onViewRef.current}
+          />
+        </View>
+      </SafeAreaView>
+      <StaticBottomTabs navigation={navigation} routeName={route.name} />
+    </>
   );
 };
 

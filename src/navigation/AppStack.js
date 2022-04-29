@@ -10,7 +10,6 @@ import NotificationsScreen from '../screens/NotificationsScreen';
 import UsersScreen from '../screens/UsersScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import CameraScreen from '../screens/CameraScreen';
-import InformationScreen from '../screens/InformationScreen';
 import AboutScreen from '../screens/AboutScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import PackagesScreen from '../screens/PackagesScreen';

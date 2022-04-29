@@ -208,10 +208,11 @@ const BottomTabNavigator = () => {
         name="SettingStack"
         component={SettingStack}
         options={{
-          tabBarLabel: 'Settings',
-          tabBarIcon: ({color, size}) => (
-            <Feather name="settings" color={color} size={size} />
-          ),
+          tabBarStyle: {display: 'none'},
+          // tabBarLabel: 'Settings',
+          // tabBarIcon: ({color, size}) => (
+          //   <Feather name="settings" color={color} size={size} />
+          // ),
         }}
       />
 
@@ -219,10 +220,11 @@ const BottomTabNavigator = () => {
         name="HomeStack"
         component={HomeStack}
         options={({route}) => ({
-          tabBarLabel: 'Home',
-          tabBarIcon: ({color, size}) => (
-            <Feather name="home" color={color} size={size} />
-          ),
+          tabBarStyle: {display: 'none'},
+          // tabBarLabel: 'Home',
+          // tabBarIcon: ({color, size}) => (
+          //   <Feather name="home" color={color} size={size} />
+          // ),
         })}
       />
 
@@ -230,10 +232,11 @@ const BottomTabNavigator = () => {
         name="PackageStack"
         component={PackageStack}
         options={{
-          tabBarLabel: 'Packages',
-          tabBarIcon: ({color, size}) => (
-            <Feather name="package" color={color} size={size} />
-          ),
+          tabBarStyle: {display: 'none'},
+          // tabBarLabel: 'Packages',
+          // tabBarIcon: ({color, size}) => (
+          //   <Feather name="package" color={color} size={size} />
+          // ),
         }}
       />
     </Tab.Navigator>

@@ -26,8 +26,9 @@ import AppStatusBar from '../components/AppStatusBar';
 // import Config from 'react-native-config';
 import {Loader} from '../components/Loader';
 import {CONFIG} from '../utils/Config';
+import StaticBottomTabs from '../components/StaticBottomTabs';
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({navigation, route}) {
   const dispatch = useDispatch();
   const toast = useToast();
   const [loader, setLoader] = useState(true);
@@ -126,161 +127,168 @@ export default function HomeScreen({navigation}) {
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
-      <View style={{flex: 1, padding: 15, marginTop: -15}}>
-        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
-        {loader ? <Loader /> : null}
-        <Ionicons
-          name="ios-home-outline"
-          size={23}
-          color={'#002060'}
-          style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-          <Text
-            style={{
-              fontSize: 18,
-              fontFamily: 'Lato-Regular',
-              color: '#002060',
-            }}>
-            Home
-          </Text>
-        </Ionicons>
+    <>
+      <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
+        <View style={{flex: 1, padding: 15, marginTop: -15}}>
+          <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+          {loader ? <Loader /> : null}
+          <Ionicons
+            name="ios-home-outline"
+            size={23}
+            color={'#002060'}
+            style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontFamily: 'Lato-Regular',
+                color: '#002060',
+              }}>
+              Home
+            </Text>
+          </Ionicons>
 
-        <View
-          style={{
-            paddingTop: 10,
-            paddingBottom: 10,
-            flexDirection: 'row',
-            alignSelf: 'center',
-          }}>
           <View
             style={{
-              flex: 1,
+              paddingTop: 10,
+              paddingBottom: 10,
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              alignSelf: 'center',
             }}>
-            <Card
-              onPress={() =>
-                toggleLockTheBox(homeDetails.PackageState === 1 ? 2 : 1)
-              }
+            <View
               style={{
-                flexDirection: 'column',
-                justifyContent: 'center',
-                width: '48%',
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
               }}>
-              <Card.Cover
-                style={{
-                  alignSelf: 'center',
-                  width: 80,
-                  height: 80,
-                  top: 10,
-                }}
-                source={
-                  homeDetails.PackageState === 1
-                    ? require('../../assets/images/new_lock.png')
-                    : require('../../assets/images/new_unlock.jpg')
+              <Card
+                onPress={() =>
+                  toggleLockTheBox(homeDetails.PackageState === 1 ? 2 : 1)
                 }
-              />
-              <Text
                 style={{
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  top: 10,
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  width: '48%',
                 }}>
-                {moment(homeDetails.LastSyncDate).format(
-                  'MMMM DD, YYYY hh:mm:ss',
-                )}
-              </Text>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  top: 10,
-                  fontWeight: 'bold',
-                }}>
-                {homeDetails.PackageState === 1 ? 'Locked' : 'UnLocked'}
-              </Text>
-            </Card>
-            <Card
-              onPress={() => navigation.navigate('Packages')}
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'center',
-                width: '48%',
-                padding: 10,
-              }}>
-              {homeDetails.Photos && (
                 <Card.Cover
                   style={{
                     alignSelf: 'center',
-                    width: '100%',
-                    height: 150,
+                    width: 90,
+                    height: 85,
+                    top: 10,
                   }}
-                  source={{
-                    uri: `${CONFIG.IMAGE_URL}/${homeDetails.Photos[0].Filename}`,
-                  }}
+                  source={
+                    homeDetails.PackageState === 1
+                      ? require('../../assets/images/new_lock.png')
+                      : require('../../assets/images/new_unlock.jpg')
+                  }
+                />
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#000000',
+                    fontWeight: 'bold',
+                    top: 10,
+                    lineHeight: 35,
+                  }}>
+                  {moment(homeDetails.LastSyncDate).format(
+                    'MMMM DD, YYYY hh:mm:ss',
+                  )}
+                </Text>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    top: 10,
+                    color:
+                      homeDetails.PackageState === 1 ? '#0DA728' : '#D83F50',
+                    fontWeight: 'bold',
+                  }}>
+                  {homeDetails.PackageState === 1 ? 'Locked' : 'UnLocked'}
+                </Text>
+              </Card>
+              <Card
+                onPress={() => navigation.navigate('Packages')}
+                style={{
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  width: '48%',
+                  padding: 10,
+                }}>
+                {homeDetails.Photos && (
+                  <Card.Cover
+                    style={{
+                      alignSelf: 'center',
+                      width: '100%',
+                      height: 150,
+                    }}
+                    source={{
+                      uri: `${CONFIG.IMAGE_URL}/${homeDetails.Photos[0].Filename}`,
+                    }}
+                  />
+                )}
+              </Card>
+            </View>
+          </View>
+          <Card style={{marginBottom: 5}}>
+            <Card.Title
+              title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
+              // subtitle={'subtitle'}
+              titleStyle={{fontSize: 18, alignSelf: 'center'}}
+              subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
+              left={props => (
+                <Ionicons
+                  name="arrow-back-circle-outline"
+                  size={30}
+                  onPress={() => getPreviousNotify()}
                 />
               )}
-            </Card>
-          </View>
-        </View>
-        <Card style={{marginBottom: 5}}>
-          <Card.Title
-            title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
-            // subtitle={'subtitle'}
-            titleStyle={{fontSize: 18, alignSelf: 'center'}}
-            subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
-            left={props => (
-              <Ionicons
-                name="arrow-back-circle-outline"
-                size={30}
-                onPress={() => getPreviousNotify()}
-              />
-            )}
-            right={props => (
-              <Ionicons
-                style={{paddingRight: 12}}
-                name="arrow-forward-circle-outline"
-                size={30}
-                onPress={() => getNextNotify()}
-              />
+              right={props => (
+                <Ionicons
+                  style={{paddingRight: 12}}
+                  name="arrow-forward-circle-outline"
+                  size={30}
+                  onPress={() => getNextNotify()}
+                />
+              )}
+            />
+          </Card>
+          <FlatList
+            keyboardShouldPersistTaps="always"
+            showsVerticalScrollIndicator={false}
+            data={[{ID: '1'}]}
+            keyExtractor={item => `${item.ID}`}
+            renderItem={() => (
+              <>
+                <View>
+                  {homeDetails.Notifications &&
+                  homeDetails.Notifications.length ? (
+                    homeDetails.Notifications.map((notification, index) => (
+                      <View style={{flex: 1, paddingBottom: 5}} key={index}>
+                        <Card
+                          style={{
+                            backgroundColor: index % 2 ? '#FFFFFF' : '#eef1f6',
+                          }}>
+                          <Card.Title
+                            title={notification.Messagex}
+                            titleStyle={{fontSize: 16}}
+                          />
+                        </Card>
+                      </View>
+                    ))
+                  ) : (
+                    <Card style={{backgroundColor: '#eef1f6'}}>
+                      <Card.Title
+                        title={'No notification message.'}
+                        titleStyle={{fontSize: 14}}
+                      />
+                    </Card>
+                  )}
+                </View>
+              </>
             )}
           />
-        </Card>
-        <FlatList
-          keyboardShouldPersistTaps="always"
-          showsVerticalScrollIndicator={false}
-          data={[{ID: '1'}]}
-          keyExtractor={item => `${item.ID}`}
-          renderItem={() => (
-            <>
-              <View>
-                {homeDetails.Notifications &&
-                homeDetails.Notifications.length ? (
-                  homeDetails.Notifications.map((notification, index) => (
-                    <View style={{flex: 1, paddingBottom: 5}} key={index}>
-                      <Card
-                        style={{
-                          backgroundColor: index % 2 ? '#FFFFFF' : '#eef1f6',
-                        }}>
-                        <Card.Title
-                          title={notification.Messagex}
-                          titleStyle={{fontSize: 16}}
-                        />
-                      </Card>
-                    </View>
-                  ))
-                ) : (
-                  <Card style={{backgroundColor: '#eef1f6'}}>
-                    <Card.Title
-                      title={'No notification message.'}
-                      titleStyle={{fontSize: 14}}
-                    />
-                  </Card>
-                )}
-              </View>
-            </>
-          )}
-        />
-      </View>
-    </SafeAreaView>
+        </View>
+      </SafeAreaView>
+      <StaticBottomTabs navigation={navigation} routeName={route.name} />
+    </>
   );
 }
