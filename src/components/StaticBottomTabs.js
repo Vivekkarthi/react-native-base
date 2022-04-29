@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, Pressable} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
+import {COLORS} from '../constants';
 
 function StaticBottomTabs({navigation, routeName}) {
   return (
@@ -12,7 +13,7 @@ function StaticBottomTabs({navigation, routeName}) {
           alignSelf: 'center',
           width: '100%',
           height: 50,
-          backgroundColor: '#002060',
+          backgroundColor: COLORS.primary,
         }}>
         <Pressable
           onPress={() => navigation.navigate('Settings')}

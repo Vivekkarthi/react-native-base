@@ -9,19 +9,19 @@ const ProfileScreen = ({navigation, route}) => {
   return (
     <>
       <SafeAreaView
-        style={{flex: 1, backgroundColor: '#dfe1eb', marginTop: -15}}>
+        style={{flex: 1, backgroundColor: COLORS.background, marginTop: -15}}>
         <ScrollView style={{padding: 10}}>
-          <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+          <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           <Ionicons
             name="ios-person-circle-outline"
             size={23}
-            color={'#002060'}
+            color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
             <Text
               style={{
                 fontSize: 18,
                 fontFamily: 'Lato-Regular',
-                color: '#002060',
+                color: COLORS.primary,
               }}>
               Profile
             </Text>

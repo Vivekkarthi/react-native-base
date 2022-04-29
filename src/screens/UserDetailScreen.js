@@ -7,8 +7,8 @@ import {COLORS} from '../constants';
 
 const UserDetailScreen = ({navigation, route}) => {
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
-      <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
+      <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Text>Books Details</Text>
 

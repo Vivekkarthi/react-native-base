@@ -273,7 +273,7 @@ const SignupScreen = ({navigation}) => {
         keyExtractor={item => `${item.ID}`}
         renderItem={() => (
           <View contentContainerStyle={[styles.container]}>
-            <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+            <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
             {loader ? <Loader /> : null}
             <Image
               source={require('../../assets/images/icon.png')}

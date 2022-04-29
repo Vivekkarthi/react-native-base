@@ -88,7 +88,7 @@ const ResetScreen = ({navigation}) => {
         <Appbar.Content title="Restore Password" />
       </Appbar.Header>
       <ScrollView contentContainerStyle={[styles.container]}>
-        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+        <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
 
         {loader ? <Loader /> : null}
         <Image

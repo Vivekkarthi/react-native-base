@@ -18,6 +18,7 @@ import AppStatusBar from '../components/AppStatusBar';
 import {Loader} from '../components/Loader';
 import {CONFIG} from '../utils/Config';
 import StaticBottomTabs from '../components/StaticBottomTabs';
+import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 
 export default function HomeScreen({navigation, route}) {
   const dispatch = useDispatch();
@@ -133,20 +134,20 @@ export default function HomeScreen({navigation, route}) {
 
   return (
     <>
-      <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
+      <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
         <View style={{flex: 1, padding: 15, marginTop: -15}}>
-          <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+          <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           {loader ? <Loader /> : null}
           <Ionicons
             name="ios-home-outline"
             size={23}
-            color={'#002060'}
+            color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
             <Text
               style={{
                 fontSize: 18,
                 fontFamily: 'Lato-Regular',
-                color: '#002060',
+                color: COLORS.primary,
               }}>
               Home
             </Text>
@@ -156,7 +157,7 @@ export default function HomeScreen({navigation, route}) {
             showsVerticalScrollIndicator={false}
             refreshControl={
               <RefreshControl
-                colors={['#f17316', '#FFFFFF']}
+                colors={[COLORS.secondary, COLORS.white]}
                 refreshing={refreshing}
                 onRefresh={onRefresh}
               />
@@ -291,7 +292,9 @@ export default function HomeScreen({navigation, route}) {
                                 backgroundColor: '#fff',
                                 marginVertical: 4,
                                 borderRadius: 4,
-                                borderLeftColor: '#ff3300',
+                                borderLeftColor: getColorCode(
+                                  notification.item.MessageID,
+                                ),
                                 borderLeftWidth: 6,
                                 justifyContent: 'center',
                                 paddingLeft: 16,
@@ -301,22 +304,26 @@ export default function HomeScreen({navigation, route}) {
                                   size={42}
                                   color={COLORS.white}
                                   icon="notification-clear-all"
-                                  style={{backgroundColor: '#ff3300'}}
+                                  style={{
+                                    backgroundColor: getColorCode(
+                                      notification.item.MessageID,
+                                    ),
+                                  }}
                                 />
                                 <View
                                   style={{
                                     flexDirection: 'column',
                                     marginLeft: 10,
-                                    width: '75%',
+                                    width: '65%',
                                   }}>
                                   <Text
                                     style={{
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       color: '#333',
                                       fontWeight: 'bold',
                                     }}>
                                     {moment(notification.item.Datex).format(
-                                      'MMMM DD, YYYY',
+                                      'MMMM DD, YYYY hh:mm:ss',
                                     )}
                                   </Text>
                                   <Text
@@ -331,12 +338,16 @@ export default function HomeScreen({navigation, route}) {
                                 <View
                                   style={{
                                     alignSelf: 'center',
-                                    marginLeft: 10,
-                                    backgroundColor: '#0DA728',
-                                    borderRadius: 50,
-                                    height: 10,
-                                    width: 10,
-                                  }}></View>
+                                    width: '35%',
+                                  }}>
+                                  <Text
+                                    style={{
+                                      textAlign: 'left',
+                                      color: COLORS.primary,
+                                    }}>
+                                    {getTypeOfMsg(notification.item.MessageID)}
+                                  </Text>
+                                </View>
                               </View>
                             </View>
                           )}

@@ -74,19 +74,19 @@ const PackagesScreen = ({navigation, route}) => {
           flex: 1,
           padding: 10,
           marginTop: -15,
-          backgroundColor: '#dfe1eb',
+          backgroundColor: COLORS.background,
         }}>
-        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+        <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
         <Ionicons
           name="logo-dropbox"
           size={23}
-          color={'#002060'}
+          color={COLORS.primary}
           style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
           <Text
             style={{
               fontSize: 18,
               fontFamily: 'Lato-Regular',
-              color: '#002060',
+              color: COLORS.primary,
             }}>
             Photos
           </Text>

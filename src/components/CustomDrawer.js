@@ -63,7 +63,7 @@ const CustomDrawer = props => {
           style={{paddingVertical: 15}}
           onPress={() => logoutUser()}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
+            <Ionicons name="exit-outline" size={22} color={'#f17012'} />
             <Text
               style={{
                 fontSize: 15,

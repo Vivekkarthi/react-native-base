@@ -58,7 +58,7 @@ const HomeStack = ({navigation}) => {
                 paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
               </TouchableOpacity>
             </View>
           ),
@@ -110,7 +110,7 @@ const SettingStack = ({navigation}) => {
                 paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
               </TouchableOpacity>
             </View>
           ),
@@ -162,7 +162,7 @@ const PackageStack = ({navigation}) => {
                 paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
               </TouchableOpacity>
             </View>
           ),
@@ -200,7 +200,7 @@ const BottomTabNavigator = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
-        tabBarStyle: {backgroundColor: '#002060'},
+        tabBarStyle: {backgroundColor: COLORS.primary},
         tabBarInactiveTintColor: '#fff',
         tabBarActiveTintColor: '#f17012',
       }}>
