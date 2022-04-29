@@ -1,14 +1,76 @@
 import moment from 'moment';
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import {View, Text, SafeAreaView, FlatList} from 'react-native';
-import {Avatar} from 'react-native-paper';
-import {useSelector} from 'react-redux';
+import {Avatar, Card} from 'react-native-paper';
+import {useSelector, useDispatch} from 'react-redux';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useToast} from 'react-native-toast-notifications';
+
 import AppStatusBar from '../components/AppStatusBar';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {COLORS} from '../constants';
+import {fetchHomeData, saveMemberHomeDetails} from '../redux/actions/HomeState';
+import {Loader} from '../components/Loader';
 
 const NotificationsScreen = ({navigation, route}) => {
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const {loggedMember} = useSelector(state => state.AuthState);
   const {homeDetails} = useSelector(state => state.HomeState);
+  const [loader, setLoader] = useState(true);
+  const [notifyDate, setNotifyDate] = useState(new Date());
+
+  const getHomeData = useCallback(
+    currentDate => {
+      setLoader(true);
+      const convertDate = moment(currentDate).format('YYYY-MM-DD');
+      fetchHomeData(
+        loggedMember.LoginID,
+        loggedMember.ControllerID,
+        convertDate,
+      )
+        .then(async resp => {
+          if (resp.LastSyncDate) {
+            //Good
+            dispatch(saveMemberHomeDetails(resp));
+            setLoader(false);
+          } else {
+            // Not Good
+            setLoader(false);
+            toast.show(resp, {
+              type: 'custom_type',
+              animationDuration: 100,
+              data: {
+                type: 'error',
+                title: 'Invalid data',
+              },
+            });
+          }
+        })
+        .catch(error => {
+          setLoader(false);
+          toast.show(error.message, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'error',
+              title: 'Invalid data',
+            },
+          });
+        });
+    },
+    [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast],
+  );
+
+  const getNextNotify = () => {
+    setNotifyDate(moment(new Date(notifyDate)).add(1, 'days'));
+    getHomeData(moment(new Date(notifyDate)).add(1, 'days'));
+  };
+
+  const getPreviousNotify = () => {
+    setNotifyDate(moment(new Date(notifyDate)).subtract(1, 'days'));
+    getHomeData(moment(new Date(notifyDate)).subtract(1, 'days'));
+  };
 
   return (
     <>
@@ -19,7 +81,30 @@ const NotificationsScreen = ({navigation, route}) => {
           backgroundColor: '#dfe1eb',
         }}>
         <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+        {loader ? <Loader /> : null}
         <View style={{flex: 1, paddingTop: 10}}>
+          <Card style={{marginBottom: 5}}>
+            <Card.Title
+              title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
+              titleStyle={{fontSize: 18, alignSelf: 'center'}}
+              subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
+              left={props => (
+                <Ionicons
+                  name="arrow-back-circle-outline"
+                  size={30}
+                  onPress={() => getPreviousNotify()}
+                />
+              )}
+              right={props => (
+                <Ionicons
+                  style={{paddingRight: 12}}
+                  name="arrow-forward-circle-outline"
+                  size={30}
+                  onPress={() => getNextNotify()}
+                />
+              )}
+            />
+          </Card>
           {homeDetails.Notifications.length ? (
             <FlatList
               data={homeDetails.Notifications}

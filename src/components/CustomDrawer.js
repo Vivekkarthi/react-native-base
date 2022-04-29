@@ -33,9 +33,7 @@ const CustomDrawer = props => {
         {...props}
         contentContainerStyle={{backgroundColor: '#ff651f'}}>
         {!isEmpty(loggedMember) && (
-          <ImageBackground
-            source={require('../../assets/images/20001278.jpg')}
-            style={{padding: 20}}>
+          <>
             <Image
               source={require('../../assets/images/user.png')}
               style={{
@@ -54,7 +52,7 @@ const CustomDrawer = props => {
               }}>
               {loggedMember.LoginNAME}
             </Text>
-          </ImageBackground>
+          </>
         )}
         <View style={{flex: 1, backgroundColor: '#fff', paddingTop: 10}}>
           <DrawerItemList {...props} />
