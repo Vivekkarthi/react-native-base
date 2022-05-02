@@ -6,6 +6,8 @@ import AppStatusBar from '../components/AppStatusBar';
 import {COLORS} from '../constants';
 
 const UserDetailScreen = ({navigation, route}) => {
+  const Category = ['Billing', 'Technical Support', 'Others'];
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
       <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />

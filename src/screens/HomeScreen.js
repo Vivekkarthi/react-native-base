@@ -279,7 +279,8 @@ export default function HomeScreen({navigation, route}) {
                   keyExtractor={item => `${item.ID}`}
                   renderItem={() => (
                     <>
-                      {homeDetails.Notifications.length ? (
+                      {homeDetails.Notifications &&
+                      homeDetails.Notifications.length ? (
                         <FlatList
                           data={homeDetails.Notifications}
                           keyExtractor={(item, index) => index.toString()}

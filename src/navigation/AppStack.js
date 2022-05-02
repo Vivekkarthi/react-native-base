@@ -13,6 +13,9 @@ import CameraScreen from '../screens/CameraScreen';
 import AboutScreen from '../screens/AboutScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import PackagesScreen from '../screens/PackagesScreen';
+import MyboxScreen from '../screens/MyboxScreen';
+import ContactDetailScreen from '../screens/ContactDetailScreen';
+import ContactScreen from '../screens/ContactScreen';
 import CustomDrawer from '../components/CustomDrawer';
 import {logoutSuccess} from '../redux/actions/AuthState';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -43,6 +46,20 @@ const UserStack = ({navigation}) => {
       <Stack.Screen
         name="UserDetails"
         component={UserDetailScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Contacts"
+        component={ContactScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ContactDetails"
+        component={ContactDetailScreen}
         options={{
           headerShown: false,
         }}
@@ -270,8 +287,70 @@ const AppStack = () => {
         }}
       />
       <Drawer.Screen
+        name="Mybox"
+        component={MyboxScreen}
+        options={{
+          headerShown: true,
+          drawerIcon: ({color}) => (
+            <Feather name="box" size={22} color={color} />
+          ),
+          headerTitleAlign: 'center',
+          headerTitle: () => (
+            <Image
+              source={require('../../assets/images/icon.png')}
+              style={{
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
+          ),
+          headerRight: () => (
+            <View
+              style={{
+                paddingRight: 16,
+              }}>
+              <TouchableOpacity onPress={() => logoutUser()}>
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
+              </TouchableOpacity>
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
         name="Packages"
         component={PackagesScreen}
+        options={{
+          headerShown: true,
+          drawerIcon: ({color}) => (
+            <Feather name="package" size={22} color={color} />
+          ),
+          headerTitleAlign: 'center',
+          headerTitle: () => (
+            <Image
+              source={require('../../assets/images/icon.png')}
+              style={{
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
+          ),
+          headerRight: () => (
+            <View
+              style={{
+                paddingRight: 16,
+              }}>
+              <TouchableOpacity onPress={() => logoutUser()}>
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
+              </TouchableOpacity>
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Contactus"
+        component={ContactScreen}
         options={{
           headerShown: true,
           drawerIcon: ({color}) => (
