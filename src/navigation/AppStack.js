@@ -50,6 +50,21 @@ const UserStack = ({navigation}) => {
           headerShown: false,
         }}
       />
+    </Stack.Navigator>
+  );
+};
+
+const ContactStack = ({navigation}) => {
+  const dispatch = useDispatch();
+  const logoutUser = async () => {
+    try {
+      dispatch(logoutSuccess());
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  return (
+    <Stack.Navigator>
       <Stack.Screen
         name="Contacts"
         component={ContactScreen}
@@ -349,8 +364,8 @@ const AppStack = () => {
         }}
       />
       <Drawer.Screen
-        name="Contactus"
-        component={ContactScreen}
+        name="Contact Us"
+        component={ContactStack}
         options={{
           headerShown: true,
           drawerIcon: ({color}) => (

@@ -123,6 +123,7 @@ export default function HomeScreen({navigation, route}) {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
+    setNotifyDate(moment(new Date()));
     getHomeData(new Date());
     setRefreshing(false);
   }, [getHomeData]);

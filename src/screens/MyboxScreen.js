@@ -1,87 +1,19 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {View, SafeAreaView, Text, FlatList, RefreshControl} from 'react-native';
+import React, {useState} from 'react';
+import {View, SafeAreaView, Text, FlatList} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import moment from 'moment';
-import {useToast} from 'react-native-toast-notifications';
 
-import {useSelector, useDispatch} from 'react-redux';
-import {
-  callOpenCloseBox,
-  fetchHomeData,
-  saveMemberHomeDetails,
-} from '../redux/actions/HomeState';
-import {Card, Button, Avatar} from 'react-native-paper';
+import {Card, Button} from 'react-native-paper';
+import RNSpeedometer from 'react-native-speedometer';
 
 import {COLORS} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
 
 import {Loader} from '../components/Loader';
 import StaticBottomTabs from '../components/StaticBottomTabs';
-import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
-import ReactSpeedometer from 'react-d3-speedometer';
+import {windowWidth} from '../utils/Dimentions';
 
 export default function MyboxScreen({navigation, route}) {
-  const dispatch = useDispatch();
-  const toast = useToast();
-  const {loggedMember} = useSelector(state => state.AuthState);
-  const {homeDetails} = useSelector(state => state.HomeState);
-
-  const [loader, setLoader] = useState(true);
-  const [notifyDate, setNotifyDate] = useState(new Date());
-  const [refreshing, setRefreshing] = useState(false);
-
-  const getHomeData = useCallback(
-    currentDate => {
-      setLoader(true);
-      const convertDate = moment(currentDate).format('YYYY-MM-DD');
-      fetchHomeData(
-        loggedMember.LoginID,
-        loggedMember.ControllerID,
-        convertDate,
-      )
-        .then(async resp => {
-          if (resp.LastSyncDate) {
-            //Good
-            dispatch(saveMemberHomeDetails(resp));
-            setLoader(false);
-          } else {
-            // Not Good
-            setLoader(false);
-            toast.show(resp, {
-              type: 'custom_type',
-              animationDuration: 100,
-              data: {
-                type: 'error',
-                title: 'Invalid data',
-              },
-            });
-          }
-        })
-        .catch(error => {
-          setLoader(false);
-          toast.show(error.message, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
-        });
-    },
-    [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast],
-  );
-
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    getHomeData(new Date());
-    setRefreshing(false);
-  }, [getHomeData]);
-
-  useEffect(() => {
-    getHomeData(new Date());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const [loader] = useState(false);
 
   return (
     <>
@@ -107,13 +39,6 @@ export default function MyboxScreen({navigation, route}) {
           <FlatList
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
-            refreshControl={
-              <RefreshControl
-                colors={[COLORS.secondary, COLORS.white]}
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-              />
-            }
             data={[{ID: '1'}]}
             keyExtractor={item => `${item.ID}`}
             renderItem={() => (
@@ -137,6 +62,14 @@ export default function MyboxScreen({navigation, route}) {
                         justifyContent: 'center',
                         width: '48%',
                       }}>
+                      <Card.Cover
+                        style={{
+                          alignSelf: 'center',
+                          width: 100,
+                          resizeMode: 'contain',
+                        }}
+                        source={require('../../assets/images/no-image.jpg')}
+                      />
                       <Card.Actions
                         style={{
                           justifyContent: 'center',
@@ -150,19 +83,25 @@ export default function MyboxScreen({navigation, route}) {
                         justifyContent: 'center',
                         width: '48%',
                       }}>
-                      <Card
+                      <Card.Cover
                         style={{
                           alignSelf: 'center',
-                          width: '100%',
-                          height: 160,
+                          width: 100,
+                          resizeMode: 'contain',
                         }}
+                        source={require('../../assets/images/no-image.jpg')}
                       />
+                      <Card.Actions
+                        style={{
+                          justifyContent: 'center',
+                        }}>
+                        <Button>Take a photo</Button>
+                      </Card.Actions>
                     </Card>
                   </View>
                 </View>
                 <View
                   style={{
-                    paddingTop: 30,
                     paddingBottom: 10,
                     flexDirection: 'row',
                     alignSelf: 'center',
@@ -178,7 +117,24 @@ export default function MyboxScreen({navigation, route}) {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         width: '48%',
-                      }}></Card>
+                      }}>
+                      <RNSpeedometer
+                        value={50}
+                        size={150}
+                        wrapperStyle={{
+                          marginTop: 20,
+                          marginBottom: 20,
+                          alignSelf: 'center',
+                        }}
+                        labelNoteStyle={{display: 'none'}}
+                      />
+                      <Card.Actions
+                        style={{
+                          justifyContent: 'center',
+                        }}>
+                        <Button>Battery</Button>
+                      </Card.Actions>
+                    </Card>
                     <Card
                       style={{
                         flexDirection: 'column',
@@ -197,14 +153,6 @@ export default function MyboxScreen({navigation, route}) {
                 </View>
               </>
             )}
-          />
-          <ReactSpeedometer
-            maxValue={500}
-            value={473}
-            needleColor="red"
-            startColor="green"
-            segments={10}
-            endColor="blue"
           />
         </View>
       </SafeAreaView>

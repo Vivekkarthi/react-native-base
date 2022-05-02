@@ -1,13 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, TextInput, TextArea, SafeAreaView} from 'react-native';
 import {Button} from 'react-native-paper';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import AppStatusBar from '../components/AppStatusBar';
 import {COLORS} from '../constants';
-import SelectDropdown from 'react-native-select-dropdown';
 
 const ContactDetailScreen = ({navigation, route}) => {
-  const Category = ['Billing', 'Technical Support', 'Others'];
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    {label: 'Billing', value: 'billing'},
+    {label: 'Technical Support', value: 'technicalSupport'},
+    {label: 'Others', value: 'others'},
+  ]);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
@@ -16,34 +22,35 @@ const ContactDetailScreen = ({navigation, route}) => {
         <Text style={{fontSize: 18}}>Contact Details</Text>
 
         <Button
-          icon="camera"
           mode="contained"
           onPress={() => navigation.goBack()}
           style={{alignSelf: 'flex-end'}}>
           Go Back
         </Button>
 
-        <View>
-          <SelectDropdown
-            data={Category}
-            defaultValue={Category[1]}
-            onSelect={(selectedItem, index) => {
-              console.log(selectedItem, index);
+        <View style={{flexDirection: 'column'}}>
+          <DropDownPicker
+            style={{
+              marginTop: 5,
             }}
-            buttonTextAfterSelection={(selectedItem, index) => {}}
-            rowTextForSelection={(item, index) => {}}
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
           />
           <TextInput
             multiline={true}
             numberOfLines={10}
             style={{
-              height: 150,
-              justifyContent: 'flex-end',
+              height: 160,
+              borderRadius: 8,
               textAlignVertical: 'top',
               fontSize: 16,
               backgroundColor: '#fff',
               padding: 20,
-              marginTop: 50,
+              marginTop: 5,
             }}
           />
         </View>
