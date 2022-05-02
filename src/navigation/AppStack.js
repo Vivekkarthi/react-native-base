@@ -64,7 +64,7 @@ const AppStack = () => {
     <Drawer.Navigator
       drawerContent={props => <CustomDrawer {...props} />}
       screenOptions={{
-        drawerActiveBackgroundColor: '#002060',
+        drawerActiveBackgroundColor: COLORS.primary,
         drawerActiveTintColor: '#fff',
         drawerInactiveTintColor: '#333',
         drawerLabelStyle: {
@@ -108,7 +108,7 @@ const AppStack = () => {
                 paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
               </TouchableOpacity>
             </View>
           ),
@@ -139,7 +139,7 @@ const AppStack = () => {
                 paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
               </TouchableOpacity>
             </View>
           ),
@@ -170,7 +170,7 @@ const AppStack = () => {
                 paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
               </TouchableOpacity>
             </View>
           ),
@@ -201,7 +201,7 @@ const AppStack = () => {
                 paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
               </TouchableOpacity>
             </View>
           ),
@@ -232,7 +232,7 @@ const AppStack = () => {
                 paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
               </TouchableOpacity>
             </View>
           ),
@@ -263,7 +263,7 @@ const AppStack = () => {
                 paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
               </TouchableOpacity>
             </View>
           ),
@@ -294,7 +294,7 @@ const AppStack = () => {
                 paddingRight: 16,
               }}>
               <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#ff3300'} />
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
               </TouchableOpacity>
             </View>
           ),

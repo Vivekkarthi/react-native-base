@@ -47,9 +47,9 @@ const CameraScreen = ({navigation, route}) => {
 
   return (
     <>
-      <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
+      <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
         <ScrollView style={{padding: 10}}>
-          <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+          <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           <Text style={{textAlign: 'center'}}>Intenal Camera</Text>
           <View style={styles.container}>
             <Carousel

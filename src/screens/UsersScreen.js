@@ -10,18 +10,18 @@ import {COLORS} from '../constants';
 const UsersScreen = ({navigation, route}) => {
   return (
     <>
-      <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
-        <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+      <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
+        <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
         <Ionicons
           name="ios-people-outline"
           size={23}
-          color={'#002060'}
+          color={COLORS.primary}
           style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
           <Text
             style={{
               fontSize: 18,
               fontFamily: 'Lato-Regular',
-              color: '#002060',
+              color: COLORS.primary,
             }}>
             Users List
           </Text>

@@ -1,8 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {isEmpty} from 'lodash';
-import {Alert} from 'react-native';
-// import Config from 'react-native-config';
+import {COLORS} from '../constants';
 import {CONFIG} from './Config';
 
 const Headers = () => {
@@ -152,6 +151,36 @@ const clearAppData = async function () {
   }
 };
 
+const getColorCode = MsgCode => {
+  switch (MsgCode) {
+    case 1:
+      return COLORS.messageColor1;
+    case 2:
+      return COLORS.messageColor2;
+    case 3:
+      return COLORS.messageColor3;
+    case 4:
+      return COLORS.messageColor4;
+    default:
+      return COLORS.background;
+  }
+};
+
+const getTypeOfMsg = MsgCode => {
+  switch (MsgCode) {
+    case 1:
+      return 'Battery';
+    case 2:
+      return 'Wifi';
+    case 3:
+      return 'Sensor';
+    case 4:
+      return 'Others';
+    default:
+      return 'Others';
+  }
+};
+
 export {
   Headers,
   AuthHeaders,
@@ -161,4 +190,6 @@ export {
   putRequest,
   getRequest,
   clearAppData,
+  getColorCode,
+  getTypeOfMsg,
 };

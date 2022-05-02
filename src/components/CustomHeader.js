@@ -36,7 +36,7 @@ export default function CustomHeader({navigation}) {
         imageStyle={{borderRadius: 25}}
       />
       <TouchableOpacity onPress={() => logoutUser()}>
-        <Ionicons name="exit-outline" size={22} color={'#ff3300'} />
+        <Ionicons name="exit-outline" size={22} color={'#f17012'} />
       </TouchableOpacity>
     </View>
   );

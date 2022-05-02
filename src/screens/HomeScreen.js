@@ -1,17 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  FlatList,
-} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, SafeAreaView, Text, FlatList, RefreshControl} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import {useToast} from 'react-native-toast-notifications';
-import PackagesScreen from '../screens/PackagesScreen';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {
@@ -19,37 +10,56 @@ import {
   fetchHomeData,
   saveMemberHomeDetails,
 } from '../redux/actions/HomeState';
-import {Card, Title, Paragraph} from 'react-native-paper';
+import {Card, Avatar} from 'react-native-paper';
 
 import {COLORS} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
-// import Config from 'react-native-config';
+
 import {Loader} from '../components/Loader';
 import {CONFIG} from '../utils/Config';
 import StaticBottomTabs from '../components/StaticBottomTabs';
+import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 
 export default function HomeScreen({navigation, route}) {
   const dispatch = useDispatch();
   const toast = useToast();
-  const [loader, setLoader] = useState(true);
   const {loggedMember} = useSelector(state => state.AuthState);
   const {homeDetails} = useSelector(state => state.HomeState);
 
+  const [loader, setLoader] = useState(true);
   const [notifyDate, setNotifyDate] = useState(new Date());
+  const [refreshing, setRefreshing] = useState(false);
 
-  const getHomeData = currentDate => {
-    setLoader(true);
-    const convertDate = moment(currentDate).format('YYYY-MM-DD');
-    fetchHomeData(loggedMember.LoginID, loggedMember.ControllerID, convertDate)
-      .then(async resp => {
-        if (resp.LastSyncDate) {
-          //Good
-          dispatch(saveMemberHomeDetails(resp));
+  const getHomeData = useCallback(
+    currentDate => {
+      setLoader(true);
+      const convertDate = moment(currentDate).format('YYYY-MM-DD');
+      fetchHomeData(
+        loggedMember.LoginID,
+        loggedMember.ControllerID,
+        convertDate,
+      )
+        .then(async resp => {
+          if (resp.LastSyncDate) {
+            //Good
+            dispatch(saveMemberHomeDetails(resp));
+            setLoader(false);
+          } else {
+            // Not Good
+            setLoader(false);
+            toast.show(resp, {
+              type: 'custom_type',
+              animationDuration: 100,
+              data: {
+                type: 'error',
+                title: 'Invalid data',
+              },
+            });
+          }
+        })
+        .catch(error => {
           setLoader(false);
-        } else {
-          // Not Good
-          setLoader(false);
-          toast.show(resp, {
+          toast.show(error.message, {
             type: 'custom_type',
             animationDuration: 100,
             data: {
@@ -57,20 +67,10 @@ export default function HomeScreen({navigation, route}) {
               title: 'Invalid data',
             },
           });
-        }
-      })
-      .catch(error => {
-        setLoader(false);
-        toast.show(error.message, {
-          type: 'custom_type',
-          animationDuration: 100,
-          data: {
-            type: 'error',
-            title: 'Invalid data',
-          },
         });
-      });
-  };
+    },
+    [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast],
+  );
 
   const getNextNotify = () => {
     setNotifyDate(moment(new Date(notifyDate)).add(1, 'days'));
@@ -121,6 +121,12 @@ export default function HomeScreen({navigation, route}) {
       });
   };
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    getHomeData(new Date());
+    setRefreshing(false);
+  }, [getHomeData]);
+
   useEffect(() => {
     getHomeData(new Date());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -128,161 +134,235 @@ export default function HomeScreen({navigation, route}) {
 
   return (
     <>
-      <SafeAreaView style={{flex: 1, backgroundColor: '#dfe1eb'}}>
+      <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
         <View style={{flex: 1, padding: 15, marginTop: -15}}>
-          <AppStatusBar colorPalete="WHITE" bg={COLORS.background} />
+          <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           {loader ? <Loader /> : null}
           <Ionicons
             name="ios-home-outline"
             size={23}
-            color={'#002060'}
+            color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
             <Text
               style={{
                 fontSize: 18,
                 fontFamily: 'Lato-Regular',
-                color: '#002060',
+                color: COLORS.primary,
               }}>
               Home
             </Text>
           </Ionicons>
-
-          <View
-            style={{
-              paddingTop: 10,
-              paddingBottom: 10,
-              flexDirection: 'row',
-              alignSelf: 'center',
-            }}>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
-              <Card
-                onPress={() =>
-                  toggleLockTheBox(homeDetails.PackageState === 1 ? 2 : 1)
-                }
-                style={{
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  width: '48%',
-                }}>
-                <Card.Cover
-                  style={{
-                    alignSelf: 'center',
-                    width: 90,
-                    height: 85,
-                    top: 10,
-                  }}
-                  source={
-                    homeDetails.PackageState === 1
-                      ? require('../../assets/images/new_lock.png')
-                      : require('../../assets/images/new_unlock.jpg')
-                  }
-                />
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: '#000000',
-                    fontWeight: 'bold',
-                    top: 10,
-                    lineHeight: 35,
-                  }}>
-                  {moment(homeDetails.LastSyncDate).format(
-                    'MMMM DD, YYYY hh:mm:ss',
-                  )}
-                </Text>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    top: 10,
-                    color:
-                      homeDetails.PackageState === 1 ? '#0DA728' : '#D83F50',
-                    fontWeight: 'bold',
-                  }}>
-                  {homeDetails.PackageState === 1 ? 'Locked' : 'UnLocked'}
-                </Text>
-              </Card>
-              <Card
-                onPress={() => navigation.navigate('Packages')}
-                style={{
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  width: '48%',
-                  padding: 10,
-                }}>
-                {homeDetails.Photos && (
-                  <Card.Cover
-                    style={{
-                      alignSelf: 'center',
-                      width: '100%',
-                      height: 150,
-                    }}
-                    source={{
-                      uri: `${CONFIG.IMAGE_URL}/${homeDetails.Photos[0].Filename}`,
-                    }}
-                  />
-                )}
-              </Card>
-            </View>
-          </View>
-          <Card style={{marginBottom: 5}}>
-            <Card.Title
-              title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
-              // subtitle={'subtitle'}
-              titleStyle={{fontSize: 18, alignSelf: 'center'}}
-              subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
-              left={props => (
-                <Ionicons
-                  name="arrow-back-circle-outline"
-                  size={30}
-                  onPress={() => getPreviousNotify()}
-                />
-              )}
-              right={props => (
-                <Ionicons
-                  style={{paddingRight: 12}}
-                  name="arrow-forward-circle-outline"
-                  size={30}
-                  onPress={() => getNextNotify()}
-                />
-              )}
-            />
-          </Card>
           <FlatList
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                colors={[COLORS.secondary, COLORS.white]}
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
+            }
             data={[{ID: '1'}]}
             keyExtractor={item => `${item.ID}`}
             renderItem={() => (
               <>
-                <View>
-                  {homeDetails.Notifications &&
-                  homeDetails.Notifications.length ? (
-                    homeDetails.Notifications.map((notification, index) => (
-                      <View style={{flex: 1, paddingBottom: 5}} key={index}>
-                        <Card
+                <View
+                  style={{
+                    paddingTop: 10,
+                    paddingBottom: 10,
+                    flexDirection: 'row',
+                    alignSelf: 'center',
+                  }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Card
+                      onPress={() =>
+                        toggleLockTheBox(homeDetails.PackageState === 1 ? 2 : 1)
+                      }
+                      style={{
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        width: '48%',
+                      }}>
+                      <Card.Cover
+                        style={{
+                          alignSelf: 'center',
+                          width: 90,
+                          height: 85,
+                          top: 10,
+                        }}
+                        source={
+                          homeDetails.PackageState === 1
+                            ? require('../../assets/images/new_lock.png')
+                            : require('../../assets/images/new_unlock.jpg')
+                        }
+                      />
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color: '#000000',
+                          fontWeight: 'bold',
+                          top: 10,
+                          lineHeight: 35,
+                        }}>
+                        {moment(homeDetails.LastSyncDate).format(
+                          'MMMM DD, YYYY hh:mm:ss',
+                        )}
+                      </Text>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          top: 10,
+                          color:
+                            homeDetails.PackageState === 1
+                              ? '#0DA728'
+                              : '#D83F50',
+                          fontWeight: 'bold',
+                        }}>
+                        {homeDetails.PackageState === 1 ? 'Locked' : 'UnLocked'}
+                      </Text>
+                    </Card>
+                    <Card
+                      onPress={() => navigation.navigate('Packages')}
+                      style={{
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        width: '48%',
+                        padding: 10,
+                      }}>
+                      {homeDetails.Photos && (
+                        <Card.Cover
                           style={{
-                            backgroundColor: index % 2 ? '#FFFFFF' : '#eef1f6',
-                          }}>
+                            alignSelf: 'center',
+                            width: '100%',
+                            height: 150,
+                          }}
+                          source={{
+                            uri: `${CONFIG.IMAGE_URL}/${homeDetails.Photos[0].Filename}`,
+                          }}
+                        />
+                      )}
+                    </Card>
+                  </View>
+                </View>
+                <Card style={{marginBottom: 5}}>
+                  <Card.Title
+                    title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
+                    // subtitle={'subtitle'}
+                    titleStyle={{fontSize: 18, alignSelf: 'center'}}
+                    subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
+                    left={props => (
+                      <Ionicons
+                        name="arrow-back-circle-outline"
+                        size={30}
+                        onPress={() => getPreviousNotify()}
+                      />
+                    )}
+                    right={props => (
+                      <Ionicons
+                        style={{paddingRight: 12}}
+                        name="arrow-forward-circle-outline"
+                        size={30}
+                        onPress={() => getNextNotify()}
+                      />
+                    )}
+                  />
+                </Card>
+                <FlatList
+                  keyboardShouldPersistTaps="always"
+                  showsVerticalScrollIndicator={false}
+                  data={[{ID: '1'}]}
+                  keyExtractor={item => `${item.ID}`}
+                  renderItem={() => (
+                    <>
+                      {homeDetails.Notifications.length ? (
+                        <FlatList
+                          data={homeDetails.Notifications}
+                          keyExtractor={(item, index) => index.toString()}
+                          renderItem={notification => (
+                            <View
+                              style={{
+                                maxWidth: '100%',
+                                paddingHorizontal: 15,
+                                paddingVertical: 10,
+                                backgroundColor: '#fff',
+                                marginVertical: 4,
+                                borderRadius: 4,
+                                borderLeftColor: getColorCode(
+                                  notification.item.MessageID,
+                                ),
+                                borderLeftWidth: 6,
+                                justifyContent: 'center',
+                                paddingLeft: 16,
+                              }}>
+                              <View style={{flex: 1, flexDirection: 'row'}}>
+                                <Avatar.Icon
+                                  size={42}
+                                  color={COLORS.white}
+                                  icon="notification-clear-all"
+                                  style={{
+                                    backgroundColor: getColorCode(
+                                      notification.item.MessageID,
+                                    ),
+                                  }}
+                                />
+                                <View
+                                  style={{
+                                    flexDirection: 'column',
+                                    marginLeft: 10,
+                                    width: '65%',
+                                  }}>
+                                  <Text
+                                    style={{
+                                      fontSize: 16,
+                                      color: '#333',
+                                      fontWeight: 'bold',
+                                    }}>
+                                    {moment(notification.item.Datex).format(
+                                      'MMMM DD, YYYY hh:mm:ss',
+                                    )}
+                                  </Text>
+                                  <Text
+                                    style={{
+                                      fontSize: 16,
+                                      color: '#a3a3a3',
+                                      marginTop: 2,
+                                    }}>
+                                    {notification.item.Messagex}
+                                  </Text>
+                                </View>
+                                <View
+                                  style={{
+                                    alignSelf: 'center',
+                                    width: '35%',
+                                  }}>
+                                  <Text
+                                    style={{
+                                      textAlign: 'left',
+                                      color: COLORS.primary,
+                                    }}>
+                                    {getTypeOfMsg(notification.item.MessageID)}
+                                  </Text>
+                                </View>
+                              </View>
+                            </View>
+                          )}
+                        />
+                      ) : (
+                        <Card style={{backgroundColor: '#eef1f6'}}>
                           <Card.Title
-                            title={notification.Messagex}
-                            titleStyle={{fontSize: 16}}
+                            title={'No notifications found.'}
+                            titleStyle={{fontSize: 14}}
                           />
                         </Card>
-                      </View>
-                    ))
-                  ) : (
-                    <Card style={{backgroundColor: '#eef1f6'}}>
-                      <Card.Title
-                        title={'No notification message.'}
-                        titleStyle={{fontSize: 14}}
-                      />
-                    </Card>
+                      )}
+                    </>
                   )}
-                </View>
+                />
               </>
             )}
           />
