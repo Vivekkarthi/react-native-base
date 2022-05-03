@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {View, SafeAreaView, Text} from 'react-native';
-import {Button} from 'react-native-paper';
+import {View, SafeAreaView, Text, FlatList} from 'react-native';
+import {Avatar, Button} from 'react-native-paper';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppStatusBar from '../components/AppStatusBar';
+import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {COLORS} from '../constants';
 import {Card} from 'react-native-paper';
@@ -12,6 +13,11 @@ import styles from '../styles/AppStyles';
 
 const ContactScreen = ({navigation, route}) => {
   const [notifyDate] = useState(new Date());
+  const [supportType, setSupportType] = useState([
+    {id: 1, name: 'Billing'},
+    {id: 2, name: 'Technical Support'},
+    {id: 3, name: 'Others'},
+  ]);
   return (
     <>
       <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
@@ -58,18 +64,53 @@ const ContactScreen = ({navigation, route}) => {
               )}
             />
           </Card>
-          <Card style={{backgroundColor: '#82d4ff', marginBottom: 5}}>
-            <Card.Title title={'Billing'} titleStyle={{fontSize: 14}} />
-          </Card>
-          <Card style={{backgroundColor: '#c682ff', marginBottom: 5}}>
-            <Card.Title
-              title={'Technical Support'}
-              titleStyle={{fontSize: 14}}
-            />
-          </Card>
-          <Card style={{backgroundColor: '#ff8282', marginBottom: 5}}>
-            <Card.Title title={'Others'} titleStyle={{fontSize: 14}} />
-          </Card>
+
+          <FlatList
+            data={supportType}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={support => (
+              <View
+                style={{
+                  maxWidth: '100%',
+                  paddingHorizontal: 15,
+                  paddingVertical: 10,
+                  backgroundColor: '#fff',
+                  marginVertical: 4,
+                  borderRadius: 4,
+                  borderLeftColor: getColorCode(support.item.id),
+                  borderLeftWidth: 6,
+                  justifyContent: 'center',
+                  paddingLeft: 16,
+                }}>
+                <View style={{flex: 1, flexDirection: 'row'}}>
+                  <Avatar.Icon
+                    size={42}
+                    color={COLORS.white}
+                    icon="notification-clear-all"
+                    style={{
+                      backgroundColor: getColorCode(support.item.id),
+                    }}
+                  />
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      marginLeft: 10,
+                    }}>
+                    <Text
+                      style={[
+                        styles.f20,
+                        {
+                          color: '#333',
+                          fontWeight: 'bold',
+                        },
+                      ]}>
+                      {support.item.name}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            )}
+          />
         </View>
       </SafeAreaView>
       <StaticBottomTabs navigation={navigation} routeName={route.name} />

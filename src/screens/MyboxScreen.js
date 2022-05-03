@@ -267,28 +267,6 @@ export default function MyboxScreen({navigation, route}) {
                         height: 150,
                       }}>
                       <View style={{height: '75%'}}>
-                        <RNSpeedometer
-                          value={70}
-                          size={140}
-                          wrapperStyle={{
-                            alignSelf: 'center',
-                          }}
-                          labelNoteStyle={{display: 'none'}}
-                        />
-                      </View>
-
-                      <View style={{height: '25%'}}>
-                        <Button>Temperature</Button>
-                      </View>
-                    </Card>
-                    <Card
-                      style={{
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        width: '48%',
-                        height: 150,
-                      }}>
-                      <View style={{height: '75%'}}>
                         <Entypo
                           onPress={() =>
                             toggleAlarm(homeDetails.AlarmState === 1 ? 2 : 1)
@@ -312,7 +290,28 @@ export default function MyboxScreen({navigation, route}) {
                       </View>
 
                       <View style={{height: '25%'}}>
-                        <Button>Others</Button>
+                        <Button>Alarm</Button>
+                      </View>
+                    </Card>
+                    <Card
+                      style={{
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        width: '48%',
+                        height: 150,
+                      }}>
+                      <View style={{height: '75%'}}>
+                        <RNSpeedometer
+                          value={70}
+                          size={140}
+                          wrapperStyle={{
+                            alignSelf: 'center',
+                          }}
+                          labelNoteStyle={{display: 'none'}}
+                        />
+                      </View>
+                      <View style={{height: '25%'}}>
+                        <Button>Temperature</Button>
                       </View>
                     </Card>
                   </View>
