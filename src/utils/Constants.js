@@ -3,4 +3,6 @@ export const ENDPOINTURL = {
   MemberRegister: 'APIAddNewUser/',
   MemberHome: 'ApiGetHomePageData/',
   MemberLock: 'APIOpenCloseBox/',
+  MemberUpdateAlarm: 'APIUpdateAlarm/',
+  MemberUpdateOnDemandCamera: 'APIUpdateOnDemandCamera/',
 };

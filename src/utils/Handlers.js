@@ -181,6 +181,39 @@ const getTypeOfMsg = MsgCode => {
   }
 };
 
+const getBatteryType = type => {
+  switch (type) {
+    case 20:
+      return 'battery-20';
+    case 40:
+      return 'battery-40';
+    case 60:
+      return 'battery-60';
+    case 80:
+      return 'battery-80';
+    case 100:
+      return 'battery';
+    default:
+      return 'battery-off-outline';
+  }
+};
+const getBatteryTypeColor = percent => {
+  switch (percent) {
+    case 20:
+      return COLORS.batter20;
+    case 40:
+      return COLORS.batter40;
+    case 60:
+      return COLORS.batter60;
+    case 80:
+      return COLORS.batter80;
+    case 100:
+      return COLORS.batter100;
+    default:
+      return COLORS.batter0;
+  }
+};
+
 export {
   Headers,
   AuthHeaders,
@@ -192,4 +225,6 @@ export {
   clearAppData,
   getColorCode,
   getTypeOfMsg,
+  getBatteryType,
+  getBatteryTypeColor,
 };

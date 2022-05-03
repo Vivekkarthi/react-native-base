@@ -13,6 +13,13 @@ export const COLORS = {
   messageColor2: '#D83F50',
   messageColor3: '#f4d837',
   messageColor4: '#8a5235',
+
+  batter0: '#f3432e',
+  batter20: '#fd2200',
+  batter40: '#f09f39',
+  batter60: '#efc81b',
+  batter80: '#16e764',
+  batter100: '#00fd60',
 };
 
 export const SIZES = {
