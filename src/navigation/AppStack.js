@@ -302,7 +302,7 @@ const AppStack = () => {
         }}
       />
       <Drawer.Screen
-        name="Mybox"
+        name="My Box"
         component={MyboxScreen}
         options={{
           headerShown: true,

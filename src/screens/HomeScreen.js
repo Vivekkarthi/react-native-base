@@ -19,6 +19,7 @@ import {Loader} from '../components/Loader';
 import {CONFIG} from '../utils/Config';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
+import styles from '../styles/AppStyles';
 
 export default function HomeScreen({navigation, route}) {
   const dispatch = useDispatch();
@@ -136,7 +137,7 @@ export default function HomeScreen({navigation, route}) {
   return (
     <>
       <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
-        <View style={{flex: 1, padding: 15, marginTop: -15}}>
+        <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           {loader ? <Loader /> : null}
           <Ionicons
@@ -144,14 +145,7 @@ export default function HomeScreen({navigation, route}) {
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontFamily: 'Lato-Regular',
-                color: COLORS.primary,
-              }}>
-              Home
-            </Text>
+            <Text style={[styles.f18, {color: COLORS.primary}]}>Home</Text>
           </Ionicons>
           <FlatList
             keyboardShouldPersistTaps="always"
