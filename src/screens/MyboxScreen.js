@@ -118,15 +118,7 @@ export default function MyboxScreen({navigation, route}) {
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontFamily: 'Lato-Regular',
-                color: COLORS.primary,
-              }}>
-              {' '}
-              Mybox
-            </Text>
+            <Text style={styles.f18}>Mybox</Text>
           </Ionicons>
           <FlatList
             keyboardShouldPersistTaps="always"

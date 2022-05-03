@@ -1,32 +1,25 @@
 import React from 'react';
-import {Text, SafeAreaView, ScrollView} from 'react-native';
+import {Text, SafeAreaView, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppStatusBar from '../components/AppStatusBar';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {COLORS} from '../constants';
+import styles from '../styles/AppStyles';
 
 const SettingsScreen = ({navigation, route}) => {
   return (
     <>
       <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
-        <ScrollView style={{padding: 10, marginTop: -15}}>
+        <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           <Ionicons
             name="settings-outline"
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontFamily: 'Lato-Regular',
-                color: COLORS.primary,
-              }}>
-              {' '}
-              Settings
-            </Text>
+            <Text style={styles.f18}>Settings</Text>
           </Ionicons>
-        </ScrollView>
+        </View>
       </SafeAreaView>
       <StaticBottomTabs navigation={navigation} routeName={route.name} />
     </>

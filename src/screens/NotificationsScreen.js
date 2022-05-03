@@ -12,6 +12,7 @@ import {COLORS} from '../constants';
 import {fetchHomeData, saveMemberHomeDetails} from '../redux/actions/HomeState';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 import {Loader} from '../components/Loader';
+import styles from '../styles/AppStyles';
 
 const NotificationsScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -87,127 +88,123 @@ const NotificationsScreen = ({navigation, route}) => {
       <SafeAreaView
         style={{
           flex: 1,
-          padding: 5,
           backgroundColor: COLORS.background,
         }}>
-        <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
-        {loader ? <Loader /> : null}
-        <Ionicons
-          name="notifications"
-          size={23}
-          color={COLORS.primary}
-          style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-          <Text
-            style={{
-              fontSize: 18,
-              fontFamily: 'Lato-Regular',
-              color: COLORS.primary,
-            }}>
-            Notifications
-          </Text>
-        </Ionicons>
-        <View style={{flex: 1, paddingTop: 10}}>
-          <Card style={{marginBottom: 5}}>
-            <Card.Title
-              title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
-              titleStyle={{fontSize: 18, alignSelf: 'center'}}
-              subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
-              left={props => (
-                <Ionicons
-                  name="arrow-back-circle-outline"
-                  size={30}
-                  onPress={() => getPreviousNotify()}
-                />
-              )}
-              right={props => (
-                <Ionicons
-                  style={{paddingRight: 12}}
-                  name="arrow-forward-circle-outline"
-                  size={30}
-                  onPress={() => getNextNotify()}
-                />
-              )}
-            />
-          </Card>
-          {homeDetails.Notifications.length ? (
-            <FlatList
-              data={homeDetails.Notifications}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={notification => (
-                <View
-                  style={{
-                    maxWidth: '100%',
-                    paddingHorizontal: 15,
-                    paddingVertical: 10,
-                    backgroundColor: '#fff',
-                    marginVertical: 4,
-                    borderRadius: 4,
-                    borderLeftColor: getColorCode(notification.item.MessageID),
-                    borderLeftWidth: 6,
-                    justifyContent: 'center',
-                    paddingLeft: 16,
-                  }}>
-                  <View style={{flex: 1, flexDirection: 'row'}}>
-                    <Avatar.Icon
-                      size={42}
-                      color={COLORS.white}
-                      icon="notification-clear-all"
-                      style={{
-                        backgroundColor: getColorCode(
-                          notification.item.MessageID,
-                        ),
-                      }}
-                    />
-                    <View
-                      style={{
-                        flexDirection: 'column',
-                        marginLeft: 10,
-                        width: '65%',
-                      }}>
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          color: '#333',
-                          fontWeight: 'bold',
-                        }}>
-                        {moment(notification.item.Datex).format(
-                          'MMMM DD, YYYY hh:mm:ss',
-                        )}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          color: '#a3a3a3',
-                          marginTop: 2,
-                        }}>
-                        {notification.item.Messagex}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        alignSelf: 'center',
-                        width: '35%',
-                      }}>
-                      <Text
-                        style={{
-                          textAlign: 'left',
-                          color: COLORS.primary,
-                        }}>
-                        {getTypeOfMsg(notification.item.MessageID)}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              )}
-            />
-          ) : (
-            <Card style={{backgroundColor: '#eef1f6'}}>
+        <View style={styles.MainContainer}>
+          <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
+          {loader ? <Loader /> : null}
+          <Ionicons
+            name="notifications"
+            size={23}
+            color={COLORS.primary}
+            style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+            <Text style={styles.f18}>Notifications</Text>
+          </Ionicons>
+          <View style={{flex: 1, paddingTop: 10}}>
+            <Card style={{marginBottom: 5}}>
               <Card.Title
-                title={'No notifications found.'}
-                titleStyle={{fontSize: 14}}
+                title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
+                titleStyle={{fontSize: 18, alignSelf: 'center'}}
+                subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
+                left={props => (
+                  <Ionicons
+                    name="arrow-back-circle-outline"
+                    size={30}
+                    onPress={() => getPreviousNotify()}
+                  />
+                )}
+                right={props => (
+                  <Ionicons
+                    style={{paddingRight: 12}}
+                    name="arrow-forward-circle-outline"
+                    size={30}
+                    onPress={() => getNextNotify()}
+                  />
+                )}
               />
             </Card>
-          )}
+            {homeDetails.Notifications.length ? (
+              <FlatList
+                data={homeDetails.Notifications}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={notification => (
+                  <View
+                    style={{
+                      maxWidth: '100%',
+                      paddingHorizontal: 15,
+                      paddingVertical: 10,
+                      backgroundColor: '#fff',
+                      marginVertical: 4,
+                      borderRadius: 4,
+                      borderLeftColor: getColorCode(
+                        notification.item.MessageID,
+                      ),
+                      borderLeftWidth: 6,
+                      justifyContent: 'center',
+                      paddingLeft: 16,
+                    }}>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                      <Avatar.Icon
+                        size={42}
+                        color={COLORS.white}
+                        icon="notification-clear-all"
+                        style={{
+                          backgroundColor: getColorCode(
+                            notification.item.MessageID,
+                          ),
+                        }}
+                      />
+                      <View
+                        style={{
+                          flexDirection: 'column',
+                          marginLeft: 10,
+                          width: '65%',
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: '#333',
+                            fontWeight: 'bold',
+                          }}>
+                          {moment(notification.item.Datex).format(
+                            'MMMM DD, YYYY hh:mm:ss',
+                          )}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: '#a3a3a3',
+                            marginTop: 2,
+                          }}>
+                          {notification.item.Messagex}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          alignSelf: 'center',
+                          width: '35%',
+                        }}>
+                        <Text
+                          style={{
+                            textAlign: 'left',
+                            color: COLORS.primary,
+                          }}>
+                          {getTypeOfMsg(notification.item.MessageID)}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                )}
+              />
+            ) : (
+              <Card style={{backgroundColor: '#eef1f6'}}>
+                <Card.Title
+                  title={'No notifications found.'}
+                  titleStyle={{fontSize: 14}}
+                />
+              </Card>
+            )}
+          </View>
         </View>
       </SafeAreaView>
       <StaticBottomTabs navigation={navigation} routeName={route.name} />

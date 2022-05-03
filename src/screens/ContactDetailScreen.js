@@ -5,6 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import AppStatusBar from '../components/AppStatusBar';
 import {COLORS} from '../constants';
+import styles from '../styles/AppStyles';
 
 const ContactDetailScreen = ({navigation, route}) => {
   const [open, setOpen] = useState(false);
@@ -18,7 +19,7 @@ const ContactDetailScreen = ({navigation, route}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
       <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
-      <View style={{flex: 1, padding: 10}}>
+      <View style={styles.MainContainer}>
         <Text style={{fontSize: 18}}>Contact Details</Text>
 
         <Button
