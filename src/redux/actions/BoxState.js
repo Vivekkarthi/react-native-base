@@ -8,11 +8,11 @@ export const initialState = {
 export const BOX_SUCCESS = 'BoxState/BOX_SUCCESS';
 export const BOX_FAILURE = 'BoxState/BOX_FAILURE';
 
-export const fetchBoxData = (LoginId, controllerId, getDate) => {
-  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=${LoginId}&snotifyfrom=${getDate}`;
+export const fetchBoxData = (LoginId, controllerId) => {
+  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=""`;
 
   const params = {
-    url: ENDPOINTURL.MemberHome,
+    url: ENDPOINTURL.MemberMyBox,
     queryParams,
   };
   return getRequest(params)
@@ -22,6 +22,22 @@ export const fetchBoxData = (LoginId, controllerId, getDate) => {
     .catch(error => {
       throw error;
     });
+};
+
+export const saveMyBoxDetails = data => {
+  return dispatch => {
+    if (data) {
+      dispatch({
+        type: BOX_SUCCESS,
+        payload: data,
+      });
+    } else {
+      dispatch({
+        type: BOX_FAILURE,
+        payload: {},
+      });
+    }
+  };
 };
 
 export const callAlarmOnOffBox = (LoginId, controllerId, Alarm) => {

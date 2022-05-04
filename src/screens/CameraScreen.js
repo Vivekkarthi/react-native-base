@@ -1,83 +1,109 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
-  StyleSheet,
-  ScrollView,
   SafeAreaView,
+  TouchableOpacity,
+  FlatList,
+  Image,
   Text,
-  Dimensions,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
-import {sliderData} from '../model/data';
-import StaticBottomTabs from '../components/StaticBottomTabs';
 import AppStatusBar from '../components/AppStatusBar';
-import {COLORS} from '../constants';
+import {CONFIG} from '../utils/Config';
 
-const {width: screenWidth} = Dimensions.get('window');
+import {COLORS} from '../constants';
+import {useSelector} from 'react-redux';
+import StaticBottomTabs from '../components/StaticBottomTabs';
+import styles from '../styles/AppStyles';
+import {Divider} from 'react-native-paper';
+const viewConfigRef = {viewAreaCoveragePercentThreshold: 95};
 
 const CameraScreen = ({navigation, route}) => {
-  const [entries, setEntries] = useState([]);
-  const carouselRef = useRef(null);
+  const flatListRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const {homeDetails} = useSelector(state => state.HomeState);
 
-  const goForward = () => {
-    carouselRef.current.snapToNext();
+  const onViewRef = useRef(({changed}) => {
+    if (changed[0].isViewable) {
+      setCurrentIndex(changed[0].index);
+    }
+  });
+
+  const scrollToIndex = index => {
+    flatListRef.current?.scrollToIndex({animated: true, index: index});
   };
 
-  useEffect(() => {
-    setEntries(sliderData);
-  }, []);
-
-  const renderItem = ({item, index}, parallaxProps) => {
+  const renderItem = ({item, index}) => {
     return (
-      <View style={styles.item}>
-        <ParallaxImage
-          source={{uri: item.illustration}}
-          containerStyle={styles.imageContainer}
-          style={styles.image}
-          parallaxFactor={0.4}
-          {...parallaxProps}
+      <TouchableOpacity onPress={() => {}} activeOpacity={1}>
+        <Image
+          style={styles.cameraImage}
+          source={{
+            uri: `${CONFIG.IMAGE_URL}/${item.Filename}`,
+          }}
         />
-        <Text style={styles.title} numberOfLines={2}>
-          {item.title}
-        </Text>
-      </View>
+        <View style={styles.packageDotView}>
+          {homeDetails.Photos.map(({}, index) => (
+            <TouchableOpacity
+              key={index.toString()}
+              style={[
+                styles.packageCircle,
+                {
+                  backgroundColor: index === currentIndex ? 'black' : 'grey',
+                },
+              ]}
+              onPress={() => scrollToIndex(index)}></TouchableOpacity>
+          ))}
+        </View>
+      </TouchableOpacity>
     );
   };
 
   return (
     <>
       <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
-        <ScrollView style={{padding: 10}}>
+        <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
-          <Text style={{textAlign: 'center'}}>Intenal Camera</Text>
-          <View style={styles.container}>
-            <Carousel
-              ref={carouselRef}
-              sliderWidth={screenWidth - 40}
-              itemWidth={500}
-              data={entries}
-              renderItem={renderItem}
-              hasParallaxImages={true}
-            />
-          </View>
-          <Text style={{textAlign: 'center', top: 10}}>External Camera</Text>
-          <View style={styles.container}>
-            {/* <Ionicons
-            name="arrow-forward-circle-outline"
-            size={30}
-            onPress={goForward}
-          /> */}
-            <Carousel
-              ref={carouselRef}
-              sliderWidth={screenWidth - 40}
-              itemWidth={500}
-              data={entries}
-              renderItem={renderItem}
-              hasParallaxImages={true}
-            />
-          </View>
-        </ScrollView>
+          <FlatList
+            keyboardShouldPersistTaps="always"
+            showsVerticalScrollIndicator={false}
+            data={[{ID: '1'}]}
+            keyExtractor={item => `${item.ID}`}
+            renderItem={() => (
+              <View style={{flexDirection: 'column'}}>
+                <Text style={[styles.tc, styles.f18]}>Intenal Camera</Text>
+                <FlatList
+                  data={homeDetails.Photos}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={renderItem}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  pagingEnabled
+                  ref={ref => {
+                    flatListRef.current = ref;
+                  }}
+                  viewabilityConfig={viewConfigRef}
+                  onViewableItemsChanged={onViewRef.current}
+                />
+                <Text style={[styles.tc, styles.f18]}>External Camera</Text>
+                <FlatList
+                  data={homeDetails.Photos}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={renderItem}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  pagingEnabled
+                  ref={ref => {
+                    flatListRef.current = ref;
+                  }}
+                  viewabilityConfig={viewConfigRef}
+                  onViewableItemsChanged={onViewRef.current}
+                />
+              </View>
+            )}
+          />
+        </View>
       </SafeAreaView>
       <StaticBottomTabs navigation={navigation} routeName={route.name} />
     </>
@@ -85,24 +111,3 @@ const CameraScreen = ({navigation, route}) => {
 };
 
 export default CameraScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  item: {
-    width: screenWidth - 60,
-    height: 250,
-    top: 20,
-  },
-  imageContainer: {
-    flex: 1,
-    marginBottom: Platform.select({ios: 0, android: 1}), // Prevent a random Android rendering issue
-    backgroundColor: 'white',
-    borderRadius: 8,
-  },
-  image: {
-    ...StyleSheet.absoluteFillObject,
-    resizeMode: 'cover',
-  },
-});

@@ -145,7 +145,7 @@ export default function HomeScreen({navigation, route}) {
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text style={[styles.f18, {color: COLORS.primary}]}>Home</Text>
+            <Text style={styles.f18}>Home</Text>
           </Ionicons>
           <FlatList
             keyboardShouldPersistTaps="always"

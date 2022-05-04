@@ -1,9 +1,7 @@
 import React, {useState, useRef} from 'react';
 import {
   View,
-  StyleSheet,
   SafeAreaView,
-  Dimensions,
   TouchableOpacity,
   FlatList,
   Image,
@@ -17,8 +15,7 @@ import {CONFIG} from '../utils/Config';
 import {COLORS} from '../constants';
 import {useSelector} from 'react-redux';
 import StaticBottomTabs from '../components/StaticBottomTabs';
-
-const {width, height} = Dimensions.get('window');
+import styles from '../styles/AppStyles';
 const viewConfigRef = {viewAreaCoveragePercentThreshold: 95};
 
 const PackagesScreen = ({navigation, route}) => {
@@ -40,22 +37,17 @@ const PackagesScreen = ({navigation, route}) => {
     return (
       <TouchableOpacity onPress={() => {}} activeOpacity={1}>
         <Image
-          style={styles.image}
+          style={styles.packageImage}
           source={{
             uri: `${CONFIG.IMAGE_URL}/${item.Filename}`,
           }}
         />
-
-        {/* <View style={styles.footer}>
-          <Text style={styles.footerText}>{item.title}</Text>
-          <Text style={styles.footerText}>{item.title}</Text>
-        </View> */}
-        <View style={styles.dotView}>
+        <View style={styles.packageDotView}>
           {homeDetails.Photos.map(({}, index) => (
             <TouchableOpacity
               key={index.toString()}
               style={[
-                styles.circle,
+                styles.packageCircle,
                 {
                   backgroundColor: index === currentIndex ? 'black' : 'grey',
                 },
@@ -72,26 +64,18 @@ const PackagesScreen = ({navigation, route}) => {
       <SafeAreaView
         style={{
           flex: 1,
-          padding: 10,
-          marginTop: -15,
           backgroundColor: COLORS.background,
         }}>
-        <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
-        <Ionicons
-          name="logo-dropbox"
-          size={23}
-          color={COLORS.primary}
-          style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-          <Text
-            style={{
-              fontSize: 18,
-              fontFamily: 'Lato-Regular',
-              color: COLORS.primary,
-            }}>
-            Photos
-          </Text>
-        </Ionicons>
-        <View style={styles.container}>
+        <View style={styles.MainContainer}>
+          <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
+          <Ionicons
+            name="logo-dropbox"
+            size={23}
+            color={COLORS.primary}
+            style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+            <Text style={styles.f18}>Photos</Text>
+          </Ionicons>
+          {/* <View style={styles.container}> */}
           <FlatList
             data={homeDetails.Photos}
             keyExtractor={(item, index) => index.toString()}
@@ -105,6 +89,7 @@ const PackagesScreen = ({navigation, route}) => {
             viewabilityConfig={viewConfigRef}
             onViewableItemsChanged={onViewRef.current}
           />
+          {/* </View> */}
         </View>
       </SafeAreaView>
       <StaticBottomTabs navigation={navigation} routeName={route.name} />
@@ -113,41 +98,3 @@ const PackagesScreen = ({navigation, route}) => {
 };
 
 export default PackagesScreen;
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 10,
-    // backgroundColor: '#FFFFFF',
-  },
-  image: {
-    borderRadius: 8,
-    width: width - 20,
-    height: 250,
-    resizeMode: 'cover',
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    height: 50,
-    paddingHorizontal: 40,
-    alignItems: 'center',
-    backgroundColor: '#000000',
-  },
-  footerText: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  dotView: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 20,
-  },
-  circle: {
-    width: 10,
-    height: 10,
-    backgroundColor: 'grey',
-    borderRadius: 50,
-    marginHorizontal: 5,
-  },
-});

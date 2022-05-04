@@ -1,10 +1,12 @@
 import {combineReducers} from 'redux';
 import AuthStateReducer, {RESET_STORE} from './actions/AuthState';
+import BoxStateReducer from './actions/BoxState';
 import HomeStateReducer from './actions/HomeState';
 
 const appReducer = combineReducers({
   AuthState: AuthStateReducer,
   HomeState: HomeStateReducer,
+  BoxState: BoxStateReducer,
 });
 
 // reset the state of a redux store

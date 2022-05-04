@@ -5,4 +5,5 @@ export const ENDPOINTURL = {
   MemberLock: 'APIOpenCloseBox/',
   MemberUpdateAlarm: 'APIUpdateAlarm/',
   MemberUpdateOnDemandCamera: 'APIUpdateOnDemandCamera/',
+  MemberMyBox: 'ApiGetMyBoxPageData/',
 };
