@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, SafeAreaView, Text, FlatList} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,25 +11,61 @@ import AppStatusBar from '../components/AppStatusBar';
 
 import {Loader} from '../components/Loader';
 import StaticBottomTabs from '../components/StaticBottomTabs';
-import {windowWidth} from '../utils/Dimentions';
 import {getBatteryType, getBatteryTypeColor} from '../utils/Handlers';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 import {
   callAlarmOnOffBox,
   callInternalOrExternalCameraOnBox,
+  fetchBoxData,
+  saveMyBoxDetails,
 } from '../redux/actions/BoxState';
-import {saveMemberHomeDetails} from '../redux/actions/HomeState';
 import {useToast} from 'react-native-toast-notifications';
 import styles from '../styles/AppStyles';
+import {CONFIG} from '../utils/Config';
 
 export default function MyboxScreen({navigation, route}) {
   const dispatch = useDispatch();
   const toast = useToast();
-  const [loader, setLoader] = useState(false);
-  const [batteryPercentage, setBatteryPercentage] = useState(80);
+  const [loader, setLoader] = useState(true);
+  // const [batteryPercentage, setBatteryPercentage] = useState(80);
   const {loggedMember} = useSelector(state => state.AuthState);
-  const {homeDetails} = useSelector(state => state.HomeState);
+  // const {homeDetails} = useSelector(state => state.HomeState);
+  const {boxDetails} = useSelector(state => state.BoxState);
+
+  const getMyBoxData = useCallback(() => {
+    setLoader(true);
+    fetchBoxData(loggedMember.LoginID, loggedMember.ControllerID)
+      .then(async resp => {
+        if (resp.SyncDateTime) {
+          //Good
+          dispatch(saveMyBoxDetails(resp));
+          setLoader(false);
+        } else {
+          // Not Good
+          setLoader(false);
+          toast.show(resp, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'error',
+              title: 'Invalid data',
+            },
+          });
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        toast.show(error.message, {
+          type: 'custom_type',
+          animationDuration: 100,
+          data: {
+            type: 'error',
+            title: 'Invalid data',
+          },
+        });
+      });
+  }, [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast]);
 
   const toggleAlarm = alarmState => {
     setLoader(true);
@@ -41,8 +77,8 @@ export default function MyboxScreen({navigation, route}) {
       .then(async resp => {
         if (resp === 'SUCCESS-1' || resp === 'SUCCESS-2') {
           //Good
-          homeDetails['AlarmState'] = alarmState;
-          dispatch(saveMemberHomeDetails(homeDetails));
+          boxDetails['AlarmState'] = alarmState;
+          dispatch(saveMyBoxDetails(boxDetails));
           setLoader(false);
         } else {
           // Not Good
@@ -107,6 +143,11 @@ export default function MyboxScreen({navigation, route}) {
       });
   };
 
+  useEffect(() => {
+    getMyBoxData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
@@ -152,7 +193,13 @@ export default function MyboxScreen({navigation, route}) {
                           width: 100,
                           resizeMode: 'contain',
                         }}
-                        source={require('../../assets/images/no-image.jpg')}
+                        source={
+                          boxDetails.OnDemandPhoto1
+                            ? {
+                                uri: `${CONFIG.IMAGE_URL}/${boxDetails.OnDemandPhoto1}`,
+                              }
+                            : require('../../assets/images/no-image.jpg')
+                        }
                       />
                       <Card.Actions
                         style={{
@@ -175,7 +222,13 @@ export default function MyboxScreen({navigation, route}) {
                           width: 100,
                           resizeMode: 'contain',
                         }}
-                        source={require('../../assets/images/no-image.jpg')}
+                        source={
+                          boxDetails.OnDemandPhoto2
+                            ? {
+                                uri: `${CONFIG.IMAGE_URL}/${boxDetails.OnDemandPhoto2}`,
+                              }
+                            : require('../../assets/images/no-image.jpg')
+                        }
                       />
                       <Card.Actions
                         style={{
@@ -209,7 +262,7 @@ export default function MyboxScreen({navigation, route}) {
                       }}>
                       <View style={{height: '75%'}}>
                         <RNSpeedometer
-                          value={70}
+                          value={boxDetails.Battery ? boxDetails.Battery : 0}
                           size={140}
                           wrapperStyle={{
                             alignSelf: 'center',
@@ -234,8 +287,12 @@ export default function MyboxScreen({navigation, route}) {
                           style={{
                             alignSelf: 'center',
                           }}
-                          name={getBatteryType(batteryPercentage)}
-                          color={getBatteryTypeColor(batteryPercentage)}
+                          name={getBatteryType(
+                            boxDetails.WIFI ? boxDetails.WIFI : 0,
+                          )}
+                          color={getBatteryTypeColor(
+                            boxDetails.WIFI ? boxDetails.WIFI : 0,
+                          )}
                           size={120}
                         />
                       </View>
@@ -269,19 +326,17 @@ export default function MyboxScreen({navigation, route}) {
                       <View style={{height: '75%'}}>
                         <Entypo
                           onPress={() =>
-                            toggleAlarm(homeDetails.AlarmState === 1 ? 2 : 1)
+                            toggleAlarm(boxDetails.AlarmState === 1 ? 2 : 1)
                           }
                           style={{
                             alignSelf: 'center',
                             marginTop: 10,
                           }}
                           name={
-                            homeDetails.AlarmState === 1
-                              ? 'sound'
-                              : 'sound-mute'
+                            boxDetails.AlarmState === 1 ? 'sound' : 'sound-mute'
                           }
                           color={
-                            homeDetails.AlarmState === 1
+                            boxDetails.AlarmState === 1
                               ? COLORS.messageColor1
                               : COLORS.messageColor4
                           }
@@ -302,7 +357,7 @@ export default function MyboxScreen({navigation, route}) {
                       }}>
                       <View style={{height: '75%'}}>
                         <RNSpeedometer
-                          value={70}
+                          value={boxDetails.TEMPER ? boxDetails.TEMPER : 0}
                           size={140}
                           wrapperStyle={{
                             alignSelf: 'center',
