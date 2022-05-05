@@ -37,6 +37,7 @@ const CustomDrawer = props => {
             <Image
               source={require('../../assets/images/user.png')}
               style={{
+                marginLeft:8,
                 height: 80,
                 width: 80,
                 borderRadius: 40,
@@ -45,6 +46,7 @@ const CustomDrawer = props => {
             />
             <Text
               style={{
+                marginLeft:12,
                 color: '#fff',
                 fontSize: 18,
                 fontFamily: 'Roboto-Medium',

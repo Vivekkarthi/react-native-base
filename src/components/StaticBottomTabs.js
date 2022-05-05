@@ -90,7 +90,7 @@ function StaticBottomTabs({navigation, routeName}) {
         </Pressable>
 
         <Pressable
-          onPress={() => navigation.navigate('Packages')}
+          onPress={() => navigation.navigate('Camera')}
           style={{
             flexDirection: 'column',
             alignSelf: 'flex-end',
@@ -99,7 +99,7 @@ function StaticBottomTabs({navigation, routeName}) {
           {({pressed}) => (
             <>
               <Feather
-                name="package"
+                name="camera"
                 color={
                   pressed
                     ? '#f17012'
@@ -120,7 +120,7 @@ function StaticBottomTabs({navigation, routeName}) {
                     : '#FFFFFF',
                   textAlign: 'center',
                 }}>
-                Packages
+                Images
               </Text>
             </>
           )}

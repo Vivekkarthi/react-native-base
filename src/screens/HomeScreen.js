@@ -3,7 +3,6 @@ import {View, SafeAreaView, Text, FlatList, RefreshControl} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import {useToast} from 'react-native-toast-notifications';
-
 import {useSelector, useDispatch} from 'react-redux';
 import {
   callOpenCloseBox,
@@ -140,12 +139,16 @@ export default function HomeScreen({navigation, route}) {
         <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           {loader ? <Loader /> : null}
+          <Text style={{alignSelf:'flex-end', bottom:25, fontWeight:'bold'}}>
+          <Text>Welcome</Text>
+          <Text style={{color: '#ff651f', fontSize:18}}> {loggedMember.LoginNAME}</Text>
+          </Text>
           <Ionicons
             name="ios-home-outline"
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text style={styles.f18}>Home</Text>
+            <Text style={styles.f18}> Home</Text>
           </Ionicons>
           <FlatList
             keyboardShouldPersistTaps="always"
@@ -222,29 +225,35 @@ export default function HomeScreen({navigation, route}) {
                       </Text>
                     </Card>
                     <Card
-                      onPress={() => navigation.navigate('Packages')}
+                      onPress={() => navigation.navigate('Camera')}
                       style={{
                         flexDirection: 'column',
                         justifyContent: 'center',
                         width: '48%',
                         padding: 10,
                       }}>
-                      {homeDetails.Photos && (
+                      {/* {homeDetails.Photos && ( */}
                         <Card.Cover
                           style={{
                             alignSelf: 'center',
                             width: '100%',
-                            height: 150,
+                            height: 170,
+                            resizeMode: 'contain',
                           }}
-                          source={{
-                            uri: `${CONFIG.IMAGE_URL}/${homeDetails.Photos[0].Filename}`,
-                          }}
+                          source={homeDetails.Photos ? {
+                            uri: `${CONFIG.IMAGE_URL}/${homeDetails.Photos[0].Filename}`
+                          } : require("../../assets/images/no-image.jpg")}
                         />
-                      )}
+                      {/* )} */}
                     </Card>
                   </View>
                 </View>
                 <Card style={{marginBottom: 5}}>
+                  <View style={{alignSelf: 'center', paddingTop:5}}>
+                <Ionicons name="notifications" size={16}> 
+                <Text> Notifications</Text>
+                </Ionicons> 
+                  </View>
                   <Card.Title
                     title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
                     // subtitle={'subtitle'}

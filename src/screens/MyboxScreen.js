@@ -8,6 +8,7 @@ import RNSpeedometer from 'react-native-speedometer';
 
 import {COLORS} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
+import Feather from 'react-native-vector-icons/Feather';
 
 import {Loader} from '../components/Loader';
 import StaticBottomTabs from '../components/StaticBottomTabs';
@@ -154,13 +155,13 @@ export default function MyboxScreen({navigation, route}) {
         <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           {loader ? <Loader /> : null}
-          <Ionicons
-            name="ios-home-outline"
+          <Feather
+            name="box"
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text style={styles.f18}>Mybox</Text>
-          </Ionicons>
+            <Text style={styles.f18}> Mybox</Text>
+          </Feather>
           <FlatList
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
@@ -186,15 +187,16 @@ export default function MyboxScreen({navigation, route}) {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         width: '48%',
-                      }}>
+                      }}><Text style={{alignSelf: 'center',fontSize:16, color:'#002060'}}>External Camera</Text>
                       <Card.Cover
                         style={{
                           alignSelf: 'center',
-                          width: 100,
-                          resizeMode: 'contain',
+                            width: '100%',
+                            height: 170,
+                            resizeMode: 'contain',
                         }}
                         source={
-                          boxDetails.OnDemandPhoto1
+                          boxDetails.OnDemandPhoto1 != ""
                             ? {
                                 uri: `${CONFIG.IMAGE_URL}/${boxDetails.OnDemandPhoto1}`,
                               }
@@ -215,11 +217,12 @@ export default function MyboxScreen({navigation, route}) {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         width: '48%',
-                      }}>
+                      }}><Text style={{alignSelf: 'center',fontSize:16, color:'#002060'}}>Internal Camera</Text>
                       <Card.Cover
                         style={{
                           alignSelf: 'center',
-                          width: 100,
+                          width: '100%',
+                          height: 170,
                           resizeMode: 'contain',
                         }}
                         source={

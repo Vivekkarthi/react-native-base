@@ -17,7 +17,7 @@ const SettingsScreen = ({navigation, route}) => {
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text style={styles.f18}>Settings</Text>
+            <Text style={styles.f18}> Settings</Text>
           </Ionicons>
         </View>
       </SafeAreaView>
