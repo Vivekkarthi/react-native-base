@@ -103,7 +103,7 @@ function StaticBottomTabs({navigation, routeName}) {
                 color={
                   pressed
                     ? '#f17012'
-                    : routeName === 'Packages'
+                    : routeName === 'Camera'
                     ? '#f17012'
                     : '#FFFFFF'
                 }
@@ -115,7 +115,7 @@ function StaticBottomTabs({navigation, routeName}) {
                   fontSize: 10,
                   color: pressed
                     ? '#f17012'
-                    : routeName === 'Packages'
+                    : routeName === 'Camera'
                     ? '#f17012'
                     : '#FFFFFF',
                   textAlign: 'center',

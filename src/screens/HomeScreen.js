@@ -139,9 +139,12 @@ export default function HomeScreen({navigation, route}) {
         <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           {loader ? <Loader /> : null}
-          <Text style={{alignSelf:'flex-end', bottom:25, fontWeight:'bold'}}>
-          <Text>Welcome</Text>
-          <Text style={{color: '#ff651f', fontSize:18}}> {loggedMember.LoginNAME}</Text>
+          <Text style={{alignSelf: 'flex-end', bottom: 25, fontWeight: 'bold'}}>
+            <Text>Welcome</Text>
+            <Text style={{color: '#ff651f', fontSize: 18}}>
+              {' '}
+              {loggedMember.LoginNAME}
+            </Text>
           </Text>
           <Ionicons
             name="ios-home-outline"
@@ -233,26 +236,30 @@ export default function HomeScreen({navigation, route}) {
                         padding: 10,
                       }}>
                       {/* {homeDetails.Photos && ( */}
-                        <Card.Cover
-                          style={{
-                            alignSelf: 'center',
-                            width: '100%',
-                            height: 170,
-                            resizeMode: 'contain',
-                          }}
-                          source={homeDetails.Photos ? {
-                            uri: `${CONFIG.IMAGE_URL}/${homeDetails.Photos[0].Filename}`
-                          } : require("../../assets/images/no-image.jpg")}
-                        />
+                      <Card.Cover
+                        style={{
+                          alignSelf: 'center',
+                          width: '100%',
+                          height: 170,
+                          resizeMode: 'contain',
+                        }}
+                        source={
+                          homeDetails.Photos
+                            ? {
+                                uri: `${CONFIG.IMAGE_URL}/${homeDetails.Photos[0].Filename}`,
+                              }
+                            : require('../../assets/images/no-image.jpg')
+                        }
+                      />
                       {/* )} */}
                     </Card>
                   </View>
                 </View>
                 <Card style={{marginBottom: 5}}>
-                  <View style={{alignSelf: 'center', paddingTop:5}}>
-                <Ionicons name="notifications" size={16}> 
-                <Text> Notifications</Text>
-                </Ionicons> 
+                  <View style={{alignSelf: 'center', paddingTop: 5}}>
+                    <Ionicons name="notifications" size={16}>
+                      <Text> Notifications</Text>
+                    </Ionicons>
                   </View>
                   <Card.Title
                     title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}

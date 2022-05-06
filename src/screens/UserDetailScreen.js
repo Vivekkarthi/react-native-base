@@ -1,27 +1,36 @@
 import React, {useState, useRef} from 'react';
-import {View, Text, SafeAreaView, StyleSheet, TextInput} from 'react-native';
-import {Button} from 'react-native-paper';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Platform,
+  StyleSheet,
+  KeyboardAvoidingView,
+  FlatList,
+  Image,
+} from 'react-native';
 import {FormProvider, useForm} from 'react-hook-form';
-import AppStatusBar from '../components/AppStatusBar';
-import {COLORS, SIZES} from '../constants';
+import {Button} from 'react-native-paper';
+// import {useToast} from 'react-native-toast-notifications';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {isEmpty} from 'lodash';
-import FormButton from '../components/FormButton';
-//import styles from '../styles/AppStyles';
-import FormInput from '../components/FormInput';
+import {Loader} from '../components/Loader';
+import {COLORS, SIZES} from '../constants';
 import {registerSchema} from '../utils/ValidateSchema';
+import {memberRegister} from '../redux/actions/AuthState';
+import FormInput from '../components/FormInput';
+import FormButton from '../components/FormButton';
+import AppStatusBar from '../components/AppStatusBar';
+import {isEmpty} from 'lodash';
+import StaticBottomTabs from '../components/StaticBottomTabs';
 
 const UserDetailScreen = ({navigation, route}) => {
-    const [inputUser, setInputUser] = useState({
-        Name: '',
-        Email: '',
-        PhoneNumber: '',
-        Password: '',
-        ControllerId: '',
-      });
-      const [loader, setLoader] = useState(false);
+  const [inputUser, setInputUser] = useState({
+    Name: '',
+    Email: '',
+    PhoneNumber: '',
+    Password: '',
+  });
+  const [loader, setLoader] = useState(false);
   const [registrationError, setRegistrationError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
@@ -34,7 +43,6 @@ const UserDetailScreen = ({navigation, route}) => {
       Email: '',
       PhoneNumber: '',
       Password: '',
-      ControllerId: '',
     },
     resolver: yupResolver(registerSchema),
   });
@@ -47,16 +55,14 @@ const UserDetailScreen = ({navigation, route}) => {
   const EmailRef = useRef(null);
   const PhoneNumberRef = useRef(null);
   const PasswordRef = useRef(null);
-  const ControllerRef = useRef(null);
 
-  const onRegisterSubmit = async user => {
+  const onUsertSubmit = async user => {
     setLoader(true);
     const formData = {
       Name: user.Name,
       Email: user.Email,
       PhoneNumber: user.PhoneNumber,
       Password: user.Password,
-      ControllerId: user.ControllerId,
     };
     setInputUser(() => formData);
     memberRegister(user, navigation)
@@ -100,29 +106,11 @@ const UserDetailScreen = ({navigation, route}) => {
         // });
       });
   };
-  const Category = ['Billing', 'Technical Support', 'Others'];
 
-  return (
-    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
-      <View style={styles.MainContainer}>
-        <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
-        <Ionicons
-          name="add-circle"
-          size={23}
-          color={COLORS.primary}
-          style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-          <Text style={styles.f18}>Add User</Text>
-        </Ionicons>
-
-        <Button
-          mode="contained"
-          onPress={() => navigation.goBack()}
-          style={{alignSelf: 'flex-end'}}>
-          Go Back
-        </Button>
-      </View>
+  const renderItem = ({item, index}) => {
+    return (
       <View>
-        <FormProvider>
+        <FormProvider {...methods}>
           <View style={{marginBottom: SIZES.base}}>
             <Text
               style={{
@@ -139,7 +127,6 @@ const UserDetailScreen = ({navigation, route}) => {
               autoFocus={true}
               defaultValues={inputUser.Name}
               textLabel={'Name'}
-              // placeHolder={'Name'}
               textName={'Name'}
               keyboardType="default"
               errorobj={errors}
@@ -163,7 +150,6 @@ const UserDetailScreen = ({navigation, route}) => {
               iconType="mail"
               defaultValues={inputUser.Email}
               textLabel={'Email'}
-              // placeHolder={'Email'}
               textName={'Email'}
               keyboardType="default"
               errorobj={errors}
@@ -210,7 +196,6 @@ const UserDetailScreen = ({navigation, route}) => {
               iconType="lock"
               defaultValues={inputUser.Password}
               textLabel={'Password'}
-              // placeHolder={'Password'}
               textName={'Password'}
               keyboardType="default"
               errorobj={errors}
@@ -221,30 +206,6 @@ const UserDetailScreen = ({navigation, route}) => {
               showPassword={showPassword}
               pwdVisible={pwdVisible}
               refs={PasswordRef}
-              refField={() => ControllerRef.current.focus()}
-            />
-          </View>
-
-          <View style={{marginBottom: SIZES.base}}>
-            <Text
-              style={{
-                fontSize: 16,
-                opacity: 0.5,
-                marginBottom: SIZES.base,
-                color: '#0d8e8a',
-                fontWeight: 'bold',
-              }}>
-              Controller ID
-            </Text>
-            <FormInput
-              iconType="idcard"
-              defaultValues={inputUser.ControllerId}
-              textLabel={'Controller Id'}
-              // placeHolder={'Name'}
-              textName={'ControllerId'}
-              keyboardType="default"
-              errorobj={errors}
-              refs={ControllerRef}
             />
           </View>
         </FormProvider>
@@ -262,55 +223,107 @@ const UserDetailScreen = ({navigation, route}) => {
         ) : null}
 
         <FormButton
-          buttonTitle="Create Account"
+          buttonTitle="Create User"
           isPrimary={true}
           style={{
             marginVertical: SIZES.base * 2,
           }}
-          onPress={handleSubmit(onRegisterSubmit)}
+          onPress={handleSubmit(onUsertSubmit)}
         />
       </View>
-    </SafeAreaView>
+    );
+  };
+
+  return (
+    <>
+      <FlatList
+        style={styles.container}
+        keyboardShouldPersistTaps="always"
+        showsVerticalScrollIndicator={false}
+        data={[{ID: '1'}]}
+        keyExtractor={item => `${item.ID}`}
+        renderItem={() => (
+          <View contentContainerStyle={[styles.container]}>
+            <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
+            {loader ? <Loader /> : null}
+            {/* <Image
+              source={require('../../assets/images/icon.png')}
+              style={{
+                alignSelf: 'center',
+                height: 150,
+                width: 280,
+              }}
+              resizeMode="stretch"
+            /> */}
+
+            <View
+              style={{
+                backgroundColor: COLORS.lightGray,
+                width: '100%',
+                borderTopStartRadius: SIZES.radius * 2,
+                borderTopEndRadius: SIZES.radius * 2,
+                padding: SIZES.base * 2,
+              }}>
+              <Text style={styles.text}>Add User</Text>
+
+              <KeyboardAvoidingView
+                style={{flex: 1}}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+                <FlatList
+                  style={{width: '100%'}}
+                  keyboardShouldPersistTaps="always"
+                  showsVerticalScrollIndicator={false}
+                  data={[{ID: '1'}]}
+                  keyExtractor={item => `${item.ID}`}
+                  renderItem={renderItem}
+                />
+              </KeyboardAvoidingView>
+            </View>
+          </View>
+        )}
+      />
+      <StaticBottomTabs navigation={navigation} routeName={route.name} />
+    </>
   );
 };
 
 export default UserDetailScreen;
 
 const styles = StyleSheet.create({
-    container: {
-      backgroundColor: COLORS.background,
-      padding: SIZES.base * 2,
-      position: 'relative',
-    },
-    text: {
-      fontSize: 22,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      marginVertical: SIZES.base * 2,
-    },
-    navButton: {
-      marginTop: 15,
-    },
-    forgotButton: {
-      marginVertical: 35,
-    },
-    navButtonText: {
-      fontSize: 18,
-      fontWeight: '500',
-      color: '#2e64e5',
-      fontFamily: 'Lato-Regular',
-    },
-    textPrivate: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      marginVertical: 35,
-      justifyContent: 'center',
-    },
-    color_textPrivate: {
-      fontSize: 13,
-      fontWeight: '400',
-      fontFamily: 'Lato-Regular',
-      color: 'grey',
-    },
-  });
-  
+  container: {
+    backgroundColor: COLORS.background,
+    padding: SIZES.base * 2,
+    position: 'relative',
+  },
+  text: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: SIZES.base * 2,
+  },
+  navButton: {
+    marginTop: 15,
+  },
+  forgotButton: {
+    marginVertical: 35,
+  },
+  navButtonText: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#2e64e5',
+    fontFamily: 'Lato-Regular',
+  },
+  textPrivate: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginVertical: 35,
+    justifyContent: 'center',
+  },
+  color_textPrivate: {
+    fontSize: 13,
+    fontWeight: '400',
+    fontFamily: 'Lato-Regular',
+    color: 'grey',
+  },
+});
