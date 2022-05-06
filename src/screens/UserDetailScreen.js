@@ -16,7 +16,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
 import {registerSchema} from '../utils/ValidateSchema';
-import {memberRegister} from '../redux/actions/AuthState';
+import {memberAdduser} from '../redux/actions/AuthState';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import AppStatusBar from '../components/AppStatusBar';
@@ -65,7 +65,7 @@ const UserDetailScreen = ({navigation, route}) => {
       Password: user.Password,
     };
     setInputUser(() => formData);
-    memberRegister(user, navigation)
+    memberAdduser(user, navigation)
       .then(async resp => {
         if (resp === 'success') {
           //Good
@@ -78,7 +78,7 @@ const UserDetailScreen = ({navigation, route}) => {
           //   },
           // });
           setLoader(false);
-          navigation.navigate('Login');
+          navigation.navigate('Users');
         } else {
           // Not Good
           setLoader(false);

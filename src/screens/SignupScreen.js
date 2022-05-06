@@ -171,7 +171,7 @@ const SignupScreen = ({navigation}) => {
                 color: '#0d8e8a',
                 fontWeight: 'bold',
               }}>
-              Mobile
+              Mobile/ Login ID
             </Text>
             <FormInput
               iconType="phone"

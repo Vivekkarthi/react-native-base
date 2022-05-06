@@ -97,7 +97,7 @@ const CameraScreen = ({navigation, route}) => {
                     backgroundColor: COLORS.primary,
                     color: COLORS.white,
                   }}>
-                  Intenal Camera
+                  Internal Camera
                 </Text>
                 {homeDetails.Photos.length ? (
                   <>

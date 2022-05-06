@@ -56,6 +56,22 @@ export function memberRegister(userData, navigation) {
       throw error;
     });
 }
+export function memberAdduser(userData, navigation) {
+  const queryParams = `sK=token&namex=${userData.Name}&spass=${userData.Password}&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=${userData.ControllerId}&icustid=${CustID}`;
+  const params = {
+    url: ENDPOINTURL.MemberRegister,
+    token: '',
+    queryParams,
+  };
+
+  return getRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      throw error;
+    });
+}
 
 export const saveMemberDetails = userData => {
   return dispatch => {

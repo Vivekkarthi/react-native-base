@@ -139,12 +139,8 @@ export default function HomeScreen({navigation, route}) {
         <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           {loader ? <Loader /> : null}
-          <Text style={{alignSelf: 'flex-end', bottom: 25, fontWeight: 'bold'}}>
-            <Text>Welcome</Text>
-            <Text style={{color: '#ff651f', fontSize: 18}}>
-              {' '}
-              {loggedMember.LoginNAME}
-            </Text>
+          <Text style={{alignSelf: 'flex-end', bottom: 25, fontWeight: 'bold',color: '#178b93', fontSize: 18,marginRight:8}}>
+            Welcome {loggedMember.LoginNAME}
           </Text>
           <Ionicons
             name="ios-home-outline"
@@ -210,9 +206,10 @@ export default function HomeScreen({navigation, route}) {
                           top: 10,
                           lineHeight: 35,
                         }}>
-                        {moment(homeDetails.LastSyncDate).format(
+                        {/* {moment(homeDetails.LastSyncDate).format(
                           'MMMM DD, YYYY hh:mm:ss',
-                        )}
+                        )} */}
+                         {(homeDetails.LastSyncDate)}
                       </Text>
                       <Text
                         style={{
@@ -224,7 +221,7 @@ export default function HomeScreen({navigation, route}) {
                               : '#D83F50',
                           fontWeight: 'bold',
                         }}>
-                        {homeDetails.PackageState === 1 ? 'Locked' : 'UnLocked'}
+                        {homeDetails.PackageState === 1 ? 'Locked' : 'Unlocked'}
                       </Text>
                     </Card>
                     <Card
@@ -235,7 +232,6 @@ export default function HomeScreen({navigation, route}) {
                         width: '48%',
                         padding: 10,
                       }}>
-                      {/* {homeDetails.Photos && ( */}
                       <Card.Cover
                         style={{
                           alignSelf: 'center',
@@ -244,21 +240,28 @@ export default function HomeScreen({navigation, route}) {
                           resizeMode: 'contain',
                         }}
                         source={
-                          homeDetails.Photos
+                          homeDetails.Photos && homeDetails.Photos.length
                             ? {
-                                uri: `${CONFIG.IMAGE_URL}/${homeDetails.Photos[0].Filename}`,
+                                uri: homeDetails.Photos.Filename,
                               }
                             : require('../../assets/images/no-image.jpg')
                         }
-                      />
-                      {/* )} */}
+                      /> 
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          top: 10,
+                          color: '#002060',
+                          fontWeight: 'bold',
+                        }}>
+                        Internal Camera
+                      </Text>
                     </Card>
                   </View>
                 </View>
-                <Card style={{marginBottom: 5}}>
-                  <View style={{alignSelf: 'center', paddingTop: 5}}>
-                    <Ionicons name="notifications" size={16}>
-                      <Text> Notifications</Text>
+                <Card style={{marginBottom: 13, marginTop: 8}}>
+                  <View style={{alignSelf: 'center', paddingTop: 5,}}>
+                    <Ionicons name="notifications" size={16}color={COLORS.primary}> Notifications
                     </Ionicons>
                   </View>
                   <Card.Title
@@ -334,9 +337,10 @@ export default function HomeScreen({navigation, route}) {
                                       color: '#333',
                                       fontWeight: 'bold',
                                     }}>
-                                    {moment(notification.item.Datex).format(
+                                    {/* {moment(notification.item.Datex).format(
                                       'MMMM DD, YYYY hh:mm:ss',
-                                    )}
+                                    )} */}
+                                    {(notification.item.Datex)}
                                   </Text>
                                   <Text
                                     style={{

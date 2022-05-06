@@ -159,9 +159,10 @@ export default function MyboxScreen({navigation, route}) {
             name="box"
             size={23}
             color={COLORS.primary}
-            style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+            style={{flexDirection: 'row', alignSelf: 'flex-start',marginBottom:15}}>
             <Text style={styles.f18}> Mybox</Text>
           </Feather>
+          
           <FlatList
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
@@ -169,6 +170,16 @@ export default function MyboxScreen({navigation, route}) {
             keyExtractor={item => `${item.ID}`}
             renderItem={() => (
               <>
+              <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 18,
+                    marginTop:5,
+                    backgroundColor: COLORS.primary,
+                    color: COLORS.white,
+                  }}>
+                 Camera
+                </Text>
                 <View
                   style={{
                     paddingTop: 10,
@@ -187,7 +198,7 @@ export default function MyboxScreen({navigation, route}) {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         width: '48%',
-                      }}><Text style={{alignSelf: 'center',fontSize:16, color:'#002060'}}>External Camera</Text>
+                      }}><Text style={{alignSelf: 'center',fontSize:16, color:'#002060'}}>Internal Camera</Text>
                       <Card.Cover
                         style={{
                           alignSelf: 'center',
@@ -217,7 +228,7 @@ export default function MyboxScreen({navigation, route}) {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         width: '48%',
-                      }}><Text style={{alignSelf: 'center',fontSize:16, color:'#002060'}}>Internal Camera</Text>
+                      }}><Text style={{alignSelf: 'center',fontSize:16, color:'#002060'}}>External Camera</Text>
                       <Card.Cover
                         style={{
                           alignSelf: 'center',
@@ -244,6 +255,76 @@ export default function MyboxScreen({navigation, route}) {
                     </Card>
                   </View>
                 </View>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 18,
+                    marginTop:5,
+                    marginBottom:8,
+                    backgroundColor: COLORS.primary,
+                    color: COLORS.white,
+                  }}>
+                 Alaram
+                </Text>
+                <View
+                  style={{
+                    paddingBottom: 10,
+                    flexDirection: 'row',
+                    alignSelf: 'center',
+                  }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                  
+                    <Card
+                      style={{
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        width: '48%',
+                        height: 150,
+                      }}>
+                      <View style={{height: '75%'}}>
+                        <Entypo
+                          onPress={() =>
+                            toggleAlarm(boxDetails.AlarmState === 1 ? 2 : 1)
+                          }
+                          style={{
+                            alignSelf: 'center',
+                            marginTop: 10,
+                          }}
+                          name={
+                            boxDetails.AlarmState === 1 ? 'sound' : 'sound-mute'
+                          }
+                          color={
+                            boxDetails.AlarmState === 1
+                              ? COLORS.messageColor1
+                              : COLORS.messageColor4
+                          }
+                          size={100}
+                        />
+                      </View>
+
+                      <View style={{height: '25%'}}>
+                        <Button>Alarm</Button>
+                      </View>
+                    </Card>
+                   
+                  </View>
+                </View>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 18,
+                    marginTop:5,
+                    marginBottom:8,
+                    backgroundColor: COLORS.primary,
+                    color: COLORS.white,
+                  }}>
+                 Others
+                </Text>
                 <View
                   style={{
                     paddingBottom: 10,
@@ -304,10 +385,9 @@ export default function MyboxScreen({navigation, route}) {
                         <Button>Wifi</Button>
                       </View>
                     </Card>
-                  </View>
+                    </View>
                 </View>
-
-                <View
+                     <View
                   style={{
                     paddingBottom: 10,
                     flexDirection: 'row',
@@ -319,39 +399,9 @@ export default function MyboxScreen({navigation, route}) {
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                     }}>
-                    <Card
-                      style={{
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        width: '48%',
-                        height: 150,
-                      }}>
-                      <View style={{height: '75%'}}>
-                        <Entypo
-                          onPress={() =>
-                            toggleAlarm(boxDetails.AlarmState === 1 ? 2 : 1)
-                          }
-                          style={{
-                            alignSelf: 'center',
-                            marginTop: 10,
-                          }}
-                          name={
-                            boxDetails.AlarmState === 1 ? 'sound' : 'sound-mute'
-                          }
-                          color={
-                            boxDetails.AlarmState === 1
-                              ? COLORS.messageColor1
-                              : COLORS.messageColor4
-                          }
-                          size={100}
-                        />
-                      </View>
-
-                      <View style={{height: '25%'}}>
-                        <Button>Alarm</Button>
-                      </View>
-                    </Card>
-                    <Card
+                    </View>
+                    </View>
+                <Card
                       style={{
                         flexDirection: 'column',
                         justifyContent: 'center',
@@ -372,8 +422,6 @@ export default function MyboxScreen({navigation, route}) {
                         <Button>Temperature</Button>
                       </View>
                     </Card>
-                  </View>
-                </View>
               </>
             )}
           />
