@@ -67,7 +67,7 @@ const UserDetailScreen = ({navigation, route}) => {
       Password: user.Password,
     };
     setInputUser(() => formData);
-    memberAdduser(user, loggedMember.CustID)
+    memberAdduser(user, loggedMember)
       .then(async resp => {
         if (resp === 'Success') {
           //Good
