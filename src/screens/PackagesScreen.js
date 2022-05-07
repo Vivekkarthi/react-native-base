@@ -73,7 +73,7 @@ const PackagesScreen = ({navigation, route}) => {
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text style={styles.f18}>Photos</Text>
+            <Text style={styles.f18}> Photos</Text>
           </Ionicons>
           {/* <View style={styles.container}> */}
           <FlatList

@@ -53,7 +53,7 @@ const UsersScreen = ({navigation, route}) => {
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text style={styles.f18}>Users List</Text>
+            <Text style={styles.f18}>Users</Text>
           </Ionicons>
           <View
             style={{
@@ -145,6 +145,8 @@ const UsersScreen = ({navigation, route}) => {
                   paddingHorizontal: 15,
                   paddingVertical: 10,
                   backgroundColor: '#fff',
+                  borderLeftColor: COLORS.secondary,
+                  borderLeftWidth: 6,
                   marginVertical: 4,
                   borderRadius: 4,
                   justifyContent: 'center',

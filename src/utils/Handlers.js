@@ -80,6 +80,10 @@ const getRequest = props => {
   return axios
     .get(`${CONFIG.API_URL}${props.url}?${props.queryParams}`)
     .then(response => {
+      console.log(
+        '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++',
+        response,
+      );
       if (response.data) {
         return response.data;
       }
