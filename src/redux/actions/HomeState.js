@@ -11,7 +11,7 @@ export const HOME_SUCCESS = 'HomeState/HOME_SUCCESS';
 export const HOME_FAILURE = 'HomeState/HOME_FAILURE';
 
 export const fetchHomeData = (LoginId, controllerId, getDate) => {
-  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=${LoginId}&snotifyfrom=${getDate}`;
+  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=&snotifyfrom=${getDate}`;
 
   const params = {
     url: ENDPOINTURL.MemberHome,
@@ -27,7 +27,7 @@ export const fetchHomeData = (LoginId, controllerId, getDate) => {
 };
 
 export const callOpenCloseBox = (LoginId, controllerId, PkgLock) => {
-  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=${LoginId}&pkgstate=${PkgLock}`;
+  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=&pkgstate=${PkgLock}`;
 
   const params = {
     url: ENDPOINTURL.MemberLock,

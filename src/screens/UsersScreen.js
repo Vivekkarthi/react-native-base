@@ -73,69 +73,6 @@ const UsersScreen = ({navigation, route}) => {
               Add
             </Button>
           </View>
-          {/* <FlatList
-            keyboardShouldPersistTaps="always"
-            showsVerticalScrollIndicator={false}
-            data={listData}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({item, index}) => (
-              <View
-                style={{
-                  maxWidth: '100%',
-                  paddingHorizontal: 15,
-                  paddingVertical: 10,
-                  backgroundColor: '#fff',
-                  marginVertical: 4,
-                  borderRadius: 4,
-                  justifyContent: 'center',
-                  paddingLeft: 16,
-                }}>
-                <View style={{flex: 1, flexDirection: 'row'}}>
-                  <Avatar.Icon
-                    size={42}
-                    color={COLORS.white}
-                    icon="account"
-                    style={{
-                      backgroundColor: COLORS.secondary,
-                      alignSelf: 'center',
-                    }}
-                  />
-                  <View
-                    style={{
-                      flexDirection: 'column',
-                      marginLeft: 10,
-                      width: '100%',
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        color: '#333',
-                        fontWeight: 'bold',
-                      }}>
-                      Name: {item.name}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        color: '#a3a3a3',
-                        marginTop: 2,
-                      }}>
-                      Email: {item.email}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        color: '#a3a3a3',
-                        marginTop: 2,
-                      }}>
-                      Mobile: {item.phone}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            )}
-          /> */}
-
           <SwipeListView
             data={listData}
             renderItem={(data, rowMap) => (
@@ -232,6 +169,7 @@ const UsersScreen = ({navigation, route}) => {
             previewOpenValue={-40}
             previewOpenDelay={3000}
             disableRightSwipe
+            showsVerticalScrollIndicator={false}
           />
         </View>
       </SafeAreaView>

@@ -139,7 +139,14 @@ export default function HomeScreen({navigation, route}) {
         <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           {loader ? <Loader /> : null}
-          <Text style={{alignSelf: 'flex-end', bottom: 25, fontWeight: 'bold',color: '#178b93', fontSize: 18,marginRight:8}}>
+          <Text
+            style={{
+              alignSelf: 'flex-end',
+              fontWeight: 'bold',
+              color: '#178b93',
+              fontSize: 18,
+              marginRight: 8,
+            }}>
             Welcome {loggedMember.LoginNAME}
           </Text>
           <Ionicons
@@ -209,7 +216,7 @@ export default function HomeScreen({navigation, route}) {
                         {/* {moment(homeDetails.LastSyncDate).format(
                           'MMMM DD, YYYY hh:mm:ss',
                         )} */}
-                         {(homeDetails.LastSyncDate)}
+                        {homeDetails.LastSyncDate}
                       </Text>
                       <Text
                         style={{
@@ -242,11 +249,11 @@ export default function HomeScreen({navigation, route}) {
                         source={
                           homeDetails.Photos && homeDetails.Photos.length
                             ? {
-                                uri: homeDetails.Photos.Filename,
+                                uri: homeDetails.Photos[0].Filename,
                               }
                             : require('../../assets/images/no-image.jpg')
                         }
-                      /> 
+                      />
                       <Text
                         style={{
                           textAlign: 'center',
@@ -260,8 +267,12 @@ export default function HomeScreen({navigation, route}) {
                   </View>
                 </View>
                 <Card style={{marginBottom: 13, marginTop: 8}}>
-                  <View style={{alignSelf: 'center', paddingTop: 5,}}>
-                    <Ionicons name="notifications" size={16}color={COLORS.primary}> Notifications
+                  <View style={{alignSelf: 'center', paddingTop: 5}}>
+                    <Ionicons
+                      name="notifications"
+                      size={16}
+                      color={COLORS.primary}>
+                      Notifications
                     </Ionicons>
                   </View>
                   <Card.Title
@@ -340,7 +351,7 @@ export default function HomeScreen({navigation, route}) {
                                     {/* {moment(notification.item.Datex).format(
                                       'MMMM DD, YYYY hh:mm:ss',
                                     )} */}
-                                    {(notification.item.Datex)}
+                                    {notification.item.Datex}
                                   </Text>
                                   <Text
                                     style={{

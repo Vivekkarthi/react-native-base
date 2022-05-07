@@ -77,24 +77,19 @@ const firebaseAuthErrors = error => {
 };
 
 const getRequest = props => {
+  console.log(
+    '-------------------------------------',
+    `${CONFIG.API_URL}${props.url}?${props.queryParams}`,
+  );
   return axios
     .get(`${CONFIG.API_URL}${props.url}?${props.queryParams}`)
     .then(response => {
-      console.log(
-        '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++',
-        response,
-      );
       if (response.data) {
         return response.data;
       }
     })
     .catch(error => {
       console.log('error+++++++++++error: ', error.message);
-      // if (error.response.status === 500 || error.response.status === 403) {
-      //   showUnderMaintain(props.navigation);
-      // } else {
-      //   throw error.response.data;
-      // }
       throw error.message;
     });
 };
@@ -187,14 +182,24 @@ const getTypeOfMsg = MsgCode => {
 
 const getBatteryType = type => {
   switch (type) {
+    case 10:
+      return 'battery-10';
     case 20:
       return 'battery-20';
+    case 30:
+      return 'battery-30';
     case 40:
       return 'battery-40';
+    case 50:
+      return 'battery-50';
     case 60:
       return 'battery-60';
+    case 70:
+      return 'battery-70';
     case 80:
       return 'battery-80';
+    case 90:
+      return 'battery-90';
     case 100:
       return 'battery';
     default:
@@ -203,14 +208,24 @@ const getBatteryType = type => {
 };
 const getBatteryTypeColor = percent => {
   switch (percent) {
+    case 10:
+      return COLORS.batter10;
     case 20:
       return COLORS.batter20;
+    case 30:
+      return COLORS.batter30;
     case 40:
       return COLORS.batter40;
+    case 50:
+      return COLORS.batter50;
     case 60:
       return COLORS.batter60;
+    case 70:
+      return COLORS.batter70;
     case 80:
       return COLORS.batter80;
+    case 90:
+      return COLORS.batter90;
     case 100:
       return COLORS.batter100;
     default:

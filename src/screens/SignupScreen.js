@@ -22,6 +22,7 @@ import AppStatusBar from '../components/AppStatusBar';
 import {isEmpty} from 'lodash';
 
 const SignupScreen = ({navigation}) => {
+  console.log('navigationnavigationnavigationnavigation', navigation);
   const [inputUser, setInputUser] = useState({
     Name: '',
     Email: '',
@@ -69,43 +70,19 @@ const SignupScreen = ({navigation}) => {
     setInputUser(() => formData);
     memberRegister(user, navigation)
       .then(async resp => {
-        if (resp === 'success') {
+        if (resp === 'Success') {
           //Good
-          // toast.show('You have registered successfully.', {
-          //   type: 'custom_type',
-          //   animationDuration: 100,
-          //   data: {
-          //     type: 'success',
-          //     title: 'Success',
-          //   },
-          // });
           setLoader(false);
           navigation.navigate('Login');
         } else {
           // Not Good
           setLoader(false);
           setRegistrationError(resp);
-          // toast.show(resp, {
-          //   type: 'custom_type',
-          //   animationDuration: 100,
-          //   data: {
-          //     type: 'error',
-          //     title: 'Failure',
-          //   },
-          // });
         }
       })
       .catch(error => {
         setLoader(false);
         setRegistrationError(error.message);
-        // toast.show(error.message, {
-        //   type: 'custom_type',
-        //   animationDuration: 100,
-        //   data: {
-        //     type: 'error',
-        //     title: 'Failure',
-        //   },
-        // });
       });
   };
 

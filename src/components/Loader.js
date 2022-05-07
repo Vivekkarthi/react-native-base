@@ -23,8 +23,8 @@ const Loader = () => {
           style={{
             justifyContent: 'center',
             alignSelf: 'center',
-            width: '50%',
-            height: '50%',
+            width: '100%',
+            // height: '50%',
           }}
           resizeMode="cover"
         />
