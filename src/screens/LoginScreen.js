@@ -69,14 +69,6 @@ const LoginScreen = ({navigation}) => {
         if (resp.USERRECORDID !== 0 && resp.AddlField1 === '') {
           //Good
           setLoader(false);
-          // toast.show(`${resp.LoginNAME} you have logged in successfully.`, {
-          //   type: 'custom_type',
-          //   animationDuration: 100,
-          //   data: {
-          //     type: 'success',
-          //     title: 'Success',
-          //   },
-          // });
           AsyncStorage.setItem('loggedUser', JSON.stringify(resp));
           dispatch(rememberMe(user, isSelected));
           dispatch(saveMemberDetails(resp));
@@ -84,27 +76,11 @@ const LoginScreen = ({navigation}) => {
           // Not Good
           setLoader(false);
           setLoginError(resp.AddlField1);
-          // toast.show(resp.AddlField1, {
-          //   type: 'custom_type',
-          //   animationDuration: 100,
-          //   data: {
-          //     type: 'error',
-          //     title: 'Invalid login',
-          //   },
-          // });
         }
       })
       .catch(error => {
         setLoader(false);
         setLoginError(error.message);
-        // toast.show(error.message, {
-        //   type: 'custom_type',
-        //   animationDuration: 100,
-        //   data: {
-        //     type: 'error',
-        //     title: 'Invalid login',
-        //   },
-        // });
       });
   };
 
