@@ -7,6 +7,7 @@ export const COLORS = {
   black: '#322F3B',
   white: '#FFFFFF',
   lightGray: '#EFEEEF',
+  gray: '#6d757a',
   transparent: 'transparent',
   background: '#dfe1eb',
   messageColor1: '#0DA728',
@@ -15,10 +16,20 @@ export const COLORS = {
   messageColor4: '#8a5235',
 
   batter0: '#f3432e',
+
+  batter10: '#fd2200',
   batter20: '#fd2200',
+
+  batter30: '#f09f39',
   batter40: '#f09f39',
+
+  batter50: '#efc81b',
   batter60: '#efc81b',
+
+  batter70: '#16e764',
   batter80: '#16e764',
+
+  batter90: '#00fd60',
   batter100: '#00fd60',
 };
 

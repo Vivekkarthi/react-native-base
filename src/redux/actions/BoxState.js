@@ -9,7 +9,7 @@ export const BOX_SUCCESS = 'BoxState/BOX_SUCCESS';
 export const BOX_FAILURE = 'BoxState/BOX_FAILURE';
 
 export const fetchBoxData = (LoginId, controllerId) => {
-  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=""`;
+  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=`;
 
   const params = {
     url: ENDPOINTURL.MemberMyBox,
@@ -41,7 +41,7 @@ export const saveMyBoxDetails = data => {
 };
 
 export const callAlarmOnOffBox = (LoginId, controllerId, Alarm) => {
-  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=${LoginId}&alarmstate=${Alarm}`;
+  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=&alarmstate=${Alarm}`;
 
   const params = {
     url: ENDPOINTURL.MemberUpdateAlarm,
@@ -61,7 +61,7 @@ export const callInternalOrExternalCameraOnBox = (
   controllerId,
   CameraType,
 ) => {
-  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=${LoginId}&cameratype=${CameraType}`;
+  const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=&cameratype=${CameraType}`;
 
   const params = {
     url: ENDPOINTURL.MemberUpdateOnDemandCamera,

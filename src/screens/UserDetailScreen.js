@@ -15,13 +15,14 @@ import {Button} from 'react-native-paper';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
-import {registerSchema} from '../utils/ValidateSchema';
+import {addUserSchema} from '../utils/ValidateSchema';
 import {memberAdduser} from '../redux/actions/AuthState';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import AppStatusBar from '../components/AppStatusBar';
 import {isEmpty} from 'lodash';
 import StaticBottomTabs from '../components/StaticBottomTabs';
+import {useSelector} from 'react-redux';
 
 const UserDetailScreen = ({navigation, route}) => {
   const [inputUser, setInputUser] = useState({
@@ -31,9 +32,10 @@ const UserDetailScreen = ({navigation, route}) => {
     Password: '',
   });
   const [loader, setLoader] = useState(false);
-  const [registrationError, setRegistrationError] = useState('');
+  const [addUserError, setAddUserError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
+  const {loggedMember} = useSelector(state => state.AuthState);
 
   // const toast = useToast();
 
@@ -44,7 +46,7 @@ const UserDetailScreen = ({navigation, route}) => {
       PhoneNumber: '',
       Password: '',
     },
-    resolver: yupResolver(registerSchema),
+    resolver: yupResolver(addUserSchema),
   });
   const {
     handleSubmit,
@@ -56,7 +58,7 @@ const UserDetailScreen = ({navigation, route}) => {
   const PhoneNumberRef = useRef(null);
   const PasswordRef = useRef(null);
 
-  const onUsertSubmit = async user => {
+  const onUserSubmit = async user => {
     setLoader(true);
     const formData = {
       Name: user.Name,
@@ -65,37 +67,21 @@ const UserDetailScreen = ({navigation, route}) => {
       Password: user.Password,
     };
     setInputUser(() => formData);
-    memberAdduser(user, navigation)
+    memberAdduser(user, loggedMember.CustID)
       .then(async resp => {
-        if (resp === 'success') {
+        if (resp === 'Success') {
           //Good
-          // toast.show('You have registered successfully.', {
-          //   type: 'custom_type',
-          //   animationDuration: 100,
-          //   data: {
-          //     type: 'success',
-          //     title: 'Success',
-          //   },
-          // });
           setLoader(false);
           navigation.navigate('Users');
         } else {
           // Not Good
           setLoader(false);
-          setRegistrationError(resp);
-          // toast.show(resp, {
-          //   type: 'custom_type',
-          //   animationDuration: 100,
-          //   data: {
-          //     type: 'error',
-          //     title: 'Failure',
-          //   },
-          // });
+          setAddUserError(resp);
         }
       })
       .catch(error => {
         setLoader(false);
-        setRegistrationError(error.message);
+        setAddUserError(error.message);
         // toast.show(error.message, {
         //   type: 'custom_type',
         //   animationDuration: 100,
@@ -210,7 +196,7 @@ const UserDetailScreen = ({navigation, route}) => {
           </View>
         </FormProvider>
 
-        {!isEmpty(registrationError) ? (
+        {!isEmpty(addUserError) ? (
           <Text
             style={{
               fontSize: 16,
@@ -218,17 +204,17 @@ const UserDetailScreen = ({navigation, route}) => {
               textAlign: 'center',
               color: '#D83F50',
             }}>
-            {registrationError}
+            {addUserError}
           </Text>
         ) : null}
 
         <FormButton
-          buttonTitle="Create User"
+          buttonTitle="Save"
           isPrimary={true}
           style={{
             marginVertical: SIZES.base * 2,
           }}
-          onPress={handleSubmit(onUsertSubmit)}
+          onPress={handleSubmit(onUserSubmit)}
         />
       </View>
     );
@@ -237,24 +223,25 @@ const UserDetailScreen = ({navigation, route}) => {
   return (
     <>
       <FlatList
-        style={styles.container}
+        style={[{flex: 1}, styles.container]}
         keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}
         data={[{ID: '1'}]}
         keyExtractor={item => `${item.ID}`}
         renderItem={() => (
-          <View contentContainerStyle={[styles.container]}>
+          <View>
             <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
-            {loader ? <Loader /> : null}
-            {/* <Image
-              source={require('../../assets/images/icon.png')}
+            <View
               style={{
-                alignSelf: 'center',
-                height: 150,
-                width: 280,
-              }}
-              resizeMode="stretch"
-            /> */}
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                marginBottom: 10,
+              }}>
+              <Button mode="contained" onPress={() => navigation.goBack()}>
+                Back
+              </Button>
+            </View>
+            {loader ? <Loader /> : null}
 
             <View
               style={{

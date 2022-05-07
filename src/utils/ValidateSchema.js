@@ -6,20 +6,17 @@ const loginSchema = yup.object().shape({
 });
 
 const registerSchema = yup.object().shape({
-  Name: yup
-    .string()
-    .min(2)
-    .max(12)
-    .matches(/^['a-zA-Z '‘’z -]+$/, 'Please enter valid name')
-    .required('Name is required'),
-  Email: yup.string().email().required(),
+  Name: yup.string().min(2).max(12).trim().required('Name is required'),
+  Email: yup.string().email().trim().required(),
   PhoneNumber: yup
     .string()
+    .trim()
     .matches(/^\d+$/, 'Please Enter Valid Mobile Number')
     .matches(/^\d{3}\d{3}\d{4}$/, 'Mobile number needs to be 10 digits')
     .required('Mobile is required'),
   Password: yup
     .string()
+    .trim()
     // .min(6)
     // .max(24)
     // .matches(
@@ -30,8 +27,20 @@ const registerSchema = yup.object().shape({
   ControllerId: yup.string().required('Controller ID is required'),
 });
 
+const addUserSchema = yup.object().shape({
+  Name: yup.string().min(2).max(12).trim().required('Name is required'),
+  Email: yup.string().email().trim().required(),
+  PhoneNumber: yup
+    .string()
+    .trim()
+    .matches(/^\d+$/, 'Please Enter Valid Mobile Number')
+    .matches(/^\d{3}\d{3}\d{4}$/, 'Mobile number needs to be 10 digits')
+    .required('Mobile is required'),
+  Password: yup.string().trim().required(),
+});
+
 const resetPassSchema = yup.object().shape({
   Email: yup.string().email().required(),
 });
 
-export {loginSchema, registerSchema, resetPassSchema};
+export {loginSchema, registerSchema, resetPassSchema, addUserSchema};

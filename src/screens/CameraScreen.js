@@ -43,26 +43,11 @@ const CameraScreen = ({navigation, route}) => {
           source={
             item.Filename
               ? {
-                  uri: `${CONFIG.IMAGE_URL}/${item.Filename}`,
+                  uri: item.Filename,
                 }
               : require('../../assets/images/no-image.jpg')
           }
         />
-        {homeDetails.Photos.length > 1 && (
-          <View style={styles.packageDotView}>
-            {homeDetails.Photos.map(({}, index) => (
-              <TouchableOpacity
-                key={index.toString()}
-                style={[
-                  styles.packageCircle,
-                  {
-                    backgroundColor: index === currentIndex ? 'black' : 'grey',
-                  },
-                ]}
-                onPress={() => scrollToIndex(index)}></TouchableOpacity>
-            ))}
-          </View>
-        )}
       </TouchableOpacity>
     );
   };
@@ -114,6 +99,25 @@ const CameraScreen = ({navigation, route}) => {
                       viewabilityConfig={viewConfigRef}
                       onViewableItemsChanged={onViewRef.current}
                     />
+
+                    {homeDetails.Photos.length > 1 && (
+                      <View style={styles.packageDotView}>
+                        {homeDetails.Photos.map(({}, index) => (
+                          <TouchableOpacity
+                            key={index.toString()}
+                            style={[
+                              styles.packageCircle,
+                              {
+                                backgroundColor:
+                                  index === currentIndex ? 'black' : 'grey',
+                              },
+                            ]}
+                            onPress={() =>
+                              scrollToIndex(index)
+                            }></TouchableOpacity>
+                        ))}
+                      </View>
+                    )}
                   </>
                 ) : (
                   <Image
@@ -132,20 +136,40 @@ const CameraScreen = ({navigation, route}) => {
                   External Camera
                 </Text>
 
-                {homeDetails.Photos.length ? (
-                  <FlatList
-                    data={homeDetails.Photos}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={renderItem}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    pagingEnabled
-                    ref={ref => {
-                      flatListRef.current = ref;
-                    }}
-                    viewabilityConfig={viewConfigRef}
-                    onViewableItemsChanged={onViewRef.current}
-                  />
+                {homeDetails.ExternalPhotos.length ? (
+                  <>
+                    <FlatList
+                      data={homeDetails.ExternalPhotos}
+                      keyExtractor={(item, index) => index.toString()}
+                      renderItem={renderItem}
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                      pagingEnabled
+                      ref={ref => {
+                        flatListRef.current = ref;
+                      }}
+                      viewabilityConfig={viewConfigRef}
+                      onViewableItemsChanged={onViewRef.current}
+                    />
+                    {homeDetails.ExternalPhotos.length > 1 && (
+                      <View style={styles.packageDotView}>
+                        {homeDetails.ExternalPhotos.map(({}, index) => (
+                          <TouchableOpacity
+                            key={index.toString()}
+                            style={[
+                              styles.packageCircle,
+                              {
+                                backgroundColor:
+                                  index === currentIndex ? 'black' : 'grey',
+                              },
+                            ]}
+                            onPress={() =>
+                              scrollToIndex(index)
+                            }></TouchableOpacity>
+                        ))}
+                      </View>
+                    )}
+                  </>
                 ) : (
                   <Image
                     style={[styles.cameraImage, styles.mt5, styles.mb5]}

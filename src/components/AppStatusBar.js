@@ -8,7 +8,7 @@ const AppStatusBar = props => {
       return (
         <View
           style={Platform.OS === 'ios' ? {backgroundColor: props.bg} : null}>
-          <View style={{height: STATUSBAR_HEIGHT}}>
+          <View>
             <StatusBar
               translucent={true}
               animated={true}
@@ -23,7 +23,7 @@ const AppStatusBar = props => {
       return (
         <View
           style={Platform.OS === 'ios' ? {backgroundColor: props.bg} : null}>
-          <View style={{height: STATUSBAR_HEIGHT}}>
+          <View>
             <StatusBar
               translucent={true}
               animated={true}
@@ -40,7 +40,7 @@ const AppStatusBar = props => {
           style={
             Platform.OS === 'ios' ? {backgroundColor: 'transparent'} : null
           }>
-          <View style={{height: STATUSBAR_HEIGHT}}>
+          <View>
             <StatusBar
               translucent={true}
               animated={true}

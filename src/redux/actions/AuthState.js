@@ -4,6 +4,7 @@ import {isEqual} from 'lodash';
 import {NetworkInfo} from 'react-native-network-info';
 import DeviceInfo from 'react-native-device-info';
 import {ENDPOINTURL} from '../../utils/Constants';
+import {getFcmToken} from '../../utils/NotificationServices';
 
 export const initialState = {
   loggedMember: {},
@@ -27,6 +28,42 @@ export async function memberLogin(userData, navigation) {
   const queryParams = `sK=token&suid=${userData.PhoneNumber}&spass=${userData.Password}&sip=${ipAddress}`;
   const params = {
     url: ENDPOINTURL.MemberLogin,
+    token: '',
+    queryParams,
+  };
+  return getRequest(params)
+    .then(userResp => {
+      if (userResp.USERRECORDID !== 0 && userResp.AddlField1 === '') {
+        memberMobileToken(userResp)
+          .then(resp => {
+            console.log(
+              '+++++++++++++++++++++++++ NOTIFY ++++++++++++++++++++',
+              resp,
+            );
+          })
+          .catch(error => {
+            console.log(
+              '################# NOTIFY Error #################',
+              error,
+            );
+            throw error;
+          });
+        return userResp;
+      }
+    })
+    .catch(error => {
+      console.log('################# Error #################', error);
+      throw error;
+    });
+}
+
+export async function memberMobileToken(userData) {
+  const fcmToken = await getFcmToken();
+
+  console.log('**********************************', fcmToken);
+  const queryParams = `sK=token&hardwareid=${userData.ControllerID}&userid=${userData.LoginID}&sTokenx=${fcmToken}`;
+  const params = {
+    url: ENDPOINTURL.MemberMobileToken,
     token: '',
     queryParams,
   };
@@ -56,8 +93,8 @@ export function memberRegister(userData, navigation) {
       throw error;
     });
 }
-export function memberAdduser(userData, navigation) {
-  const queryParams = `sK=token&namex=${userData.Name}&spass=${userData.Password}&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=${userData.ControllerId}&icustid=${CustID}`;
+export function memberAdduser(userData, CustID) {
+  const queryParams = `sK=token&namex=${userData.Name}&spass=${userData.Password}&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=&icustid=${CustID}`;
   const params = {
     url: ENDPOINTURL.MemberRegister,
     token: '',

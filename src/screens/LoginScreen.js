@@ -69,14 +69,6 @@ const LoginScreen = ({navigation}) => {
         if (resp.USERRECORDID !== 0 && resp.AddlField1 === '') {
           //Good
           setLoader(false);
-          // toast.show(`${resp.LoginNAME} you have logged in successfully.`, {
-          //   type: 'custom_type',
-          //   animationDuration: 100,
-          //   data: {
-          //     type: 'success',
-          //     title: 'Success',
-          //   },
-          // });
           AsyncStorage.setItem('loggedUser', JSON.stringify(resp));
           dispatch(rememberMe(user, isSelected));
           dispatch(saveMemberDetails(resp));
@@ -84,27 +76,11 @@ const LoginScreen = ({navigation}) => {
           // Not Good
           setLoader(false);
           setLoginError(resp.AddlField1);
-          // toast.show(resp.AddlField1, {
-          //   type: 'custom_type',
-          //   animationDuration: 100,
-          //   data: {
-          //     type: 'error',
-          //     title: 'Invalid login',
-          //   },
-          // });
         }
       })
       .catch(error => {
         setLoader(false);
         setLoginError(error.message);
-        // toast.show(error.message, {
-        //   type: 'custom_type',
-        //   animationDuration: 100,
-        //   data: {
-        //     type: 'error',
-        //     title: 'Invalid login',
-        //   },
-        // });
       });
   };
 
@@ -132,13 +108,13 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <FlatList
-      style={styles.container}
+      style={[{flex: 1}, styles.container]}
       keyboardShouldPersistTaps="always"
       showsVerticalScrollIndicator={false}
       data={[{ID: '1'}]}
       keyExtractor={item => `${item.ID}`}
       renderItem={() => (
-        <View contentContainerStyle={[styles.container]}>
+        <View>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           {loader ? <Loader /> : null}
           <Image
@@ -159,7 +135,7 @@ const LoginScreen = ({navigation}) => {
               borderTopEndRadius: SIZES.radius * 2,
               padding: SIZES.base * 2,
             }}>
-            <Text style={styles.text}>Enter your credentials.</Text>
+            <Text style={styles.text}>Enter your credentials</Text>
 
             <KeyboardAvoidingView
               style={{flex: 1}}
