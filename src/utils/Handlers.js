@@ -15,15 +15,14 @@ const Headers = () => {
   return axiosConfig;
 };
 
-const AuthHeaders = (token, cancelToken) => {
+const AuthHeaders = (token) => {
   const axiosConfig = {
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },
   };
-  !isEmpty(cancelToken) ? (axiosConfig.cancelToken = cancelToken.token) : null;
-  !isEmpty(token) ? (axiosConfig.headers['usertoken'] = token) : null;
+  !isEmpty(token) ? (axiosConfig.headers['token'] = token) : null;
   return axiosConfig;
 };
 
@@ -77,10 +76,6 @@ const firebaseAuthErrors = error => {
 };
 
 const getRequest = props => {
-  console.log(
-    '-------------------------------------',
-    `${CONFIG.API_URL}${props.url}?${props.queryParams}`,
-  );
   return axios
     .get(`${CONFIG.API_URL}${props.url}?${props.queryParams}`)
     .then(response => {
@@ -94,14 +89,8 @@ const getRequest = props => {
     });
 };
 
-const postRequest = (props, cancelToken) => {
-  return axios
-    .post(
-      CONFI.API_URL + props.url,
-      props.data,
-      AuthHeaders(props.token, cancelToken),
-    )
-    .then(response => {
+const postRequest = (props) => {
+  return axios.post(`${CONFIG.API_URL}${props.url}?${props.queryParams}`).then(response => {
       if (response.data) {
         return response.data;
       }

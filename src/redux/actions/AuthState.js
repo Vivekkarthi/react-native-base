@@ -36,10 +36,9 @@ export async function memberLogin(userData, navigation) {
       if (userResp.USERRECORDID !== 0 && userResp.AddlField1 === '') {
         memberMobileToken(userResp)
           .then(resp => {
-            console.log(
-              '+++++++++++++++++++++++++ NOTIFY ++++++++++++++++++++',
-              resp,
-            );
+            if (resp === 'SUCCESS') {
+              console.log('#################### NOTIFICATION SUCCESS ######################');
+            }
           })
           .catch(error => {
             console.log(
@@ -59,15 +58,13 @@ export async function memberLogin(userData, navigation) {
 
 export async function memberMobileToken(userData) {
   const fcmToken = await getFcmToken();
-
-  console.log('**********************************', fcmToken);
   const queryParams = `sK=token&hardwareid=${userData.ControllerID}&userid=${userData.LoginID}&sTokenx=${fcmToken}`;
   const params = {
     url: ENDPOINTURL.MemberMobileToken,
     token: '',
     queryParams,
   };
-  return getRequest(params)
+  return postRequest(params)
     .then(userResp => {
       return userResp;
     })
