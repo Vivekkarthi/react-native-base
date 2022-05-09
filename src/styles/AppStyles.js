@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
   MainContainer: {
     flex: 1,
     paddingTop: 5,
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: 14,
+    paddingRight: 14,
     // marginTop: -15,
   },
   f14: {

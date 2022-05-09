@@ -91,7 +91,7 @@ export function memberRegister(userData, navigation) {
     });
 }
 export function memberAdduser(userData, loggedMember) {
-  const queryParams = `sK=token&namex=${userData.Name}&spass=${userData.Password}&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=${loggedMember.ControllerId}&icustid=${loggedMember.CustID}`;
+  const queryParams = `sK=token&namex=${userData.Name}&spass=${userData.Password}&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=${loggedMember.ControllerName}&icustid=${loggedMember.CustID}`;
   const params = {
     url: ENDPOINTURL.MemberRegister,
     token: '',

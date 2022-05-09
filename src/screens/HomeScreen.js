@@ -271,8 +271,7 @@ export default function HomeScreen({navigation, route}) {
                     <Ionicons
                       name="notifications"
                       size={16}
-                      color={COLORS.primary}>
-                      Notifications
+                      color={COLORS.primary}> Notifications
                     </Ionicons>
                   </View>
                   <Card.Title
