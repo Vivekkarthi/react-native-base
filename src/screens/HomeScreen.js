@@ -168,7 +168,7 @@ export default function HomeScreen({navigation, route}) {
             }
             data={[{ID: '1'}]}
             keyExtractor={item => `${item.ID}`}
-            renderItem={() => (
+            renderItem={item => (
               <>
                 <View
                   style={{
@@ -192,6 +192,17 @@ export default function HomeScreen({navigation, route}) {
                         justifyContent: 'center',
                         width: '48%',
                       }}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          fontSize: 18,
+                          backgroundColor: '#178b93',
+                          paddingBottom:10,
+                          paddingTop:9,
+                          color: COLORS.white,
+                        }}>
+                        Box status
+                      </Text>
                       <Card.Cover
                         style={{
                           alignSelf: 'center',
@@ -237,8 +248,18 @@ export default function HomeScreen({navigation, route}) {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         width: '48%',
-                        padding: 10,
                       }}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          fontSize: 18,
+                          backgroundColor: '#178b93',
+                          color: COLORS.white,
+                          paddingBottom:10,
+                          paddingTop:9,
+                        }}>
+                        Internal camera
+                      </Text>
                       <Card.Cover
                         style={{
                           alignSelf: 'center',
@@ -254,7 +275,22 @@ export default function HomeScreen({navigation, route}) {
                             : require('../../assets/images/no-image.jpg')
                         }
                       />
-                      <Text
+                      <FlatList
+                        data={homeDetails.Photos}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={Photos => (
+                          <Text
+                            style={{
+                              textAlign: 'center',
+                              color: '#000000',
+                              fontWeight: 'bold',
+                              lineHeight: 35,
+                            }}>
+                            {Photos.item.DateTimeX}
+                          </Text>
+                        )}
+                      />
+                      {/* <Text
                         style={{
                           textAlign: 'center',
                           top: 10,
@@ -262,16 +298,19 @@ export default function HomeScreen({navigation, route}) {
                           fontWeight: 'bold',
                         }}>
                         Internal Camera
-                      </Text>
+                      </Text> */}
                     </Card>
                   </View>
                 </View>
-                <Card style={{marginBottom: 13, marginTop: 8}}>
-                  <View style={{alignSelf: 'center', paddingTop: 5}}>
+                <Card style={{marginBottom: 13, marginTop: 2}}>
+                  <View style={{alignSelf: 'center',paddingBottom:12,
+                    paddingTop:12,backgroundColor: '#178b93', width: '100%'}}>
                     <Ionicons
                       name="notifications"
                       size={16}
-                      color={COLORS.primary}> Notifications
+                      style={{textAlign: 'center', justifyContent: 'center'}}
+                      color={COLORS.white}>
+                      Notifications
                     </Ionicons>
                   </View>
                   <Card.Title

@@ -53,7 +53,7 @@ const UsersScreen = ({navigation, route}) => {
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text style={styles.f18}>Users</Text>
+            <Text style={styles.f18}> Users</Text>
           </Ionicons>
           <View
             style={{

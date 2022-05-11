@@ -205,6 +205,8 @@ export default function MyboxScreen({navigation, route}) {
                     marginBottom: 8,
                     backgroundColor: COLORS.primary,
                     color: COLORS.white,
+                    paddingTop:9,
+                    paddingBottom:10,
                   }}>
                   Camera
                 </Text>
@@ -401,6 +403,8 @@ export default function MyboxScreen({navigation, route}) {
                     marginBottom: 8,
                     backgroundColor: COLORS.primary,
                     color: COLORS.white,
+                    paddingTop:9,
+                    paddingBottom:10,
                   }}>
                   Alaram
                 </Text>
@@ -457,7 +461,9 @@ export default function MyboxScreen({navigation, route}) {
                     marginTop: 5,
                     marginBottom: 8,
                     backgroundColor: COLORS.gray,
-                    color: COLORS.primary,
+                    color: COLORS.white,
+                    paddingTop:9,
+                    paddingBottom:10,
                   }}>
                   Others
                 </Text>
@@ -478,12 +484,12 @@ export default function MyboxScreen({navigation, route}) {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         width: '48%',
-                        height: 150,
+                        height: 160,
                       }}>
                       <View style={{height: '75%'}}>
                         <RNSpeedometer
-                          value={boxDetails.Battery ? boxDetails.Battery : 0}
-                          size={140}
+                          value={boxDetails.WIFI ? boxDetails.WIFI : 0}
+                          size={180}
                           wrapperStyle={{
                             alignSelf: 'center',
                           }}
@@ -491,8 +497,8 @@ export default function MyboxScreen({navigation, route}) {
                         />
                       </View>
 
-                      <View style={{height: '25%'}}>
-                        <Button>Battery</Button>
+                      <View style={{height: '25%',paddingTop:5}}>
+                        <Button>WIFI</Button>
                       </View>
                     </Card>
                     <Card
@@ -500,7 +506,7 @@ export default function MyboxScreen({navigation, route}) {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         width: '48%',
-                        height: 150,
+                        height: 160,
                       }}>
                       <View style={{height: '75%'}}>
                         <MaterialCommunityIcons
@@ -508,21 +514,21 @@ export default function MyboxScreen({navigation, route}) {
                             alignSelf: 'center',
                           }}
                           name={getBatteryType(
-                            boxDetails.WIFI
-                              ? Math.round(boxDetails.WIFI / 10) * 10
+                            boxDetails.Battery
+                              ? Math.round(boxDetails.Battery / 10) * 10
                               : 0,
                           )}
                           color={getBatteryTypeColor(
-                            boxDetails.WIFI
-                              ? Math.round(boxDetails.WIFI / 10) * 10
+                            boxDetails.Battery
+                              ? Math.round(boxDetails.Battery / 10) * 10
                               : 0,
                           )}
-                          size={120}
+                          size={105}
                         />
                       </View>
-
-                      <View style={{height: '25%'}}>
-                        <Button>Wifi</Button>
+                        <Text style={{textAlign: 'center', justifyContent: 'center',bottom:17, fontSize:24, fontWeight:'bold'}}>{boxDetails.Battery ? boxDetails.Battery : 0}</Text>
+                      <View style={{height: '25%', bottom:24}}>
+                        <Button>Battery</Button>
                       </View>
                     </Card>
                   </View>

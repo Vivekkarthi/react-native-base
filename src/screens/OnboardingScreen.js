@@ -51,8 +51,8 @@ const OnboardingScreen = ({navigation}) => {
         {
           backgroundColor: '#a6e4d0',
           image: (
-            <Image
-              source={require('../../assets/images/onboarding-img1.png')}
+            <Image style={{height:330,width:420}}
+              source={{uri:'https://dbmobileapp.s3.us-west-1.amazonaws.com/images/db1.jpg'}}
             />
           ),
           title: "WORLD's No. 1 Package Delivery Box",
@@ -61,8 +61,8 @@ const OnboardingScreen = ({navigation}) => {
         {
           backgroundColor: '#fdeb93',
           image: (
-            <Image
-              source={require('../../assets/images/onboarding-img2.png')}
+            <Image style={{height:330,width:420}}
+              source={{uri:'https://dbmobileapp.s3.us-west-1.amazonaws.com/images/db2.jpg'}}
             />
           ),
           title: 'Secured & Not Removable',
@@ -71,8 +71,8 @@ const OnboardingScreen = ({navigation}) => {
         {
           backgroundColor: '#e9bcbe',
           image: (
-            <Image
-              source={require('../../assets/images/onboarding-img3.png')}
+            <Image style={{height:240,width:420}}
+            source={{uri:'https://dbmobileapp.s3.us-west-1.amazonaws.com/images/db3.jpg'}}
             />
           ),
           title: 'Weatherproof & Water Repellent',

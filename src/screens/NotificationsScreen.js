@@ -98,7 +98,7 @@ const NotificationsScreen = ({navigation, route}) => {
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text style={styles.f18}>Notifications</Text>
+            <Text style={styles.f18}> Notifications</Text>
           </Ionicons>
           <View style={{flex: 1, paddingTop: 10}}>
             <Card style={{marginBottom: 5}}>

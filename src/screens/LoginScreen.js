@@ -28,9 +28,11 @@ import {
 import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
-import {isEmpty} from 'lodash';
+import {isEmpty, isUndefined} from 'lodash';
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({navigation, content}) => {
+  console.log('contentcontentcontentcontentcontentcontent', content);
+  //content = 'SSSSSSSSSSSSSSSSSSSS';
   const {rememberLogin} = useSelector(state => state.AuthState);
   const [inputUser, setInputUser] = useState({PhoneNumber: '', Password: ''});
   const [loginError, setLoginError] = useState('');
@@ -267,6 +269,18 @@ const LoginScreen = ({navigation}) => {
                           color: '#D83F50',
                         }}>
                         {loginError}
+                      </Text>
+                    ) : null}
+
+                    {!isUndefined(content) ? (
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontFamily: 'Lato-Regular',
+                          textAlign: 'center',
+                          color: 'green',
+                        }}>
+                        {content}
                       </Text>
                     ) : null}
 

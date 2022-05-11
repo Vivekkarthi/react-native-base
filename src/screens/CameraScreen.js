@@ -43,11 +43,20 @@ const CameraScreen = ({navigation, route}) => {
           source={
             item.Filename
               ? {
-                  uri: item.Filename,
+                  uri: item.Filename, 
                 }
               : require('../../assets/images/no-image.jpg')
           }
         />
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: '#000000',
+                  fontWeight: 'bold',
+                  lineHeight: 35,
+                }}>
+                {item.DateTimeX}
+              </Text>
       </TouchableOpacity>
     );
   };
@@ -80,6 +89,8 @@ const CameraScreen = ({navigation, route}) => {
                     textAlign: 'center',
                     fontSize: 18,
                     backgroundColor: COLORS.primary,
+                    paddingBottom:10,
+                    paddingTop:9,
                     color: COLORS.white,
                   }}>
                   Internal Camera
@@ -125,13 +136,14 @@ const CameraScreen = ({navigation, route}) => {
                     source={require('../../assets/images/no-image.jpg')}
                   />
                 )}
-
                 <Text
                   style={{
                     textAlign: 'center',
                     fontSize: 18,
                     backgroundColor: COLORS.primary,
                     color: COLORS.white,
+                    paddingBottom:10,
+                    paddingTop:9,
                   }}>
                   External Camera
                 </Text>

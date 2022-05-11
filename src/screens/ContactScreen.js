@@ -28,7 +28,7 @@ const ContactScreen = ({navigation, route}) => {
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text style={styles.f18}>Contact Us</Text>
+            <Text style={styles.f18}> Contact Us</Text>
           </Ionicons>
           <View
             style={{
