@@ -6,6 +6,7 @@ import {
   FlatList,
   Image,
   Text,
+  RefreshControl
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -24,6 +25,7 @@ const CameraScreen = ({navigation, route}) => {
   const flatListRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const {homeDetails} = useSelector(state => state.HomeState);
+  const [refreshing, setRefreshing] = useState(false);
 
   const onViewRef = useRef(({changed}) => {
     if (changed[0].isViewable) {
@@ -80,6 +82,13 @@ const CameraScreen = ({navigation, route}) => {
           <FlatList
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                colors={[COLORS.secondary, COLORS.white]}
+                refreshing={refreshing}
+          
+              />
+            }
             data={[{ID: '1'}]}
             keyExtractor={item => `${item.ID}`}
             renderItem={() => (

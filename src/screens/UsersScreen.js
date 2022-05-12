@@ -12,6 +12,7 @@ import {Avatar, Button, Card} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SwipeListView} from 'react-native-swipe-list-view';
 
+import {memberGetuser} from '../redux/actions/AuthState';
 import AppStatusBar from '../components/AppStatusBar';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {COLORS} from '../constants';
@@ -73,7 +74,7 @@ const UsersScreen = ({navigation, route}) => {
               Add
             </Button>
           </View>
-          <SwipeListView
+           <SwipeListView
             data={listData}
             renderItem={(data, rowMap) => (
               <View
@@ -170,7 +171,7 @@ const UsersScreen = ({navigation, route}) => {
             previewOpenDelay={3000}
             disableRightSwipe
             showsVerticalScrollIndicator={false}
-          />
+          /> 
         </View>
       </SafeAreaView>
       <StaticBottomTabs navigation={navigation} routeName={route.name} />

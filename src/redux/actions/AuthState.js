@@ -107,6 +107,23 @@ export function memberAdduser(userData, loggedMember) {
     });
 }
 
+export function memberGetuser(controllerId) {
+  const queryParams = `sK=token&ihwidx=${controllerId}&sHWname=&icallfrom=0`;
+  const params = {
+    url: ENDPOINTURL.MemberGetuser,
+    token: '',
+    queryParams,
+  };
+
+  return getRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      throw error;
+    });
+}
+
 export const saveMemberDetails = userData => {
   return dispatch => {
     if (userData) {

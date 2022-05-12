@@ -126,12 +126,36 @@ export default function HomeScreen({navigation, route}) {
     setNotifyDate(moment(new Date()));
     getHomeData(new Date());
     setRefreshing(false);
-  }, [getHomeData]);
+  }, []);
 
   useEffect(() => {
-    getHomeData(new Date());
+    getHomeData(notifyDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const intervalCall = setInterval(() => {
+      
+    console.log('*******************************************************',moment(notifyDate).format('YYYY-MM-DD'));
+      fetchHomeData(
+        loggedMember.LoginID,
+        loggedMember.ControllerID,
+        moment(notifyDate).format('YYYY-MM-DD'),
+      )
+        .then(async resp => {
+          if (resp.LastSyncDate) {
+            dispatch(saveMemberHomeDetails(resp));
+          } 
+        });
+    }, 1000 * homeDetails.MobileAppPageRefreshInterval);
+
+    return () => {
+      // clean up
+      clearInterval(intervalCall);
+    };
+  }, []);
+
+  
 
   return (
     <>
@@ -309,8 +333,7 @@ export default function HomeScreen({navigation, route}) {
                       name="notifications"
                       size={16}
                       style={{textAlign: 'center', justifyContent: 'center'}}
-                      color={COLORS.white}>
-                      Notifications
+                      color={COLORS.white}> Notifications
                     </Ionicons>
                   </View>
                   <Card.Title
@@ -351,6 +374,7 @@ export default function HomeScreen({navigation, route}) {
                             <View
                               style={{
                                 maxWidth: '100%',
+                                bottom:13,
                                 paddingHorizontal: 15,
                                 paddingVertical: 10,
                                 backgroundColor: '#fff',
@@ -418,7 +442,7 @@ export default function HomeScreen({navigation, route}) {
                           )}
                         />
                       ) : (
-                        <Card style={{backgroundColor: '#eef1f6'}}>
+                        <Card style={{backgroundColor: '#eef1f6',bottom:10}}>
                           <Card.Title
                             title={'No notifications found.'}
                             titleStyle={{fontSize: 14}}

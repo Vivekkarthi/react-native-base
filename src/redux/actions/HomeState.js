@@ -26,6 +26,7 @@ export const fetchHomeData = (LoginId, controllerId, getDate) => {
     });
 };
 
+
 export const callOpenCloseBox = (LoginId, controllerId, PkgLock) => {
   const queryParams = `ihwidx=${controllerId}&sK=token&hardwareid=&pkgstate=${PkgLock}`;
 

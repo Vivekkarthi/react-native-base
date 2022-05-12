@@ -39,6 +39,15 @@ const Done = ({...props}) => (
 );
 
 const OnboardingScreen = ({navigation}) => {
+  <Image
+            source={require('../../assets/images/icon.png')}
+            style={{
+              alignSelf: 'center',
+              height: 150,
+              width: 280,
+            }}
+            resizeMode="stretch"
+          />
   return (
     <Onboarding
       SkipButtonComponent={Skip}

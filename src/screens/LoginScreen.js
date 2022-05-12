@@ -30,9 +30,9 @@ import {COLORS, SIZES} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
 import {isEmpty, isUndefined} from 'lodash';
 
-const LoginScreen = ({navigation, content}) => {
+const LoginScreen = ({navigation, route}) => {
+  const content = route.params && route.params.content;
   console.log('contentcontentcontentcontentcontentcontent', content);
-  //content = 'SSSSSSSSSSSSSSSSSSSS';
   const {rememberLogin} = useSelector(state => state.AuthState);
   const [inputUser, setInputUser] = useState({PhoneNumber: '', Password: ''});
   const [loginError, setLoginError] = useState('');

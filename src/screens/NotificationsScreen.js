@@ -9,7 +9,7 @@ import {useToast} from 'react-native-toast-notifications';
 import AppStatusBar from '../components/AppStatusBar';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {COLORS} from '../constants';
-import {fetchHomeData, saveMemberHomeDetails} from '../redux/actions/HomeState';
+import { fetchNotifyData, saveMemberNotificationDetails } from '../redux/actions/NotificationState';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 import {Loader} from '../components/Loader';
 import styles from '../styles/AppStyles';
@@ -18,36 +18,25 @@ const NotificationsScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const toast = useToast();
   const {loggedMember} = useSelector(state => state.AuthState);
-  const {homeDetails} = useSelector(state => state.HomeState);
+  const {notificationDetails} = useSelector(state => state.NotificationState);
   const [loader, setLoader] = useState(true);
-  const [notifyDate, setNotifyDate] = useState(new Date());
+  const [notifyDate, setNotifyDate] = useState({fromDate:new Date(), toDate: new Date()});
 
-  const getHomeData = useCallback(
-    currentDate => {
+  const getNotifyData = useCallback(
+    (currentDate, toDate) => {
       setLoader(true);
       const convertDate = moment(currentDate).format('YYYY-MM-DD');
-      fetchHomeData(
+      const convertToDate = moment(toDate).format('YYYY-MM-DD');
+      fetchNotifyData(
         loggedMember.LoginID,
         loggedMember.ControllerID,
         convertDate,
+        convertToDate
       )
         .then(async resp => {
-          if (resp.LastSyncDate) {
-            //Good
-            dispatch(saveMemberHomeDetails(resp));
-            setLoader(false);
-          } else {
-            // Not Good
-            setLoader(false);
-            toast.show(resp, {
-              type: 'custom_type',
-              animationDuration: 100,
-              data: {
-                type: 'error',
-                title: 'Invalid data',
-              },
-            });
-          }
+          console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++',resp);
+          dispatch(saveMemberNotificationDetails(resp));
+          setLoader(false);
         })
         .catch(error => {
           setLoader(false);
@@ -64,22 +53,22 @@ const NotificationsScreen = ({navigation, route}) => {
     [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast],
   );
 
-  const getNextNotify = () => {
-    setNotifyDate(moment(new Date(notifyDate)).add(1, 'weeks'));
-    getHomeData(moment(new Date(notifyDate)).add(1, 'weeks'));
+  const getNextNotify = () => {    
+    setNotifyDate((prevState) => ({...prevState,
+      fromDate: notifyDate.toDate, toDate: moment(new Date(notifyDate.toDate)).add(1, 'weeks')}));
+    getNotifyData(notifyDate.toDate, moment(new Date(notifyDate.toDate)).add(1, 'weeks'));
   };
 
   const getPreviousNotify = () => {
-    setNotifyDate(moment(new Date(notifyDate)).subtract(1, 'weeks'));
-    getHomeData(moment(new Date(notifyDate)).subtract(1, 'weeks'));
+    setNotifyDate((prevState) => ({...prevState,
+       toDate: notifyDate.fromDate,
+        fromDate: moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks')}));
+    getNotifyData(moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks'),notifyDate.fromDate);
   };
 
+
   useEffect(() => {
-    getHomeData(
-      homeDetails.Notifications.length
-        ? homeDetails.Notifications[0].Datex
-        : new Date(),
-    );
+    getNotifyData(notifyDate.fromDate, notifyDate.toDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -103,7 +92,8 @@ const NotificationsScreen = ({navigation, route}) => {
           <View style={{flex: 1, paddingTop: 10}}>
             <Card style={{marginBottom: 5}}>
               <Card.Title
-                title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
+                title={`${moment(new Date(notifyDate.fromDate)).format('MMMM DD, YYYY')} - ${moment(new Date(notifyDate.toDate)).format('MMMM DD, YYYY')}`}
+                // subtitle={moment(new Date(notifyDate.toDate)).format('MMMM DD, YYYY')}
                 titleStyle={{fontSize: 18, alignSelf: 'center'}}
                 subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
                 left={props => (
@@ -123,9 +113,9 @@ const NotificationsScreen = ({navigation, route}) => {
                 )}
               />
             </Card>
-            {homeDetails.Notifications.length ? (
+            {notificationDetails.length ? (
               <FlatList
-                data={homeDetails.Notifications}
+                data={notificationDetails}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={notification => (
                   <View
@@ -166,9 +156,7 @@ const NotificationsScreen = ({navigation, route}) => {
                             color: '#333',
                             fontWeight: 'bold',
                           }}>
-                          {moment(notification.item.Datex).format(
-                            'MMMM DD, YYYY hh:mm:ss',
-                          )}
+                          {notification.item.Datex}
                         </Text>
                         <Text
                           style={{
