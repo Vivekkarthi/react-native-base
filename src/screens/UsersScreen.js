@@ -1,16 +1,12 @@
-import moment from 'moment';
-import React, {useState} from 'react';
-import {
-  View,
-  SafeAreaView,
-  Text,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
-import {Avatar, Button, Card} from 'react-native-paper';
+import React, {useCallback, useEffect, useState} from 'react';
+import {View, SafeAreaView, Text, TouchableOpacity} from 'react-native';
+import {useSelector} from 'react-redux';
+
+import {Avatar, Button} from 'react-native-paper';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SwipeListView} from 'react-native-swipe-list-view';
+import {useIsFocused} from '@react-navigation/native';
 
 import {memberGetuser} from '../redux/actions/AuthState';
 import AppStatusBar from '../components/AppStatusBar';
@@ -19,16 +15,10 @@ import {COLORS} from '../constants';
 import styles from '../styles/AppStyles';
 
 const UsersScreen = ({navigation, route}) => {
-  const [listData, setListData] = useState(
-    Array(5)
-      .fill('')
-      .map((_, i) => ({
-        key: `${i}`,
-        name: 'Leanne Graham',
-        email: 'Sincere@april.biz',
-        phone: '1-770-736-8031',
-      })),
-  );
+  const [listData, setListData] = useState([]);
+
+  const {loggedMember} = useSelector(state => state.AuthState);
+  const isFocused = useIsFocused();
 
   const closeRow = (rowMap, rowKey) => {
     if (rowMap[rowKey]) {
@@ -43,6 +33,16 @@ const UsersScreen = ({navigation, route}) => {
     newData.splice(prevIndex, 1);
     setListData(newData);
   };
+  const fetchUserInfo = useCallback(async () => {
+    const response = await memberGetuser(loggedMember.ControllerID);
+    setListData(response);
+  }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchUserInfo();
+    }
+  }, [isFocused, fetchUserInfo]);
 
   return (
     <>
@@ -74,7 +74,7 @@ const UsersScreen = ({navigation, route}) => {
               Add
             </Button>
           </View>
-           <SwipeListView
+          <SwipeListView
             data={listData}
             renderItem={(data, rowMap) => (
               <View
@@ -112,7 +112,7 @@ const UsersScreen = ({navigation, route}) => {
                         color: '#333',
                         fontWeight: 'bold',
                       }}>
-                      Name: {data.item.name}
+                      Name: {data.item.Namex}
                     </Text>
                     <Text
                       style={{
@@ -128,7 +128,7 @@ const UsersScreen = ({navigation, route}) => {
                         color: '#a3a3a3',
                         marginTop: 2,
                       }}>
-                      Mobile: {data.item.phone}
+                      Mobile: {data.item.Phone}
                     </Text>
                   </View>
                 </View>
@@ -171,7 +171,7 @@ const UsersScreen = ({navigation, route}) => {
             previewOpenDelay={3000}
             disableRightSwipe
             showsVerticalScrollIndicator={false}
-          /> 
+          />
         </View>
       </SafeAreaView>
       <StaticBottomTabs navigation={navigation} routeName={route.name} />

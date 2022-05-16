@@ -133,29 +133,27 @@ export default function HomeScreen({navigation, route}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    const intervalCall = setInterval(() => {
-      
-    console.log('*******************************************************',moment(notifyDate).format('YYYY-MM-DD'));
-      fetchHomeData(
-        loggedMember.LoginID,
-        loggedMember.ControllerID,
-        moment(notifyDate).format('YYYY-MM-DD'),
-      )
-        .then(async resp => {
-          if (resp.LastSyncDate) {
-            dispatch(saveMemberHomeDetails(resp));
-          } 
-        });
-    }, 1000 * homeDetails.MobileAppPageRefreshInterval);
+  // useEffect(() => {
+  //   const intervalCall = setInterval(() => {
 
-    return () => {
-      // clean up
-      clearInterval(intervalCall);
-    };
-  }, []);
+  //   console.log('*******************************************************',moment(notifyDate).format('YYYY-MM-DD'));
+  //     fetchHomeData(
+  //       loggedMember.LoginID,
+  //       loggedMember.ControllerID,
+  //       moment(notifyDate).format('YYYY-MM-DD'),
+  //     )
+  //       .then(async resp => {
+  //         if (resp.LastSyncDate) {
+  //           dispatch(saveMemberHomeDetails(resp));
+  //         }
+  //       });
+  //   }, 1000 * homeDetails.MobileAppPageRefreshInterval);
 
-  
+  //   return () => {
+  //     // clean up
+  //     clearInterval(intervalCall);
+  //   };
+  // }, []);
 
   return (
     <>
@@ -221,8 +219,8 @@ export default function HomeScreen({navigation, route}) {
                           textAlign: 'center',
                           fontSize: 18,
                           backgroundColor: '#178b93',
-                          paddingBottom:10,
-                          paddingTop:9,
+                          paddingBottom: 10,
+                          paddingTop: 9,
                           color: COLORS.white,
                         }}>
                         Box status
@@ -279,8 +277,8 @@ export default function HomeScreen({navigation, route}) {
                           fontSize: 18,
                           backgroundColor: '#178b93',
                           color: COLORS.white,
-                          paddingBottom:10,
-                          paddingTop:9,
+                          paddingBottom: 10,
+                          paddingTop: 9,
                         }}>
                         Internal camera
                       </Text>
@@ -299,21 +297,17 @@ export default function HomeScreen({navigation, route}) {
                             : require('../../assets/images/no-image.jpg')
                         }
                       />
-                      <FlatList
-                        data={homeDetails.Photos}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={Photos => (
-                          <Text
-                            style={{
-                              textAlign: 'center',
-                              color: '#000000',
-                              fontWeight: 'bold',
-                              lineHeight: 35,
-                            }}>
-                            {Photos.item.DateTimeX}
-                          </Text>
-                        )}
-                      />
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color: '#000000',
+                          fontWeight: 'bold',
+                          lineHeight: 35,
+                        }}>
+                        {homeDetails.Photos && homeDetails.Photos.length
+                          ? homeDetails.Photos[0].DateTimeX
+                          : ''}
+                      </Text>
                       {/* <Text
                         style={{
                           textAlign: 'center',
@@ -327,13 +321,21 @@ export default function HomeScreen({navigation, route}) {
                   </View>
                 </View>
                 <Card style={{marginBottom: 13, marginTop: 2}}>
-                  <View style={{alignSelf: 'center',paddingBottom:12,
-                    paddingTop:12,backgroundColor: '#178b93', width: '100%'}}>
+                  <View
+                    style={{
+                      alignSelf: 'center',
+                      paddingBottom: 12,
+                      paddingTop: 12,
+                      backgroundColor: '#178b93',
+                      width: '100%',
+                    }}>
                     <Ionicons
                       name="notifications"
                       size={16}
                       style={{textAlign: 'center', justifyContent: 'center'}}
-                      color={COLORS.white}> Notifications
+                      color={COLORS.white}>
+                      {' '}
+                      Notifications
                     </Ionicons>
                   </View>
                   <Card.Title
@@ -374,7 +376,7 @@ export default function HomeScreen({navigation, route}) {
                             <View
                               style={{
                                 maxWidth: '100%',
-                                bottom:13,
+                                bottom: 13,
                                 paddingHorizontal: 15,
                                 paddingVertical: 10,
                                 backgroundColor: '#fff',
@@ -442,7 +444,7 @@ export default function HomeScreen({navigation, route}) {
                           )}
                         />
                       ) : (
-                        <Card style={{backgroundColor: '#eef1f6',bottom:10}}>
+                        <Card style={{backgroundColor: '#eef1f6', bottom: 10}}>
                           <Card.Title
                             title={'No notifications found.'}
                             titleStyle={{fontSize: 14}}

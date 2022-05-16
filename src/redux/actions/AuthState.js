@@ -37,7 +37,9 @@ export async function memberLogin(userData, navigation) {
         memberMobileToken(userResp)
           .then(resp => {
             if (resp === 'SUCCESS') {
-              console.log('#################### NOTIFICATION SUCCESS ######################');
+              console.log(
+                '#################### NOTIFICATION SUCCESS ######################',
+              );
             }
           })
           .catch(error => {

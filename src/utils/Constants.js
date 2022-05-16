@@ -10,4 +10,8 @@ export const ENDPOINTURL = {
   MemberGetuser: 'ApiGetusers/',
   MemberMobileToken: 'APIUpdateMobileToken/',
   MemberNotification: 'ApiGetNotifications/',
+
+  MemberGetTicketList: 'APIGetTicketList/',
+  MemberGetTicketResponse: 'APIGetTicketReponse/',
+  MemberSaveTicetResponse: 'APISaveTicketReponse/',
 };
