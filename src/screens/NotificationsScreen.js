@@ -9,7 +9,10 @@ import {useToast} from 'react-native-toast-notifications';
 import AppStatusBar from '../components/AppStatusBar';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {COLORS} from '../constants';
-import { fetchNotifyData, saveMemberNotificationDetails } from '../redux/actions/NotificationState';
+import {
+  fetchNotifyData,
+  saveMemberNotificationDetails,
+} from '../redux/actions/NotificationState';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 import {Loader} from '../components/Loader';
 import styles from '../styles/AppStyles';
@@ -20,21 +23,18 @@ const NotificationsScreen = ({navigation, route}) => {
   const {loggedMember} = useSelector(state => state.AuthState);
   const {notificationDetails} = useSelector(state => state.NotificationState);
   const [loader, setLoader] = useState(true);
-  const [notifyDate, setNotifyDate] = useState({fromDate:new Date(), toDate: new Date()});
+  const [notifyDate, setNotifyDate] = useState({
+    fromDate: new Date(),
+    toDate: new Date(),
+  });
 
   const getNotifyData = useCallback(
     (currentDate, toDate) => {
       setLoader(true);
       const convertDate = moment(currentDate).format('YYYY-MM-DD');
       const convertToDate = moment(toDate).format('YYYY-MM-DD');
-      fetchNotifyData(
-        loggedMember.LoginID,
-        loggedMember.ControllerID,
-        convertDate,
-        convertToDate
-      )
+      fetchNotifyData(loggedMember.ControllerID, convertDate, convertToDate)
         .then(async resp => {
-          console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++',resp);
           dispatch(saveMemberNotificationDetails(resp));
           setLoader(false);
         })
@@ -50,22 +50,32 @@ const NotificationsScreen = ({navigation, route}) => {
           });
         });
     },
-    [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast],
+    [dispatch, loggedMember.ControllerID, toast],
   );
 
-  const getNextNotify = () => {    
-    setNotifyDate((prevState) => ({...prevState,
-      fromDate: notifyDate.toDate, toDate: moment(new Date(notifyDate.toDate)).add(1, 'weeks')}));
-    getNotifyData(notifyDate.toDate, moment(new Date(notifyDate.toDate)).add(1, 'weeks'));
+  const getNextNotify = () => {
+    setNotifyDate(prevState => ({
+      ...prevState,
+      fromDate: notifyDate.toDate,
+      toDate: moment(new Date(notifyDate.toDate)).add(1, 'weeks'),
+    }));
+    getNotifyData(
+      notifyDate.toDate,
+      moment(new Date(notifyDate.toDate)).add(1, 'weeks'),
+    );
   };
 
   const getPreviousNotify = () => {
-    setNotifyDate((prevState) => ({...prevState,
-       toDate: notifyDate.fromDate,
-        fromDate: moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks')}));
-    getNotifyData(moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks'),notifyDate.fromDate);
+    setNotifyDate(prevState => ({
+      ...prevState,
+      toDate: notifyDate.fromDate,
+      fromDate: moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks'),
+    }));
+    getNotifyData(
+      moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks'),
+      notifyDate.fromDate,
+    );
   };
-
 
   useEffect(() => {
     getNotifyData(notifyDate.fromDate, notifyDate.toDate);
@@ -92,7 +102,11 @@ const NotificationsScreen = ({navigation, route}) => {
           <View style={{flex: 1, paddingTop: 10}}>
             <Card style={{marginBottom: 5}}>
               <Card.Title
-                title={`${moment(new Date(notifyDate.fromDate)).format('MMMM DD, YYYY')} - ${moment(new Date(notifyDate.toDate)).format('MMMM DD, YYYY')}`}
+                title={`${moment(new Date(notifyDate.fromDate)).format(
+                  'MMMM DD, YYYY',
+                )} - ${moment(new Date(notifyDate.toDate)).format(
+                  'MMMM DD, YYYY',
+                )}`}
                 // subtitle={moment(new Date(notifyDate.toDate)).format('MMMM DD, YYYY')}
                 titleStyle={{fontSize: 18, alignSelf: 'center'}}
                 subtitleStyle={{fontSize: 16, alignSelf: 'center'}}

@@ -1,4 +1,3 @@
-import moment from 'moment';
 import {ENDPOINTURL} from '../../utils/Constants';
 import {getRequest} from '../../utils/Handlers';
 
@@ -9,15 +8,13 @@ export const initialState = {
 export const NOTIFICATION_SUCCESS = 'HomeState/NOTIFICATION_SUCCESS';
 export const NOTIFICATION_FAILURE = 'HomeState/NOTIFICATION_FAILURE';
 
-
-export function fetchNotifyData(userData, controllerId, fromDate, toDate) {
+export function fetchNotifyData(controllerId, fromDate, toDate) {
   const queryParams = `sK=token&snotifyfrom=${fromDate}&snotifyto=${toDate}&ihwidx=${controllerId}&sHWname=`;
   const params = {
     url: ENDPOINTURL.MemberNotification,
     token: '',
     queryParams,
   };
-
 
   return getRequest(params)
     .then(response => {
@@ -28,24 +25,26 @@ export function fetchNotifyData(userData, controllerId, fromDate, toDate) {
     });
 }
 
-
 export const saveMemberNotificationDetails = data => {
-    return dispatch => {
-      if (data) {
-        dispatch({
-          type: NOTIFICATION_SUCCESS,
-          payload: data,
-        });
-      } else {
-        dispatch({
-          type: NOTIFICATION_FAILURE,
-          payload: [],
-        });
-      }
-    };
+  return dispatch => {
+    if (data) {
+      dispatch({
+        type: NOTIFICATION_SUCCESS,
+        payload: data,
+      });
+    } else {
+      dispatch({
+        type: NOTIFICATION_FAILURE,
+        payload: [],
+      });
+    }
   };
+};
 
-export default function NotificatationStateReducer(state = initialState, action) {
+export default function NotificatationStateReducer(
+  state = initialState,
+  action,
+) {
   switch (action.type) {
     case NOTIFICATION_SUCCESS:
       return {

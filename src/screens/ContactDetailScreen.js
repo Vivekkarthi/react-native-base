@@ -1,21 +1,48 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, TextArea, SafeAreaView} from 'react-native';
+import {View, Text, TextInput, SafeAreaView} from 'react-native';
 import {Button} from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import AppStatusBar from '../components/AppStatusBar';
 import {COLORS} from '../constants';
 import styles from '../styles/AppStyles';
+import {addNewTicket} from '../redux/actions/SupportTicketState';
+import {useSelector} from 'react-redux';
 
 const ContactDetailScreen = ({navigation, route}) => {
+  const {loggedMember} = useSelector(state => state.AuthState);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const [supportValue, setSupportValue] = useState(null);
+  const [supportTextValue, setSupportTextValue] = useState(null);
   const [items, setItems] = useState([
-    {label: 'Billing', value: 'billing'},
-    {label: 'Technical Support', value: 'technicalSupport'},
-    {label: 'Others', value: 'others'},
+    {label: 'Billing', value: 1},
+    {label: 'Technical Support', value: 2},
+    {label: 'Others', value: 3},
   ]);
+  const [supportError, setSupportError] = useState({
+    success: 0,
+    message: 'No Error Found.',
+  });
 
+  const onsubmit = () => {
+    addNewTicket(loggedMember, supportValue, supportTextValue)
+      .then(resp => {
+        console.log('++++++++++++++++++++++++++++++++++', resp);
+        if (resp === 'Success') {
+          // setSupportError({
+          //   success: 1,
+          //   message: 'Ticket Created Successfully.',
+          // });
+          navigation.navigate('Contacts');
+        } else {
+          setSupportError({
+            success: 2,
+            message: 'Something went wrong, Please try again.',
+          });
+        }
+      })
+      .catch(e => console.log(e));
+  };
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
       <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
@@ -35,15 +62,16 @@ const ContactDetailScreen = ({navigation, route}) => {
               marginTop: 5,
             }}
             open={open}
-            value={value}
+            value={supportValue}
             items={items}
             setOpen={setOpen}
-            setValue={setValue}
+            setValue={setSupportValue}
             setItems={setItems}
           />
           <TextInput
             multiline={true}
             numberOfLines={10}
+            value={supportTextValue}
             style={{
               height: 160,
               borderRadius: 8,
@@ -53,12 +81,24 @@ const ContactDetailScreen = ({navigation, route}) => {
               padding: 20,
               marginTop: 5,
             }}
+            onChangeText={setSupportTextValue}
           />
+          {supportError.success !== 0 ? (
+            <Text
+              style={{
+                fontSize: 16,
+                fontFamily: 'Lato-Regular',
+                textAlign: 'center',
+                color: '#D83F50',
+              }}>
+              {supportError.message}
+            </Text>
+          ) : null}
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Button
             mode="contained"
-            onPress={() => navigation.goBack()}
+            onPress={() => onsubmit()}
             style={{
               alignSelf: 'flex-start',
               marginTop: 20,

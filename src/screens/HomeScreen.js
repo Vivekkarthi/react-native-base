@@ -126,6 +126,7 @@ export default function HomeScreen({navigation, route}) {
     setNotifyDate(moment(new Date()));
     getHomeData(new Date());
     setRefreshing(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

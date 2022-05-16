@@ -13,5 +13,5 @@ export const ENDPOINTURL = {
 
   MemberGetTicketList: 'APIGetTicketList/',
   MemberGetTicketResponse: 'APIGetTicketReponse/',
-  MemberSaveTicetResponse: 'APISaveTicketReponse/',
+  MemberSaveTicketResponse: 'APISaveTicketReponse/',
 };

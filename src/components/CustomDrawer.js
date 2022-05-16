@@ -37,7 +37,7 @@ const CustomDrawer = props => {
             <Image
               source={require('../../assets/images/user.png')}
               style={{
-                marginLeft: 8,
+                marginLeft: 14,
                 height: 80,
                 width: 80,
                 borderRadius: 40,
@@ -46,13 +46,23 @@ const CustomDrawer = props => {
             />
             <Text
               style={{
-                marginLeft: 12,
+                marginLeft: 14,
                 color: '#fff',
                 fontSize: 18,
                 fontFamily: 'Roboto-Medium',
                 marginBottom: 5,
               }}>
-              {loggedMember.LoginNAME}
+              Name: {loggedMember.LoginNAME}
+            </Text>
+            <Text
+              style={{
+                marginLeft: 14,
+                color: '#fff',
+                fontSize: 18,
+                fontFamily: 'Roboto-Medium',
+                marginBottom: 5,
+              }}>
+              Controller: {loggedMember.ControllerName}
             </Text>
           </>
         )}

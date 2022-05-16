@@ -36,6 +36,7 @@ const UsersScreen = ({navigation, route}) => {
   const fetchUserInfo = useCallback(async () => {
     const response = await memberGetuser(loggedMember.ControllerID);
     setListData(response);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -67,12 +68,14 @@ const UsersScreen = ({navigation, route}) => {
               onPress={() => navigation.goBack()}>
               Back
             </Button>
-            <Button
-              style={{margin: 5}}
-              mode="contained"
-              onPress={() => navigation.navigate('UserDetails')}>
-              Add
-            </Button>
+            {loggedMember.RoleID === 2 && (
+              <Button
+                style={{margin: 5}}
+                mode="contained"
+                onPress={() => navigation.navigate('UserDetails')}>
+                Add
+              </Button>
+            )}
           </View>
           <SwipeListView
             data={listData}
@@ -134,36 +137,38 @@ const UsersScreen = ({navigation, route}) => {
                 </View>
               </View>
             )}
-            renderHiddenItem={(data, rowMap) => (
-              <View style={styles.rowBack}>
-                <TouchableOpacity
-                  style={[styles.backRightBtn, styles.backRightBtnLeft]}
-                  onPress={() => closeRow(rowMap, data.item.key)}>
-                  <Ionicons
-                    name="md-close-circle-outline"
-                    size={36}
-                    color={COLORS.white}
-                    style={{
-                      flexDirection: 'row',
-                      alignSelf: 'flex-start',
-                    }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.backRightBtn, styles.backRightBtnRight]}
-                  onPress={() => deleteRow(rowMap, data.item.key)}>
-                  <Ionicons
-                    name="md-trash-outline"
-                    size={36}
-                    color={COLORS.white}
-                    style={{
-                      flexDirection: 'row',
-                      alignSelf: 'flex-start',
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-            )}
+            renderHiddenItem={(data, rowMap) =>
+              loggedMember.RoleID === 2 && (
+                <View style={styles.rowBack}>
+                  <TouchableOpacity
+                    style={[styles.backRightBtn, styles.backRightBtnLeft]}
+                    onPress={() => closeRow(rowMap, data.item.key)}>
+                    <Ionicons
+                      name="md-close-circle-outline"
+                      size={36}
+                      color={COLORS.white}
+                      style={{
+                        flexDirection: 'row',
+                        alignSelf: 'flex-start',
+                      }}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.backRightBtn, styles.backRightBtnRight]}
+                    onPress={() => deleteRow(rowMap, data.item.key)}>
+                    <Ionicons
+                      name="md-trash-outline"
+                      size={36}
+                      color={COLORS.white}
+                      style={{
+                        flexDirection: 'row',
+                        alignSelf: 'flex-start',
+                      }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )
+            }
             leftOpenValue={75}
             rightOpenValue={-75}
             previewRowKey={'0'}
