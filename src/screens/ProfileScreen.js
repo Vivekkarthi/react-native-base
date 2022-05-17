@@ -18,7 +18,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
 import {addUserSchema} from '../utils/ValidateSchema';
-import {memberAdduser} from '../redux/actions/AuthState';
+import {memberEdituser} from '../redux/actions/AuthState';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import AppStatusBar from '../components/AppStatusBar';
@@ -69,7 +69,7 @@ const ProfileScreen = ({navigation, route}) => {
       Password: user.Password,
     };
     setInputUser(() => formData);
-    memberAdduser(user, loggedMember)
+    memberEdituser(user, loggedMember)
       .then(async resp => {
         if (resp === 'Success') {
           //Good
@@ -117,6 +117,7 @@ const ProfileScreen = ({navigation, route}) => {
                 iconType="edit"
                 autoFocus={true}
                 defaultValues={inputUser.Name}
+                placeholder={'loggedMember.LoginNAME'}
                 textLabel={loggedMember.LoginNAME}
                 textName={'Name'}
                 keyboardType="default"
@@ -271,7 +272,7 @@ const ProfileScreen = ({navigation, route}) => {
                 borderTopEndRadius: SIZES.radius * 2,
                 padding: SIZES.base * 2,
               }}>
-              <Text style={styles.text}>Edit User</Text>
+              <Text style={styles.text}>{loggedMember.LoginNAME}Edit User</Text>
 
               <KeyboardAvoidingView
                 style={{flex: 1}}

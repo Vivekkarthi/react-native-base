@@ -109,6 +109,23 @@ export function memberAdduser(userData, loggedMember) {
     });
 }
 
+export function memberEdituser(userData, navigation) {
+  const queryParams = `sK=token&namex=${userData.Name}&spass=${userData.Password}&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=${userData.ControllerId}&icustid=0&userrecordid=0`;
+  const params = {
+    url: ENDPOINTURL.MemberRegister,
+    token: '',
+    queryParams,
+  };
+
+  return getRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      throw error;
+    });
+}
+
 export function memberGetuser(controllerId) {
   const queryParams = `sK=token&ihwidx=${controllerId}&sHWname=&icallfrom=0`;
   const params = {
