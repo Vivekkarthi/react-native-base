@@ -9,6 +9,7 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 import {useIsFocused} from '@react-navigation/native';
 
 import {memberGetuser} from '../redux/actions/AuthState';
+import {memberDeleteuser} from '../redux/actions/AuthState';
 import AppStatusBar from '../components/AppStatusBar';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {COLORS} from '../constants';
@@ -86,7 +87,7 @@ const UsersScreen = ({navigation, route}) => {
                   paddingHorizontal: 15,
                   paddingVertical: 10,
                   backgroundColor: '#fff',
-                  borderLeftColor: COLORS.secondary,
+                  borderLeftColor: '#99ccff',
                   borderLeftWidth: 6,
                   marginVertical: 4,
                   borderRadius: 4,
@@ -99,7 +100,7 @@ const UsersScreen = ({navigation, route}) => {
                     color={COLORS.white}
                     icon="account"
                     style={{
-                      backgroundColor: COLORS.secondary,
+                      backgroundColor: '#99ccff',
                       alignSelf: 'center',
                     }}
                   />
@@ -140,7 +141,7 @@ const UsersScreen = ({navigation, route}) => {
             renderHiddenItem={(data, rowMap) =>
               loggedMember.RoleID === 2 && (
                 <View style={styles.rowBack}>
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     style={[styles.backRightBtn, styles.backRightBtnLeft]}
                     onPress={() => closeRow(rowMap, data.item.key)}>
                     <Ionicons
@@ -152,7 +153,7 @@ const UsersScreen = ({navigation, route}) => {
                         alignSelf: 'flex-start',
                       }}
                     />
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                   <TouchableOpacity
                     style={[styles.backRightBtn, styles.backRightBtnRight]}
                     onPress={() => deleteRow(rowMap, data.item.key)}>
@@ -170,7 +171,8 @@ const UsersScreen = ({navigation, route}) => {
               )
             }
             leftOpenValue={75}
-            rightOpenValue={-75}
+            //rightOpenValue={-75}
+            rightOpenValue={-35}
             previewRowKey={'0'}
             previewOpenValue={-40}
             previewOpenDelay={3000}

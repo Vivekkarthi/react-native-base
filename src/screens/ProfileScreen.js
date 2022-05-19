@@ -1,24 +1,22 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useCallback, useEffect} from 'react';
 import {
   View,
   Text,
   SafeAreaView,
-  TouchableOpacity,
   Platform,
   StyleSheet,
   KeyboardAvoidingView,
   FlatList,
-  Image,
 } from 'react-native';
 import {FormProvider, useForm} from 'react-hook-form';
-import {Button} from 'react-native-paper';
+// import {Button} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-// import {useToast} from 'react-native-toast-notifications';
+import {useIsFocused} from '@react-navigation/native';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
 import {addUserSchema} from '../utils/ValidateSchema';
-import {memberEdituser} from '../redux/actions/AuthState';
+import {memberEdituser, memberGetuser} from '../redux/actions/AuthState';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import AppStatusBar from '../components/AppStatusBar';
@@ -33,6 +31,7 @@ const ProfileScreen = ({navigation, route}) => {
     PhoneNumber: '',
     Password: '',
   });
+  const isFocused = useIsFocused();
   const [loader, setLoader] = useState(false);
   const [addUserError, setAddUserError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -52,6 +51,7 @@ const ProfileScreen = ({navigation, route}) => {
   });
   const {
     handleSubmit,
+    setValue,
     formState: {errors},
   } = methods;
 
@@ -60,7 +60,7 @@ const ProfileScreen = ({navigation, route}) => {
   const PhoneNumberRef = useRef(null);
   const PasswordRef = useRef(null);
 
-  const onUserSubmit = async user => {
+  const onUserSubmit = useCallback(async user => {
     setLoader(true);
     const formData = {
       Name: user.Name,
@@ -68,8 +68,11 @@ const ProfileScreen = ({navigation, route}) => {
       PhoneNumber: user.PhoneNumber,
       Password: user.Password,
     };
-    setInputUser(() => formData);
-    memberEdituser(user, loggedMember)
+    // setInputUser(() => formData);
+    formData.CustID = loggedMember.CustID;
+    formData.ControllerId = loggedMember.ControllerName;
+    formData.UserRecordId = loggedMember.USERRECORDID;
+    memberEdituser(formData)
       .then(async resp => {
         if (resp === 'Success') {
           //Good
@@ -93,7 +96,37 @@ const ProfileScreen = ({navigation, route}) => {
         //   },
         // });
       });
-  };
+  }, []);
+
+  const fetchUserInfo = useCallback(async () => {
+    const response = await memberGetuser(loggedMember.ControllerID);
+    if (response && response.length) {
+      const findUserRecord = response.find(
+        el => el.UserrecordID === loggedMember.USERRECORDID,
+      );
+      if (findUserRecord) {
+        setValue('Name', findUserRecord.Namex);
+        setValue('Email', findUserRecord.email);
+        setValue('PhoneNumber', findUserRecord.Phone);
+        setValue('Password', findUserRecord.PasswordX);
+        setInputUser(pre => ({
+          ...pre,
+          Name: findUserRecord.Namex,
+          Email: findUserRecord.email,
+          PhoneNumber: findUserRecord.Phone,
+          Password: findUserRecord.PasswordX,
+        }));
+      }
+    }
+    // setListData(response);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchUserInfo();
+    }
+  }, [isFocused, fetchUserInfo]);
 
   const renderItem = ({item, index}) => {
     return (
@@ -272,7 +305,7 @@ const ProfileScreen = ({navigation, route}) => {
                 borderTopEndRadius: SIZES.radius * 2,
                 padding: SIZES.base * 2,
               }}>
-              <Text style={styles.text}>{loggedMember.LoginNAME}Edit User</Text>
+              {/* <Text style={styles.text}>{loggedMember.LoginNAME}Edit User</Text> */}
 
               <KeyboardAvoidingView
                 style={{flex: 1}}

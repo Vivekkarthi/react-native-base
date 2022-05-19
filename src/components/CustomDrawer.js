@@ -31,23 +31,22 @@ const CustomDrawer = props => {
     <View style={{flex: 1}}>
       <DrawerContentScrollView
         {...props}
-        contentContainerStyle={{backgroundColor: '#ff651f'}}>
+        contentContainerStyle={{backgroundColor: '#ccc'}}>
         {!isEmpty(loggedMember) && (
           <>
             <Image
-              source={require('../../assets/images/user.png')}
+              source={require('../../assets/images/icon.png')}
               style={{
                 marginLeft: 14,
-                height: 80,
-                width: 80,
+                height: 100,
+                width: 180,
                 borderRadius: 40,
-                marginBottom: 10,
               }}
             />
             <Text
               style={{
-                marginLeft: 14,
-                color: '#fff',
+                marginLeft: 20,
+                color: '#000',
                 fontSize: 18,
                 fontFamily: 'Roboto-Medium',
                 marginBottom: 5,
@@ -56,14 +55,19 @@ const CustomDrawer = props => {
             </Text>
             <Text
               style={{
-                marginLeft: 14,
-                color: '#fff',
+                marginLeft: 20,
+                color: '#000',
                 fontSize: 18,
                 fontFamily: 'Roboto-Medium',
                 marginBottom: 5,
               }}>
               Controller: {loggedMember.ControllerName}
             </Text>
+            <View
+              style={{
+                borderTopWidth: 1,
+                borderTopColor: '#ccc',
+              }}></View>
           </>
         )}
         <View style={{flex: 1, backgroundColor: '#fff', paddingTop: 10}}>
@@ -81,6 +85,7 @@ const CustomDrawer = props => {
                 fontSize: 15,
                 fontFamily: 'Roboto-Medium',
                 marginLeft: 5,
+                fontWeight: 'bold',
               }}>
               Sign Out
             </Text>

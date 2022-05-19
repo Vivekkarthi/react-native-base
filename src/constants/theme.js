@@ -10,10 +10,10 @@ export const COLORS = {
   gray: '#6d757a',
   transparent: 'transparent',
   background: '#dfe1eb',
-  messageColor1: '#0DA728',
-  messageColor2: '#D83F50',
-  messageColor3: '#f4d837',
-  messageColor4: '#8a5235',
+  messageColor1: '#99ccff',
+  messageColor2: '#bbff33',
+  messageColor3: '#85adad',
+  messageColor4: '#cc9966',
 
   batter0: '#f3432e',
 

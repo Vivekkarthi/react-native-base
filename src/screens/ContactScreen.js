@@ -17,6 +17,7 @@ import {
 } from '../redux/actions/SupportTicketState';
 import {useToast} from 'react-native-toast-notifications';
 import {Loader} from '../components/Loader';
+import {Linking} from 'react-native';
 
 const ContactScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -109,6 +110,12 @@ const ContactScreen = ({navigation, route}) => {
             <Button
               style={{margin: 5}}
               mode="contained"
+              onPress={() => Linking.openURL('http://doorbox.ai/')}>
+              Manual
+            </Button>
+            <Button
+              style={{margin: 5}}
+              mode="contained"
               onPress={() => navigation.navigate('ContactDetails')}>
               Add
             </Button>
@@ -121,7 +128,7 @@ const ContactScreen = ({navigation, route}) => {
                 'MMMM DD, YYYY',
               )}`}
               // subtitle={moment(new Date(notifyDate.toDate)).format('MMMM DD, YYYY')}
-              titleStyle={{fontSize: 18, alignSelf: 'center'}}
+              titleStyle={{fontSize: 16, alignSelf: 'center'}}
               subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
               left={props => (
                 <Ionicons

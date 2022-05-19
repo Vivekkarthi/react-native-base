@@ -6,7 +6,7 @@ import {
   FlatList,
   Image,
   Text,
-  RefreshControl
+  RefreshControl,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -45,20 +45,20 @@ const CameraScreen = ({navigation, route}) => {
           source={
             item.Filename
               ? {
-                  uri: item.Filename, 
+                  uri: item.Filename,
                 }
               : require('../../assets/images/no-image.jpg')
           }
         />
-              <Text
-                style={{
-                  textAlign: 'center',
-                  color: '#000000',
-                  fontWeight: 'bold',
-                  lineHeight: 35,
-                }}>
-                {item.DateTimeX}
-              </Text>
+        <Text
+          style={{
+            textAlign: 'center',
+            color: '#000000',
+            fontWeight: 'bold',
+            lineHeight: 35,
+          }}>
+          {item.DateTimeX}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -77,7 +77,7 @@ const CameraScreen = ({navigation, route}) => {
               alignSelf: 'flex-start',
               marginBottom: 20,
             }}>
-            <Text style={styles.f18}> Photos</Text>
+            <Text style={styles.f18}> Images</Text>
           </Feather>
           <FlatList
             keyboardShouldPersistTaps="always"
@@ -86,7 +86,6 @@ const CameraScreen = ({navigation, route}) => {
               <RefreshControl
                 colors={[COLORS.secondary, COLORS.white]}
                 refreshing={refreshing}
-          
               />
             }
             data={[{ID: '1'}]}
@@ -98,8 +97,8 @@ const CameraScreen = ({navigation, route}) => {
                     textAlign: 'center',
                     fontSize: 18,
                     backgroundColor: COLORS.primary,
-                    paddingBottom:10,
-                    paddingTop:9,
+                    paddingBottom: 10,
+                    paddingTop: 9,
                     color: COLORS.white,
                   }}>
                   Internal Camera
@@ -151,8 +150,8 @@ const CameraScreen = ({navigation, route}) => {
                     fontSize: 18,
                     backgroundColor: COLORS.primary,
                     color: COLORS.white,
-                    paddingBottom:10,
-                    paddingTop:9,
+                    paddingBottom: 10,
+                    paddingTop: 9,
                   }}>
                   External Camera
                 </Text>

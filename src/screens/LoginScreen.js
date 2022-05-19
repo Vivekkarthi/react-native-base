@@ -237,7 +237,7 @@ const LoginScreen = ({navigation, route}) => {
                           </Text>
                         </View>
 
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                           style={{
                             marginTop: 8,
                             paddingLeft: 20,
@@ -256,7 +256,7 @@ const LoginScreen = ({navigation, route}) => {
                             }}>
                             Forgot Password ?
                           </Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                       </View>
                     </FormProvider>
 

@@ -6,7 +6,7 @@ const loginSchema = yup.object().shape({
 });
 
 const registerSchema = yup.object().shape({
-  Name: yup.string().min(2).max(12).trim().required('Name is required'),
+  Name: yup.string().min(2).trim().required('Name is required'),
   Email: yup.string().email().trim().required(),
   PhoneNumber: yup
     .string()
@@ -28,7 +28,7 @@ const registerSchema = yup.object().shape({
 });
 
 const addUserSchema = yup.object().shape({
-  Name: yup.string().min(2).max(12).trim().required('Name is required'),
+  Name: yup.string().min(2).trim().required('Name is required'),
   Email: yup.string().email().trim().required(),
   PhoneNumber: yup
     .string()

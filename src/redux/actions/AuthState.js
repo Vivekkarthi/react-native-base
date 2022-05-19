@@ -60,7 +60,7 @@ export async function memberLogin(userData, navigation) {
 
 export async function memberMobileToken(userData) {
   const fcmToken = await getFcmToken();
-  const queryParams = `sK=token&hardwareid=${userData.ControllerID}&userid=${userData.LoginID}&sTokenx=${fcmToken}`;
+  const queryParams = `sK=token&hardwareid=&userid=${userData.USERRECORDID}&sTokenx=${fcmToken}`;
   const params = {
     url: ENDPOINTURL.MemberMobileToken,
     token: '',
@@ -109,10 +109,10 @@ export function memberAdduser(userData, loggedMember) {
     });
 }
 
-export function memberEdituser(userData, navigation) {
-  const queryParams = `sK=token&namex=${userData.Name}&spass=${userData.Password}&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=${userData.ControllerId}&icustid=0&userrecordid=0`;
+export function memberDeleteuser(userData, loggedMember) {
+  const queryParams = `sK=token&userid=${userData.USERRECORDID}`;
   const params = {
-    url: ENDPOINTURL.MemberRegister,
+    url: ENDPOINTURL.MemberDeleteuser,
     token: '',
     queryParams,
   };
@@ -126,8 +126,33 @@ export function memberEdituser(userData, navigation) {
     });
 }
 
+export function memberEdituser(userData) {
+  const queryParams = `sK=token&namex=${userData.Name}&spass=${
+    userData.Password
+  }&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=${
+    userData.ControllerId
+  }&icustid=${userData.CustID ? userData.CustID : '0'}&userrecordid=${
+    userData.UserRecordId ? userData.UserRecordId : '0'
+  }`;
+  console.log({queryParams});
+  const params = {
+    url: ENDPOINTURL.MemberRegister,
+    token: '',
+    queryParams,
+  };
+
+  return getRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      console.log('errorrr', error);
+      throw error;
+    });
+}
+
 export function memberGetuser(controllerId) {
-  const queryParams = `sK=token&ihwidx=${controllerId}&sHWname=&icallfrom=0`;
+  const queryParams = `sK=token&ihwidx=${controllerId}&sHWname=&icallfrom=1`;
   const params = {
     url: ENDPOINTURL.MemberGetuser,
     token: '',

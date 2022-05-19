@@ -1,4 +1,4 @@
-package com.dropbox.newarchitecture.components;
+package com.doorbox.mobile.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

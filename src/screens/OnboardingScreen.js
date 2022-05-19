@@ -39,15 +39,6 @@ const Done = ({...props}) => (
 );
 
 const OnboardingScreen = ({navigation}) => {
-  <Image
-            source={require('../../assets/images/icon.png')}
-            style={{
-              alignSelf: 'center',
-              height: 150,
-              width: 280,
-            }}
-            resizeMode="stretch"
-          />
   return (
     <Onboarding
       SkipButtonComponent={Skip}
@@ -60,9 +51,23 @@ const OnboardingScreen = ({navigation}) => {
         {
           backgroundColor: '#a6e4d0',
           image: (
-            <Image style={{height:330,width:420}}
-              source={{uri:'https://dbmobileapp.s3.us-west-1.amazonaws.com/images/db1.jpg'}}
-            />
+            <>
+              <Image
+                source={require('../../assets/images/icon.png')}
+                style={{
+                  alignSelf: 'center',
+                  height: 150,
+                  width: 280,
+                }}
+                resizeMode="stretch"
+              />
+              <Image
+                style={{height: 330, width: 420}}
+                source={{
+                  uri: 'https://dbmobileapp.s3.us-west-1.amazonaws.com/images/db1.jpg',
+                }}
+              />
+            </>
           ),
           title: "WORLD's No. 1 Package Delivery Box",
           subtitle: 'With Anti-Theft Alarm Protection.',
@@ -70,9 +75,23 @@ const OnboardingScreen = ({navigation}) => {
         {
           backgroundColor: '#fdeb93',
           image: (
-            <Image style={{height:330,width:420}}
-              source={{uri:'https://dbmobileapp.s3.us-west-1.amazonaws.com/images/db2.jpg'}}
-            />
+            <>
+              <Image
+                source={require('../../assets/images/icon.png')}
+                style={{
+                  alignSelf: 'center',
+                  height: 150,
+                  width: 280,
+                }}
+                resizeMode="stretch"
+              />
+              <Image
+                style={{height: 330, width: 420}}
+                source={{
+                  uri: 'https://dbmobileapp.s3.us-west-1.amazonaws.com/images/db2.jpg',
+                }}
+              />
+            </>
           ),
           title: 'Secured & Not Removable',
           subtitle: 'No More Stolen Packages Or Missed Deliveries.',
@@ -80,9 +99,23 @@ const OnboardingScreen = ({navigation}) => {
         {
           backgroundColor: '#e9bcbe',
           image: (
-            <Image style={{height:240,width:420}}
-            source={{uri:'https://dbmobileapp.s3.us-west-1.amazonaws.com/images/db3.jpg'}}
-            />
+            <>
+              <Image
+                source={require('../../assets/images/icon.png')}
+                style={{
+                  alignSelf: 'center',
+                  height: 150,
+                  width: 280,
+                }}
+                resizeMode="stretch"
+              />
+              <Image
+                style={{height: 240, width: 420}}
+                source={{
+                  uri: 'https://dbmobileapp.s3.us-west-1.amazonaws.com/images/db3.jpg',
+                }}
+              />
+            </>
           ),
           title: 'Weatherproof & Water Repellent',
           subtitle:

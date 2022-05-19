@@ -141,13 +141,13 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.dropbox"
+        applicationId "com.doorbox.mobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
-        resValue "string", "build_config_package", "com.dropbox" // com.yourappname
+        resValue "string", "build_config_package", "com.doorbox.mobile" // com.yourappname
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {

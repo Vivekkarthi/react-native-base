@@ -15,7 +15,7 @@ const Headers = () => {
   return axiosConfig;
 };
 
-const AuthHeaders = (token) => {
+const AuthHeaders = token => {
   const axiosConfig = {
     headers: {
       'Content-Type': 'application/json',
@@ -89,8 +89,10 @@ const getRequest = props => {
     });
 };
 
-const postRequest = (props) => {
-  return axios.post(`${CONFIG.API_URL}${props.url}?${props.queryParams}`).then(response => {
+const postRequest = props => {
+  return axios
+    .post(`${CONFIG.API_URL}${props.url}?${props.queryParams}`)
+    .then(response => {
       if (response.data) {
         return response.data;
       }

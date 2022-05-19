@@ -10,6 +10,7 @@ import {
   saveMemberHomeDetails,
 } from '../redux/actions/HomeState';
 import {Card, Avatar} from 'react-native-paper';
+import Feather from 'react-native-vector-icons/Feather';
 
 import {COLORS} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
@@ -224,7 +225,7 @@ export default function HomeScreen({navigation, route}) {
                           paddingTop: 9,
                           color: COLORS.white,
                         }}>
-                        Box status
+                        <Feather name="box" size={22} /> Box status
                       </Text>
                       <Card.Cover
                         style={{
@@ -266,7 +267,7 @@ export default function HomeScreen({navigation, route}) {
                       </Text>
                     </Card>
                     <Card
-                      onPress={() => navigation.navigate('Camera')}
+                      onPress={() => navigation.navigate('Images')}
                       style={{
                         flexDirection: 'column',
                         justifyContent: 'center',
@@ -281,7 +282,7 @@ export default function HomeScreen({navigation, route}) {
                           paddingBottom: 10,
                           paddingTop: 9,
                         }}>
-                        Internal camera
+                        <Feather name="camera" size={22} /> Internal camera
                       </Text>
                       <Card.Cover
                         style={{
@@ -342,7 +343,7 @@ export default function HomeScreen({navigation, route}) {
                   <Card.Title
                     title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
                     // subtitle={'subtitle'}
-                    titleStyle={{fontSize: 18, alignSelf: 'center'}}
+                    titleStyle={{fontSize: 16, alignSelf: 'center'}}
                     subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
                     left={props => (
                       <Ionicons
@@ -416,15 +417,15 @@ export default function HomeScreen({navigation, route}) {
                                     {/* {moment(notification.item.Datex).format(
                                       'MMMM DD, YYYY hh:mm:ss',
                                     )} */}
-                                    {notification.item.Datex}
+                                    {notification.item.Messagex}
                                   </Text>
                                   <Text
                                     style={{
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       color: '#a3a3a3',
                                       marginTop: 2,
                                     }}>
-                                    {notification.item.Messagex}
+                                    {notification.item.Datex}
                                   </Text>
                                 </View>
                                 <View
