@@ -36,6 +36,7 @@ import {useForm, FormProvider} from 'react-hook-form';
 import {controllerPasswordSchema} from '../utils/ValidateSchema';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
+import {isEmpty} from 'lodash';
 
 export default function MyboxScreen({navigation, route}) {
   const dispatch = useDispatch();
@@ -691,6 +692,18 @@ export default function MyboxScreen({navigation, route}) {
                             />
                           </View>
                         </FormProvider>
+
+                        {!isEmpty(passwordError) ? (
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontFamily: 'Lato-Regular',
+                              textAlign: 'center',
+                              color: '#D83F50',
+                            }}>
+                            {passwordError}
+                          </Text>
+                        ) : null}
 
                         <FormButton
                           buttonTitle="Update"
