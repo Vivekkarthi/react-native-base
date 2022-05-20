@@ -35,7 +35,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
       setLoader(true);
       const convertDate = moment(currentDate).format('YYYY-MM-DD');
       const convertToDate = moment(toDate).format('YYYY-MM-DD');
-      fetchNotifyData(loggedMember.ControllerID, convertDate, convertToDate)
+      fetchNotifyData(loggedMember.CustID, convertDate, convertToDate)
         .then(async resp => {
           dispatch(saveMemberMobileNotificationDetails(resp));
           setLoader(false);
@@ -52,7 +52,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
           });
         });
     },
-    [dispatch, loggedMember.ControllerID, toast],
+    [dispatch, loggedMember.CustID, toast],
   );
 
   const getNextNotify = () => {
@@ -133,7 +133,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
               <FlatList
                 data={mobilenotificationDetails}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={notification => (
+                renderItem={mobilenotification => (
                   <View
                     style={{
                       maxWidth: '100%',
@@ -143,7 +143,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                       marginVertical: 4,
                       borderRadius: 4,
                       borderLeftColor: getColorCode(
-                        notification.item.MessageID,
+                        mobilenotification.item.MsgTitle,
                       ),
                       borderLeftWidth: 6,
                       justifyContent: 'center',
@@ -156,7 +156,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                         icon="notification-clear-all"
                         style={{
                           backgroundColor: getColorCode(
-                            notification.item.MessageID,
+                            mobilenotification.item.MsgTitle,
                           ),
                         }}
                       />
@@ -172,7 +172,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                             color: '#333',
                             fontWeight: 'bold',
                           }}>
-                          {notification.item.Messagex}
+                          {mobilenotification.item.MessageX}
                         </Text>
                         <Text
                           style={{
@@ -180,7 +180,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                             color: '#a3a3a3',
                             marginTop: 2,
                           }}>
-                          {notification.item.Datex}
+                          {mobilenotification.item.DateX}
                         </Text>
                       </View>
                       <View
@@ -193,7 +193,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                             textAlign: 'left',
                             color: COLORS.primary,
                           }}>
-                          {getTypeOfMsg(notification.item.MessageID)}
+                          {getTypeOfMsg(mobilenotification.item.MsgTitle)}
                         </Text>
                       </View>
                     </View>

@@ -5,10 +5,8 @@ export const initialState = {
   mobilenotificationDetails: [],
 };
 
-export const MOBILENOTIFICATION_SUCCESS =
-  'HomeState/MOBILENOTIFICATION_SUCCESS';
-export const MOBILENOTIFICATION_FAILURE =
-  'HomeState/MOBILENOTIFICATION_FAILURE';
+export const MOBILENOTIFICATION_SUCCESS = 'MOBILENOTIFICATION_SUCCESS';
+export const MOBILENOTIFICATION_FAILURE = 'MOBILENOTIFICATION_FAILURE';
 
 export function fetchNotifyData(CustID, fromDate, toDate) {
   const queryParams = `sK=token&sfromdate=${fromDate}&stodate=${toDate}&custid=${CustID}`;

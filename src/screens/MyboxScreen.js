@@ -4,6 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Entypo from 'react-native-vector-icons/Entypo';
 import {Card, Button} from 'react-native-paper';
 import RNSpeedometer from 'react-native-speedometer';
+//import Tooltip from 'react-native-walkthrough-tooltip';
 
 import {COLORS} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
@@ -573,6 +574,13 @@ export default function MyboxScreen({navigation, route}) {
                   }}>
                   Controller password
                 </Text>
+                {/* <Tooltip
+                  isVisible={this.state.toolTipVisible}
+                  content={<Text>Check this out!</Text>}
+                  placement="top"
+                  onClose={() =>
+                    this.setState({toolTipVisible: false})
+                  }></Tooltip> */}
               </>
             )}
           />

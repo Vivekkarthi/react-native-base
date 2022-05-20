@@ -41,6 +41,23 @@ export function fetchTicketData(custID, fromDate, toDate) {
     });
 }
 
+export function fetchTickeResponcetData() {
+  const queryParams = `sK=token&iSTID=${custID}`;
+  const params = {
+    url: ENDPOINTURL.MemberGetTicketResponse,
+    token: '',
+    queryParams,
+  };
+
+  return getRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      throw error;
+    });
+}
+
 export const saveTicketDetails = data => {
   return dispatch => {
     if (data) {
