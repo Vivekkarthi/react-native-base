@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, SafeAreaView, Text, FlatList} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {Card, Button} from 'react-native-paper';
@@ -23,10 +22,11 @@ import {
 } from '../redux/actions/BoxState';
 import {useToast} from 'react-native-toast-notifications';
 import styles from '../styles/AppStyles';
-import {CONFIG} from '../utils/Config';
+import {useIsFocused} from '@react-navigation/native';
 
 export default function MyboxScreen({navigation, route}) {
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
   const toast = useToast();
   const [loader, setLoader] = useState(true);
   const [onTakePhoto, setOnTakePhoto] = useState({
@@ -40,6 +40,11 @@ export default function MyboxScreen({navigation, route}) {
     setLoader(true);
     fetchBoxData(loggedMember.LoginID, loggedMember.ControllerID)
       .then(async resp => {
+        setOnTakePhoto(pre => ({
+          ...pre,
+          internal: resp.OnDemandPhoto2 === 1 ? false : true,
+          external: resp.OnDemandPhoto1 === 1 ? false : true,
+        }));
         if (resp.SyncDateTime) {
           //Good
           dispatch(saveMyBoxDetails(resp));
@@ -109,12 +114,16 @@ export default function MyboxScreen({navigation, route}) {
       });
   };
 
-  const captureCamera = cameraType => {
+  const captureCamera = (cameraType, type) => {
     setLoader(true);
     setOnTakePhoto(prev => ({
       ...prev,
-      internal: cameraType === 2 ? false : true,
-      external: cameraType === 1 ? false : true,
+      ...(type === 'internal'
+        ? {internal: cameraType === 2 ? false : true}
+        : {}),
+      ...(type === 'external'
+        ? {external: cameraType === 1 ? false : true}
+        : {}),
     }));
     callInternalOrExternalCameraOnBox(
       loggedMember.LoginID,
@@ -130,7 +139,7 @@ export default function MyboxScreen({navigation, route}) {
             internal: true,
             external: true,
           }));
-          navigation.navigate('Camera');
+          navigation.navigate('Images');
         } else {
           // Not Good
           setLoader(false);
@@ -168,9 +177,11 @@ export default function MyboxScreen({navigation, route}) {
   };
 
   useEffect(() => {
-    getMyBoxData();
+    if (isFocused) {
+      getMyBoxData();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isFocused]);
 
   return (
     <>
@@ -187,7 +198,7 @@ export default function MyboxScreen({navigation, route}) {
               alignSelf: 'flex-start',
               marginBottom: 15,
             }}>
-            <Text style={styles.f18}> Mybox</Text>
+            <Text style={styles.f18}> My DoorBox</Text>
           </Feather>
 
           <FlatList
@@ -205,8 +216,10 @@ export default function MyboxScreen({navigation, route}) {
                     marginBottom: 8,
                     backgroundColor: COLORS.primary,
                     color: COLORS.white,
+                    paddingTop: 9,
+                    paddingBottom: 10,
                   }}>
-                  Camera
+                  Action
                 </Text>
                 {/* <View
                   style={{
@@ -325,7 +338,7 @@ export default function MyboxScreen({navigation, route}) {
                           fontSize: 16,
                           color: '#002060',
                         }}>
-                        Internal Camera
+                        INTERNAL CAMERA
                       </Text>
                       <View style={{height: '60%'}}>
                         <Entypo
@@ -336,23 +349,23 @@ export default function MyboxScreen({navigation, route}) {
                           name={'camera'}
                           color={
                             onTakePhoto.internal
-                              ? COLORS.messageColor1
-                              : COLORS.secondary
+                              ? COLORS.messageColor4
+                              : 'green'
                           }
                           size={80}
                         />
                       </View>
 
                       <View style={{height: '40%'}}>
-                        {boxDetails.OnDemandPhoto1 !== 0 && (
-                          <Button onPress={() => captureCamera(2)}>
+                        {
+                          <Button onPress={() => captureCamera(2, 'internal')}>
                             Take a photo
                           </Button>
-                        )}
+                        }
                       </View>
                     </Card>
 
-                    <Card
+                    {/* <Card
                       style={{
                         flexDirection: 'column',
                         justifyContent: 'center',
@@ -365,7 +378,7 @@ export default function MyboxScreen({navigation, route}) {
                           fontSize: 16,
                           color: '#002060',
                         }}>
-                        External Camera
+                        EXTERNAL CAMERA
                       </Text>
                       <View style={{height: '60%'}}>
                         <Entypo
@@ -376,46 +389,21 @@ export default function MyboxScreen({navigation, route}) {
                           name={'camera'}
                           color={
                             onTakePhoto.external
-                              ? COLORS.messageColor1
-                              : COLORS.secondary
+                              ? COLORS.messageColor4
+                              : 'green'
                           }
                           size={80}
                         />
                       </View>
 
                       <View style={{height: '40%'}}>
-                        {boxDetails.OnDemandPhoto2 !== 0 && (
-                          <Button onPress={() => captureCamera(1)}>
+                        {
+                          <Button onPress={() => captureCamera(1, 'external')}>
                             Take a photo
                           </Button>
-                        )}
+                        }
                       </View>
-                    </Card>
-                  </View>
-                </View>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 18,
-                    marginTop: 5,
-                    marginBottom: 8,
-                    backgroundColor: COLORS.primary,
-                    color: COLORS.white,
-                  }}>
-                  Alaram
-                </Text>
-                <View
-                  style={{
-                    paddingBottom: 10,
-                    flexDirection: 'row',
-                    alignSelf: 'center',
-                  }}>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
+                    </Card> */}
                     <Card
                       style={{
                         flexDirection: 'column',
@@ -423,6 +411,9 @@ export default function MyboxScreen({navigation, route}) {
                         width: '48%',
                         height: 150,
                       }}>
+                      <View style={{marginBottom: 10}}>
+                        <Button>Alarm</Button>
+                      </View>
                       <View style={{height: '75%'}}>
                         <Entypo
                           onPress={() =>
@@ -430,26 +421,23 @@ export default function MyboxScreen({navigation, route}) {
                           }
                           style={{
                             alignSelf: 'center',
-                            marginTop: 10,
+                            marginTop: -5,
                           }}
                           name={
                             boxDetails.AlarmState === 1 ? 'sound' : 'sound-mute'
                           }
                           color={
                             boxDetails.AlarmState === 1
-                              ? COLORS.messageColor1
+                              ? 'green'
                               : COLORS.messageColor4
                           }
                           size={100}
                         />
                       </View>
-
-                      <View style={{height: '25%'}}>
-                        <Button>Alarm</Button>
-                      </View>
                     </Card>
                   </View>
                 </View>
+
                 <Text
                   style={{
                     textAlign: 'center',
@@ -457,7 +445,9 @@ export default function MyboxScreen({navigation, route}) {
                     marginTop: 5,
                     marginBottom: 8,
                     backgroundColor: COLORS.gray,
-                    color: COLORS.primary,
+                    color: COLORS.white,
+                    paddingTop: 9,
+                    paddingBottom: 10,
                   }}>
                   Others
                 </Text>
@@ -478,21 +468,20 @@ export default function MyboxScreen({navigation, route}) {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         width: '48%',
-                        height: 150,
+                        height: 160,
                       }}>
-                      <View style={{height: '75%'}}>
+                      <View style={{height: '25%', paddingTop: 2}}>
+                        <Button>WIFI</Button>
+                      </View>
+                      <View style={{height: '75%', marginTop: -2}}>
                         <RNSpeedometer
-                          value={boxDetails.Battery ? boxDetails.Battery : 0}
-                          size={140}
+                          value={boxDetails.WIFI ? boxDetails.WIFI : 0}
+                          size={160}
                           wrapperStyle={{
                             alignSelf: 'center',
                           }}
                           labelNoteStyle={{display: 'none'}}
                         />
-                      </View>
-
-                      <View style={{height: '25%'}}>
-                        <Button>Battery</Button>
                       </View>
                     </Card>
                     <Card
@@ -500,30 +489,39 @@ export default function MyboxScreen({navigation, route}) {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         width: '48%',
-                        height: 150,
+                        height: 160,
                       }}>
-                      <View style={{height: '75%'}}>
+                      <View style={{height: '25%'}}>
+                        <Button>Battery</Button>
+                      </View>
+                      <View style={{height: '65%', bottom: 8}}>
                         <MaterialCommunityIcons
                           style={{
                             alignSelf: 'center',
                           }}
                           name={getBatteryType(
-                            boxDetails.WIFI
-                              ? Math.round(boxDetails.WIFI / 10) * 10
+                            boxDetails.Battery
+                              ? Math.round(boxDetails.Battery / 10) * 10
                               : 0,
                           )}
                           color={getBatteryTypeColor(
-                            boxDetails.WIFI
-                              ? Math.round(boxDetails.WIFI / 10) * 10
+                            boxDetails.Battery
+                              ? Math.round(boxDetails.Battery / 10) * 10
                               : 0,
                           )}
-                          size={120}
+                          size={100}
                         />
                       </View>
-
-                      <View style={{height: '25%'}}>
-                        <Button>Wifi</Button>
-                      </View>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          justifyContent: 'center',
+                          bottom: 17,
+                          fontSize: 24,
+                          fontWeight: 'bold',
+                        }}>
+                        {boxDetails.Battery ? boxDetails.Battery : 0}
+                      </Text>
                     </Card>
                   </View>
                 </View>
@@ -544,24 +542,37 @@ export default function MyboxScreen({navigation, route}) {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         width: '48%',
-                        height: 150,
+                        height: 160,
                       }}>
-                      <View style={{height: '75%'}}>
+                      <View style={{height: '25%', paddingTop: 2}}>
+                        <Button>Temperature</Button>
+                      </View>
+                      <View style={{height: '75%', marginTop: -2}}>
                         <RNSpeedometer
                           value={boxDetails.TEMPER ? boxDetails.TEMPER : 0}
-                          size={140}
+                          size={160}
                           wrapperStyle={{
                             alignSelf: 'center',
                           }}
                           labelNoteStyle={{display: 'none'}}
                         />
                       </View>
-                      <View style={{height: '25%'}}>
-                        <Button>Temperature</Button>
-                      </View>
                     </Card>
                   </View>
                 </View>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 18,
+                    marginTop: 5,
+                    marginBottom: 8,
+                    backgroundColor: COLORS.gray,
+                    color: COLORS.white,
+                    paddingTop: 9,
+                    paddingBottom: 10,
+                  }}>
+                  Controller password
+                </Text>
               </>
             )}
           />

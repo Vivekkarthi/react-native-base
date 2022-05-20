@@ -9,6 +9,7 @@ import {
   FlatList,
   Image,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {FormProvider, useForm} from 'react-hook-form';
 import {Button} from 'react-native-paper';
 // import {useToast} from 'react-native-toast-notifications';
@@ -67,7 +68,7 @@ const UserDetailScreen = ({navigation, route}) => {
       Password: user.Password,
     };
     setInputUser(() => formData);
-    memberAdduser(user, loggedMember.CustID)
+    memberAdduser(user, loggedMember)
       .then(async resp => {
         if (resp === 'Success') {
           //Good
@@ -230,6 +231,20 @@ const UserDetailScreen = ({navigation, route}) => {
         keyExtractor={item => `${item.ID}`}
         renderItem={() => (
           <View>
+            <View style={styles.MainContainer}>
+              <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
+              <Ionicons
+                name="ios-person-circle-outline"
+                size={23}
+                color={COLORS.primary}
+                style={{
+                  flexDirection: 'row',
+                  alignSelf: 'flex-start',
+                  marginBottom: 20,
+                }}>
+                <Text style={styles.f18}> Add User</Text>
+              </Ionicons>
+            </View>
             <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
             <View
               style={{
@@ -251,8 +266,6 @@ const UserDetailScreen = ({navigation, route}) => {
                 borderTopEndRadius: SIZES.radius * 2,
                 padding: SIZES.base * 2,
               }}>
-              <Text style={styles.text}>Add User</Text>
-
               <KeyboardAvoidingView
                 style={{flex: 1}}
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}

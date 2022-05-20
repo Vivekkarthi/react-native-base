@@ -11,17 +11,19 @@ import StaticBottomTabs from '../components/StaticBottomTabs';
 import {COLORS} from '../constants';
 import {
   fetchNotifyData,
-  saveMemberNotificationDetails,
+  saveMemberMobileNotificationDetails,
 } from '../redux/actions/NotificationState';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 import {Loader} from '../components/Loader';
 import styles from '../styles/AppStyles';
 
-const NotificationsScreen = ({navigation, route}) => {
+const MobileNotificationsScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const toast = useToast();
   const {loggedMember} = useSelector(state => state.AuthState);
-  const {notificationDetails} = useSelector(state => state.NotificationState);
+  const {mobilenotificationDetails} = useSelector(
+    state => state.MobileNotificationState,
+  );
   const [loader, setLoader] = useState(true);
   const [notifyDate, setNotifyDate] = useState({
     fromDate: new Date(),
@@ -35,7 +37,7 @@ const NotificationsScreen = ({navigation, route}) => {
       const convertToDate = moment(toDate).format('YYYY-MM-DD');
       fetchNotifyData(loggedMember.ControllerID, convertDate, convertToDate)
         .then(async resp => {
-          dispatch(saveMemberNotificationDetails(resp));
+          dispatch(saveMemberMobileNotificationDetails(resp));
           setLoader(false);
         })
         .catch(error => {
@@ -97,7 +99,7 @@ const NotificationsScreen = ({navigation, route}) => {
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text style={styles.f18}> Notifications</Text>
+            <Text style={styles.f18}> Mobile Notifications</Text>
           </Ionicons>
           <View style={{flex: 1, paddingTop: 19}}>
             <Card style={{marginBottom: 5}}>
@@ -127,9 +129,9 @@ const NotificationsScreen = ({navigation, route}) => {
                 )}
               />
             </Card>
-            {notificationDetails.length ? (
+            {mobilenotificationDetails.length ? (
               <FlatList
-                data={notificationDetails}
+                data={mobilenotificationDetails}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={notification => (
                   <View
@@ -214,4 +216,4 @@ const NotificationsScreen = ({navigation, route}) => {
   );
 };
 
-export default NotificationsScreen;
+export default MobileNotificationsScreen;

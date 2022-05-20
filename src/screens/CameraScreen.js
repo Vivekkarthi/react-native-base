@@ -6,6 +6,7 @@ import {
   FlatList,
   Image,
   Text,
+  RefreshControl,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -24,6 +25,7 @@ const CameraScreen = ({navigation, route}) => {
   const flatListRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const {homeDetails} = useSelector(state => state.HomeState);
+  const [refreshing, setRefreshing] = useState(false);
 
   const onViewRef = useRef(({changed}) => {
     if (changed[0].isViewable) {
@@ -48,6 +50,15 @@ const CameraScreen = ({navigation, route}) => {
               : require('../../assets/images/no-image.jpg')
           }
         />
+        <Text
+          style={{
+            textAlign: 'center',
+            color: '#000000',
+            fontWeight: 'bold',
+            lineHeight: 35,
+          }}>
+          {item.DateTimeX}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -66,11 +77,17 @@ const CameraScreen = ({navigation, route}) => {
               alignSelf: 'flex-start',
               marginBottom: 20,
             }}>
-            <Text style={styles.f18}> Photos</Text>
+            <Text style={styles.f18}> Images</Text>
           </Feather>
           <FlatList
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                colors={[COLORS.secondary, COLORS.white]}
+                refreshing={refreshing}
+              />
+            }
             data={[{ID: '1'}]}
             keyExtractor={item => `${item.ID}`}
             renderItem={() => (
@@ -80,6 +97,8 @@ const CameraScreen = ({navigation, route}) => {
                     textAlign: 'center',
                     fontSize: 18,
                     backgroundColor: COLORS.primary,
+                    paddingBottom: 10,
+                    paddingTop: 9,
                     color: COLORS.white,
                   }}>
                   Internal Camera
@@ -125,13 +144,14 @@ const CameraScreen = ({navigation, route}) => {
                     source={require('../../assets/images/no-image.jpg')}
                   />
                 )}
-
                 <Text
                   style={{
                     textAlign: 'center',
                     fontSize: 18,
                     backgroundColor: COLORS.primary,
                     color: COLORS.white,
+                    paddingBottom: 10,
+                    paddingTop: 9,
                   }}>
                   External Camera
                 </Text>

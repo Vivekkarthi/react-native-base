@@ -13,4 +13,4 @@
     @org.greenrobot.eventbus.Subscribe <methods>;
 }
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
--keep class com.dropbox.BuildConfig { *; }
+-keep class com.doorbox.mobile.BuildConfig { *; }

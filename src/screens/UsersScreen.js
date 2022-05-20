@@ -1,33 +1,25 @@
-import moment from 'moment';
-import React, {useState} from 'react';
-import {
-  View,
-  SafeAreaView,
-  Text,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
-import {Avatar, Button, Card} from 'react-native-paper';
+import React, {useCallback, useEffect, useState} from 'react';
+import {View, SafeAreaView, Text, TouchableOpacity} from 'react-native';
+import {useSelector} from 'react-redux';
+
+import {Avatar, Button} from 'react-native-paper';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SwipeListView} from 'react-native-swipe-list-view';
+import {useIsFocused} from '@react-navigation/native';
 
+import {memberGetuser} from '../redux/actions/AuthState';
+import {memberDeleteuser} from '../redux/actions/AuthState';
 import AppStatusBar from '../components/AppStatusBar';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {COLORS} from '../constants';
 import styles from '../styles/AppStyles';
 
 const UsersScreen = ({navigation, route}) => {
-  const [listData, setListData] = useState(
-    Array(5)
-      .fill('')
-      .map((_, i) => ({
-        key: `${i}`,
-        name: 'Leanne Graham',
-        email: 'Sincere@april.biz',
-        phone: '1-770-736-8031',
-      })),
-  );
+  const [listData, setListData] = useState([]);
+
+  const {loggedMember} = useSelector(state => state.AuthState);
+  const isFocused = useIsFocused();
 
   const closeRow = (rowMap, rowKey) => {
     if (rowMap[rowKey]) {
@@ -42,6 +34,17 @@ const UsersScreen = ({navigation, route}) => {
     newData.splice(prevIndex, 1);
     setListData(newData);
   };
+  const fetchUserInfo = useCallback(async () => {
+    const response = await memberGetuser(loggedMember.ControllerID);
+    setListData(response);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchUserInfo();
+    }
+  }, [isFocused, fetchUserInfo]);
 
   return (
     <>
@@ -53,7 +56,7 @@ const UsersScreen = ({navigation, route}) => {
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-            <Text style={styles.f18}>Users</Text>
+            <Text style={styles.f18}> Users</Text>
           </Ionicons>
           <View
             style={{
@@ -66,12 +69,14 @@ const UsersScreen = ({navigation, route}) => {
               onPress={() => navigation.goBack()}>
               Back
             </Button>
-            <Button
-              style={{margin: 5}}
-              mode="contained"
-              onPress={() => navigation.navigate('UserDetails')}>
-              Add
-            </Button>
+            {loggedMember.RoleID === 2 && (
+              <Button
+                style={{margin: 5}}
+                mode="contained"
+                onPress={() => navigation.navigate('UserDetails')}>
+                Add
+              </Button>
+            )}
           </View>
           <SwipeListView
             data={listData}
@@ -82,7 +87,7 @@ const UsersScreen = ({navigation, route}) => {
                   paddingHorizontal: 15,
                   paddingVertical: 10,
                   backgroundColor: '#fff',
-                  borderLeftColor: COLORS.secondary,
+                  borderLeftColor: '#99ccff',
                   borderLeftWidth: 6,
                   marginVertical: 4,
                   borderRadius: 4,
@@ -95,7 +100,7 @@ const UsersScreen = ({navigation, route}) => {
                     color={COLORS.white}
                     icon="account"
                     style={{
-                      backgroundColor: COLORS.secondary,
+                      backgroundColor: '#99ccff',
                       alignSelf: 'center',
                     }}
                   />
@@ -111,7 +116,7 @@ const UsersScreen = ({navigation, route}) => {
                         color: '#333',
                         fontWeight: 'bold',
                       }}>
-                      Name: {data.item.name}
+                      Name: {data.item.Namex}
                     </Text>
                     <Text
                       style={{
@@ -127,44 +132,47 @@ const UsersScreen = ({navigation, route}) => {
                         color: '#a3a3a3',
                         marginTop: 2,
                       }}>
-                      Mobile: {data.item.phone}
+                      Mobile: {data.item.Phone}
                     </Text>
                   </View>
                 </View>
               </View>
             )}
-            renderHiddenItem={(data, rowMap) => (
-              <View style={styles.rowBack}>
-                <TouchableOpacity
-                  style={[styles.backRightBtn, styles.backRightBtnLeft]}
-                  onPress={() => closeRow(rowMap, data.item.key)}>
-                  <Ionicons
-                    name="md-close-circle-outline"
-                    size={36}
-                    color={COLORS.white}
-                    style={{
-                      flexDirection: 'row',
-                      alignSelf: 'flex-start',
-                    }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.backRightBtn, styles.backRightBtnRight]}
-                  onPress={() => deleteRow(rowMap, data.item.key)}>
-                  <Ionicons
-                    name="md-trash-outline"
-                    size={36}
-                    color={COLORS.white}
-                    style={{
-                      flexDirection: 'row',
-                      alignSelf: 'flex-start',
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-            )}
+            renderHiddenItem={(data, rowMap) =>
+              loggedMember.RoleID === 2 && (
+                <View style={styles.rowBack}>
+                  {/* <TouchableOpacity
+                    style={[styles.backRightBtn, styles.backRightBtnLeft]}
+                    onPress={() => closeRow(rowMap, data.item.key)}>
+                    <Ionicons
+                      name="md-close-circle-outline"
+                      size={36}
+                      color={COLORS.white}
+                      style={{
+                        flexDirection: 'row',
+                        alignSelf: 'flex-start',
+                      }}
+                    />
+                  </TouchableOpacity> */}
+                  <TouchableOpacity
+                    style={[styles.backRightBtn, styles.backRightBtnRight]}
+                    onPress={() => deleteRow(rowMap, data.item.key)}>
+                    <Ionicons
+                      name="md-trash-outline"
+                      size={36}
+                      color={COLORS.white}
+                      style={{
+                        flexDirection: 'row',
+                        alignSelf: 'flex-start',
+                      }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )
+            }
             leftOpenValue={75}
-            rightOpenValue={-75}
+            //rightOpenValue={-75}
+            rightOpenValue={-35}
             previewRowKey={'0'}
             previewOpenValue={-40}
             previewOpenDelay={3000}

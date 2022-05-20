@@ -16,7 +16,7 @@ function StaticBottomTabs({navigation, routeName}) {
           backgroundColor: COLORS.primary,
         }}>
         <Pressable
-          onPress={() => navigation.navigate('Settings')}
+          onPress={() => navigation.navigate('My DoorBox')}
           style={{
             flexDirection: 'column',
             alignSelf: 'flex-end',
@@ -25,11 +25,11 @@ function StaticBottomTabs({navigation, routeName}) {
           {({pressed}) => (
             <>
               <Feather
-                name="settings"
+                name="box"
                 color={
                   pressed
                     ? '#f17012'
-                    : routeName === 'Settings'
+                    : routeName === 'My DoorBox'
                     ? '#f17012'
                     : '#FFFFFF'
                 }
@@ -41,12 +41,12 @@ function StaticBottomTabs({navigation, routeName}) {
                   fontSize: 10,
                   color: pressed
                     ? '#f17012'
-                    : routeName === 'Settings'
+                    : routeName === 'My DoorBox'
                     ? '#f17012'
                     : '#FFFFFF',
                   textAlign: 'center',
                 }}>
-                Settings
+                My DoorBox
               </Text>
             </>
           )}
@@ -90,7 +90,7 @@ function StaticBottomTabs({navigation, routeName}) {
         </Pressable>
 
         <Pressable
-          onPress={() => navigation.navigate('Camera')}
+          onPress={() => navigation.navigate('Images')}
           style={{
             flexDirection: 'column',
             alignSelf: 'flex-end',
@@ -103,7 +103,7 @@ function StaticBottomTabs({navigation, routeName}) {
                 color={
                   pressed
                     ? '#f17012'
-                    : routeName === 'Camera'
+                    : routeName === 'Images'
                     ? '#f17012'
                     : '#FFFFFF'
                 }
@@ -115,7 +115,7 @@ function StaticBottomTabs({navigation, routeName}) {
                   fontSize: 10,
                   color: pressed
                     ? '#f17012'
-                    : routeName === 'Camera'
+                    : routeName === 'Images'
                     ? '#f17012'
                     : '#FFFFFF',
                   textAlign: 'center',

@@ -73,7 +73,10 @@ const SignupScreen = ({navigation}) => {
         if (resp === 'Success') {
           //Good
           setLoader(false);
-          navigation.navigate('Login');
+          navigation.navigate('Login', {
+              content: 'The account has been created successfully. Kindly enter your mobile number and password to login.'
+            }
+          );
         } else {
           // Not Good
           setLoader(false);

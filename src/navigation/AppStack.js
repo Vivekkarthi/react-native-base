@@ -7,6 +7,7 @@ import {useDispatch} from 'react-redux';
 
 import BottomTabNavigator from './BottomTabNavigator';
 import NotificationsScreen from '../screens/NotificationsScreen';
+import MobileNotificationsScreen from '../screens/MobileNotificationsScreen';
 import UsersScreen from '../screens/UsersScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import CameraScreen from '../screens/CameraScreen';
@@ -115,6 +116,68 @@ const AppStack = () => {
         }}
       />
       <Drawer.Screen
+        name="Images"
+        component={CameraScreen}
+        options={{
+          headerShown: true,
+          drawerIcon: ({color}) => (
+            <Feather name="camera" size={22} color={color} />
+          ),
+          headerTitleAlign: 'center',
+          headerTitle: () => (
+            <Image
+              source={require('../../assets/images/icon.png')}
+              style={{
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
+          ),
+          headerRight: () => (
+            <View
+              style={{
+                paddingRight: 16,
+              }}>
+              <TouchableOpacity onPress={() => logoutUser()}>
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
+              </TouchableOpacity>
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="My DoorBox"
+        component={MyboxScreen}
+        options={{
+          headerShown: true,
+          drawerIcon: ({color}) => (
+            <Feather name="box" size={22} color={color} />
+          ),
+          headerTitleAlign: 'center',
+          headerTitle: () => (
+            <Image
+              source={require('../../assets/images/icon.png')}
+              style={{
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
+          ),
+          headerRight: () => (
+            <View
+              style={{
+                paddingRight: 16,
+              }}>
+              <TouchableOpacity onPress={() => logoutUser()}>
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
+              </TouchableOpacity>
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
         name="Notifications"
         component={NotificationsScreen}
         options={{
@@ -146,74 +209,12 @@ const AppStack = () => {
         }}
       />
       <Drawer.Screen
-        name="Users"
-        component={UserStack}
+        name="MobileNotifications"
+        component={MobileNotificationsScreen}
         options={{
           headerShown: true,
           drawerIcon: ({color}) => (
-            <Feather name="users" size={22} color={color} />
-          ),
-          headerTitleAlign: 'center',
-          headerTitle: () => (
-            <Image
-              source={require('../../assets/images/icon.png')}
-              style={{
-                width: 185,
-                height: 88,
-              }}
-              imageStyle={{borderRadius: 25}}
-            />
-          ),
-          headerRight: () => (
-            <View
-              style={{
-                paddingRight: 16,
-              }}>
-              <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
-              </TouchableOpacity>
-            </View>
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{
-          headerShown: true,
-          drawerIcon: ({color}) => (
-            <Feather name="settings" size={22} color={color} />
-          ),
-          headerTitleAlign: 'center',
-          headerTitle: () => (
-            <Image
-              source={require('../../assets/images/icon.png')}
-              style={{
-                width: 185,
-                height: 88,
-              }}
-              imageStyle={{borderRadius: 25}}
-            />
-          ),
-          headerRight: () => (
-            <View
-              style={{
-                paddingRight: 16,
-              }}>
-              <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
-              </TouchableOpacity>
-            </View>
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Camera"
-        component={CameraScreen}
-        options={{
-          headerShown: true,
-          drawerIcon: ({color}) => (
-            <Feather name="camera" size={22} color={color} />
+            <Ionicons name="notifications" size={22} color={color} />
           ),
           headerTitleAlign: 'center',
           headerTitle: () => (
@@ -270,12 +271,12 @@ const AppStack = () => {
         }}
       />
       <Drawer.Screen
-        name="My Box"
-        component={MyboxScreen}
+        name="Users"
+        component={UserStack}
         options={{
           headerShown: true,
           drawerIcon: ({color}) => (
-            <Feather name="box" size={22} color={color} />
+            <Feather name="users" size={22} color={color} />
           ),
           headerTitleAlign: 'center',
           headerTitle: () => (

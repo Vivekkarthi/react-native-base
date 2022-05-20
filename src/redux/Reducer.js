@@ -2,10 +2,14 @@ import {combineReducers} from 'redux';
 import AuthStateReducer, {RESET_STORE} from './actions/AuthState';
 import BoxStateReducer from './actions/BoxState';
 import HomeStateReducer from './actions/HomeState';
+import NotificatationStateReducer from './actions/NotificationState';
+import TicketStateReducer from './actions/SupportTicketState';
 
 const appReducer = combineReducers({
   AuthState: AuthStateReducer,
   HomeState: HomeStateReducer,
+  NotificationState: NotificatationStateReducer,
+  TicketStateState: TicketStateReducer,
   BoxState: BoxStateReducer,
 });
 

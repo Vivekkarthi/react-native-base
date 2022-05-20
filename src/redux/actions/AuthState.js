@@ -36,10 +36,11 @@ export async function memberLogin(userData, navigation) {
       if (userResp.USERRECORDID !== 0 && userResp.AddlField1 === '') {
         memberMobileToken(userResp)
           .then(resp => {
-            console.log(
-              '+++++++++++++++++++++++++ NOTIFY ++++++++++++++++++++',
-              resp,
-            );
+            if (resp === 'SUCCESS') {
+              console.log(
+                '#################### NOTIFICATION SUCCESS ######################',
+              );
+            }
           })
           .catch(error => {
             console.log(
@@ -59,15 +60,13 @@ export async function memberLogin(userData, navigation) {
 
 export async function memberMobileToken(userData) {
   const fcmToken = await getFcmToken();
-
-  console.log('**********************************', fcmToken);
-  const queryParams = `sK=token&hardwareid=${userData.ControllerID}&userid=${userData.LoginID}&sTokenx=${fcmToken}`;
+  const queryParams = `sK=token&hardwareid=&userid=${userData.USERRECORDID}&sTokenx=${fcmToken}`;
   const params = {
     url: ENDPOINTURL.MemberMobileToken,
     token: '',
     queryParams,
   };
-  return getRequest(params)
+  return postRequest(params)
     .then(userResp => {
       return userResp;
     })
@@ -93,10 +92,69 @@ export function memberRegister(userData, navigation) {
       throw error;
     });
 }
-export function memberAdduser(userData, CustID) {
-  const queryParams = `sK=token&namex=${userData.Name}&spass=${userData.Password}&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=&icustid=${CustID}`;
+export function memberAdduser(userData, loggedMember) {
+  const queryParams = `sK=token&namex=${userData.Name}&spass=${userData.Password}&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=${loggedMember.ControllerName}&icustid=${loggedMember.CustID}`;
   const params = {
     url: ENDPOINTURL.MemberRegister,
+    token: '',
+    queryParams,
+  };
+
+  return getRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      throw error;
+    });
+}
+
+export function memberDeleteuser(userData, loggedMember) {
+  const queryParams = `sK=token&userid=${userData.USERRECORDID}`;
+  const params = {
+    url: ENDPOINTURL.MemberDeleteuser,
+    token: '',
+    queryParams,
+  };
+
+  return getRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      throw error;
+    });
+}
+
+export function memberEdituser(userData) {
+  const queryParams = `sK=token&namex=${userData.Name}&spass=${
+    userData.Password
+  }&semail=${userData.Email}&sphone=${userData.PhoneNumber}&sidx=${
+    userData.ControllerId
+  }&icustid=${userData.CustID ? userData.CustID : '0'}&userrecordid=${
+    userData.UserRecordId ? userData.UserRecordId : '0'
+  }`;
+  console.log({queryParams});
+  const params = {
+    url: ENDPOINTURL.MemberRegister,
+    token: '',
+    queryParams,
+  };
+
+  return getRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      console.log('errorrr', error);
+      throw error;
+    });
+}
+
+export function memberGetuser(controllerId) {
+  const queryParams = `sK=token&ihwidx=${controllerId}&sHWname=&icallfrom=1`;
+  const params = {
+    url: ENDPOINTURL.MemberGetuser,
     token: '',
     queryParams,
   };

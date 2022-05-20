@@ -1,4 +1,4 @@
-package com.dropbox.newarchitecture;
+package com.doorbox.mobile.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.dropbox.BuildConfig;
-import com.dropbox.newarchitecture.components.MainComponentsRegistry;
-import com.dropbox.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.doorbox.mobile.BuildConfig;
+import com.doorbox.mobile.newarchitecture.components.MainComponentsRegistry;
+import com.doorbox.mobile.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

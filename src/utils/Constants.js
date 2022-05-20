@@ -7,5 +7,13 @@ export const ENDPOINTURL = {
   MemberUpdateOnDemandCamera: 'APIUpdateOnDemandCamera/',
   MemberMyBox: 'ApiGetMyBoxPageData/',
   MemberAdduser: 'APIAddNewUser/',
+  MemberDeleteuser: 'APIDeleteUSER/',
+  MemberGetuser: 'ApiGetusers/',
   MemberMobileToken: 'APIUpdateMobileToken/',
+  MemberNotification: 'ApiGetNotifications/',
+  MemberMobileNotification: 'ApiGetMobileNotifications/',
+
+  MemberGetTicketList: 'APIGetTicketList/',
+  MemberGetTicketResponse: 'APIGetTicketReponse/',
+  MemberSaveTicketResponse: 'APISaveTicketReponse/',
 };

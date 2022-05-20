@@ -1,4 +1,4 @@
-package com.dropbox;
+package com.doorbox.mobile;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

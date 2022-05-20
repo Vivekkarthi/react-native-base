@@ -10,6 +10,7 @@ import {
   saveMemberHomeDetails,
 } from '../redux/actions/HomeState';
 import {Card, Avatar} from 'react-native-paper';
+import Feather from 'react-native-vector-icons/Feather';
 
 import {COLORS} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
@@ -126,12 +127,35 @@ export default function HomeScreen({navigation, route}) {
     setNotifyDate(moment(new Date()));
     getHomeData(new Date());
     setRefreshing(false);
-  }, [getHomeData]);
-
-  useEffect(() => {
-    getHomeData(new Date());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    getHomeData(notifyDate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // useEffect(() => {
+  //   const intervalCall = setInterval(() => {
+
+  //   console.log('*******************************************************',moment(notifyDate).format('YYYY-MM-DD'));
+  //     fetchHomeData(
+  //       loggedMember.LoginID,
+  //       loggedMember.ControllerID,
+  //       moment(notifyDate).format('YYYY-MM-DD'),
+  //     )
+  //       .then(async resp => {
+  //         if (resp.LastSyncDate) {
+  //           dispatch(saveMemberHomeDetails(resp));
+  //         }
+  //       });
+  //   }, 1000 * homeDetails.MobileAppPageRefreshInterval);
+
+  //   return () => {
+  //     // clean up
+  //     clearInterval(intervalCall);
+  //   };
+  // }, []);
 
   return (
     <>
@@ -168,7 +192,7 @@ export default function HomeScreen({navigation, route}) {
             }
             data={[{ID: '1'}]}
             keyExtractor={item => `${item.ID}`}
-            renderItem={() => (
+            renderItem={item => (
               <>
                 <View
                   style={{
@@ -192,6 +216,17 @@ export default function HomeScreen({navigation, route}) {
                         justifyContent: 'center',
                         width: '48%',
                       }}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          fontSize: 18,
+                          backgroundColor: '#178b93',
+                          paddingBottom: 10,
+                          paddingTop: 9,
+                          color: COLORS.white,
+                        }}>
+                        <Feather name="box" size={22} /> Box status
+                      </Text>
                       <Card.Cover
                         style={{
                           alignSelf: 'center',
@@ -232,13 +267,23 @@ export default function HomeScreen({navigation, route}) {
                       </Text>
                     </Card>
                     <Card
-                      onPress={() => navigation.navigate('Camera')}
+                      onPress={() => navigation.navigate('Images')}
                       style={{
                         flexDirection: 'column',
                         justifyContent: 'center',
                         width: '48%',
-                        padding: 10,
                       }}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          fontSize: 18,
+                          backgroundColor: '#178b93',
+                          color: COLORS.white,
+                          paddingBottom: 10,
+                          paddingTop: 9,
+                        }}>
+                        <Feather name="camera" size={22} /> Internal camera
+                      </Text>
                       <Card.Cover
                         style={{
                           alignSelf: 'center',
@@ -257,28 +302,48 @@ export default function HomeScreen({navigation, route}) {
                       <Text
                         style={{
                           textAlign: 'center',
+                          color: '#000000',
+                          fontWeight: 'bold',
+                          lineHeight: 35,
+                        }}>
+                        {homeDetails.Photos && homeDetails.Photos.length
+                          ? homeDetails.Photos[0].DateTimeX
+                          : ''}
+                      </Text>
+                      {/* <Text
+                        style={{
+                          textAlign: 'center',
                           top: 10,
                           color: '#002060',
                           fontWeight: 'bold',
                         }}>
                         Internal Camera
-                      </Text>
+                      </Text> */}
                     </Card>
                   </View>
                 </View>
-                <Card style={{marginBottom: 13, marginTop: 8}}>
-                  <View style={{alignSelf: 'center', paddingTop: 5}}>
+                <Card style={{marginBottom: 13, marginTop: 2}}>
+                  <View
+                    style={{
+                      alignSelf: 'center',
+                      paddingBottom: 12,
+                      paddingTop: 12,
+                      backgroundColor: '#178b93',
+                      width: '100%',
+                    }}>
                     <Ionicons
                       name="notifications"
                       size={16}
-                      color={COLORS.primary}>
+                      style={{textAlign: 'center', justifyContent: 'center'}}
+                      color={COLORS.white}>
+                      {' '}
                       Notifications
                     </Ionicons>
                   </View>
                   <Card.Title
                     title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
                     // subtitle={'subtitle'}
-                    titleStyle={{fontSize: 18, alignSelf: 'center'}}
+                    titleStyle={{fontSize: 16, alignSelf: 'center'}}
                     subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
                     left={props => (
                       <Ionicons
@@ -313,6 +378,7 @@ export default function HomeScreen({navigation, route}) {
                             <View
                               style={{
                                 maxWidth: '100%',
+                                bottom: 13,
                                 paddingHorizontal: 15,
                                 paddingVertical: 10,
                                 backgroundColor: '#fff',
@@ -351,15 +417,15 @@ export default function HomeScreen({navigation, route}) {
                                     {/* {moment(notification.item.Datex).format(
                                       'MMMM DD, YYYY hh:mm:ss',
                                     )} */}
-                                    {notification.item.Datex}
+                                    {notification.item.Messagex}
                                   </Text>
                                   <Text
                                     style={{
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       color: '#a3a3a3',
                                       marginTop: 2,
                                     }}>
-                                    {notification.item.Messagex}
+                                    {notification.item.Datex}
                                   </Text>
                                 </View>
                                 <View
@@ -380,7 +446,7 @@ export default function HomeScreen({navigation, route}) {
                           )}
                         />
                       ) : (
-                        <Card style={{backgroundColor: '#eef1f6'}}>
+                        <Card style={{backgroundColor: '#eef1f6', bottom: 10}}>
                           <Card.Title
                             title={'No notifications found.'}
                             titleStyle={{fontSize: 14}}

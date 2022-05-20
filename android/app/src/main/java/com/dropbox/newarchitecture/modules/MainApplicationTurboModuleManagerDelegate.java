@@ -1,4 +1,4 @@
-package com.dropbox.newarchitecture.modules;
+package com.doorbox.mobile.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;
