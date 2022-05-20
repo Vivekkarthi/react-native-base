@@ -108,8 +108,12 @@ const NotificationsScreen = ({navigation, route}) => {
                   'MMMM DD, YYYY',
                 )}`}
                 // subtitle={moment(new Date(notifyDate.toDate)).format('MMMM DD, YYYY')}
-                titleStyle={{fontSize: 16, alignSelf: 'center'}}
-                subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
+                titleStyle={{
+                  fontSize: 14,
+                  alignSelf: 'center',
+                  justifyContent: 'center',
+                }}
+                // subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
                 left={props => (
                   <Ionicons
                     name="arrow-back-circle-outline"

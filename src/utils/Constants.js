@@ -12,7 +12,7 @@ export const ENDPOINTURL = {
   MemberMobileToken: 'APIUpdateMobileToken/',
   MemberNotification: 'ApiGetNotifications/',
   MemberMobileNotification: 'ApiGetMobileNotifications/',
-
+  MemberUpdateControllerPassword: 'APIUpdateControllerPassword/',
   MemberGetTicketList: 'APIGetTicketList/',
   MemberGetTicketResponse: 'APIGetTicketReponse/',
   MemberSaveTicketResponse: 'APISaveTicketReponse/',

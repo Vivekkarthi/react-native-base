@@ -43,4 +43,14 @@ const resetPassSchema = yup.object().shape({
   Email: yup.string().email().required(),
 });
 
-export {loginSchema, registerSchema, resetPassSchema, addUserSchema};
+const controllerPasswordSchema = yup.object().shape({
+  Password: yup.string().required(),
+});
+
+export {
+  loginSchema,
+  registerSchema,
+  resetPassSchema,
+  addUserSchema,
+  controllerPasswordSchema,
+};

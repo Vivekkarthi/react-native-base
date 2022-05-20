@@ -1,5 +1,5 @@
 import {ENDPOINTURL} from '../../utils/Constants';
-import {getRequest} from '../../utils/Handlers';
+import {getRequest, postRequest} from '../../utils/Handlers';
 
 export const initialState = {
   boxDetails: {},
@@ -72,6 +72,25 @@ export const callInternalOrExternalCameraOnBox = (
       return response;
     })
     .catch(error => {
+      throw error;
+    });
+};
+
+export const updateControllerPassword = (userData, controllerId) => {
+  const queryParams = `sK=token&iHWID=${controllerId}&sPWD=${userData.Password}`;
+  const params = {
+    url: ENDPOINTURL.MemberUpdateControllerPassword,
+    token: '',
+    queryParams,
+  };
+  console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%', params);
+  return postRequest(params)
+    .then(resp => {
+      console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&', resp);
+      return resp;
+    })
+    .catch(error => {
+      console.log('################# Error #################', error);
       throw error;
     });
 };

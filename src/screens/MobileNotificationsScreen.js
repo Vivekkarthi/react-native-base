@@ -12,7 +12,7 @@ import {COLORS} from '../constants';
 import {
   fetchNotifyData,
   saveMemberMobileNotificationDetails,
-} from '../redux/actions/NotificationState';
+} from '../redux/actions/MobileNotificationState';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 import {Loader} from '../components/Loader';
 import styles from '../styles/AppStyles';
@@ -21,14 +21,15 @@ const MobileNotificationsScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const toast = useToast();
   const {loggedMember} = useSelector(state => state.AuthState);
-  const {mobilenotificationDetails} = useSelector(
-    state => state.MobileNotificationState,
-  );
+  // const {mobilenotificationDetails} = useSelector(
+  //   state => state.MobileNotificationState,
+  // );
   const [loader, setLoader] = useState(true);
   const [notifyDate, setNotifyDate] = useState({
     fromDate: new Date(),
     toDate: new Date(),
   });
+  const [notificationData, setNotificationData] = useState([]);
 
   const getNotifyData = useCallback(
     (currentDate, toDate) => {
@@ -37,7 +38,10 @@ const MobileNotificationsScreen = ({navigation, route}) => {
       const convertToDate = moment(toDate).format('YYYY-MM-DD');
       fetchNotifyData(loggedMember.CustID, convertDate, convertToDate)
         .then(async resp => {
-          dispatch(saveMemberMobileNotificationDetails(resp));
+          if (resp && resp.length) {
+            setNotificationData(resp);
+          }
+          // dispatch(saveMemberMobileNotificationDetails(resp));
           setLoader(false);
         })
         .catch(error => {
@@ -52,7 +56,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
           });
         });
     },
-    [dispatch, loggedMember.CustID, toast],
+    [loggedMember.CustID, toast],
   );
 
   const getNextNotify = () => {
@@ -110,8 +114,12 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                   'MMMM DD, YYYY',
                 )}`}
                 // subtitle={moment(new Date(notifyDate.toDate)).format('MMMM DD, YYYY')}
-                titleStyle={{fontSize: 16, alignSelf: 'center'}}
-                subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
+                titleStyle={{
+                  fontSize: 14,
+                  alignSelf: 'center',
+                  justifyContent: 'center',
+                }}
+                // subtitleStyle={{fontSize: 12, alignSelf: 'center'}}
                 left={props => (
                   <Ionicons
                     name="arrow-back-circle-outline"
@@ -129,9 +137,11 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                 )}
               />
             </Card>
-            {mobilenotificationDetails.length ? (
+            {notificationData.length ? (
               <FlatList
-                data={mobilenotificationDetails}
+                keyboardShouldPersistTaps="always"
+                showsVerticalScrollIndicator={false}
+                data={notificationData}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={mobilenotification => (
                   <View
@@ -143,7 +153,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                       marginVertical: 4,
                       borderRadius: 4,
                       borderLeftColor: getColorCode(
-                        mobilenotification.item.MsgTitle,
+                        mobilenotification.item.STATUSX,
                       ),
                       borderLeftWidth: 6,
                       justifyContent: 'center',
@@ -156,7 +166,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                         icon="notification-clear-all"
                         style={{
                           backgroundColor: getColorCode(
-                            mobilenotification.item.MsgTitle,
+                            mobilenotification.item.STATUSX,
                           ),
                         }}
                       />
@@ -164,13 +174,19 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                         style={{
                           flexDirection: 'column',
                           marginLeft: 10,
-                          width: '65%',
                         }}>
                         <Text
                           style={{
                             fontSize: 16,
                             color: '#333',
                             fontWeight: 'bold',
+                          }}>
+                          {mobilenotification.item.MsgTitle}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            color: '#333',
                           }}>
                           {mobilenotification.item.MessageX}
                         </Text>
@@ -181,19 +197,6 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                             marginTop: 2,
                           }}>
                           {mobilenotification.item.DateX}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          alignSelf: 'center',
-                          width: '35%',
-                        }}>
-                        <Text
-                          style={{
-                            textAlign: 'left',
-                            color: COLORS.primary,
-                          }}>
-                          {getTypeOfMsg(mobilenotification.item.MsgTitle)}
                         </Text>
                       </View>
                     </View>

@@ -1,12 +1,19 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, SafeAreaView, Text, FlatList} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {Card, Button} from 'react-native-paper';
 import RNSpeedometer from 'react-native-speedometer';
+import {yupResolver} from '@hookform/resolvers/yup';
 //import Tooltip from 'react-native-walkthrough-tooltip';
 
-import {COLORS} from '../constants';
+import {COLORS, SIZES} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -20,10 +27,15 @@ import {
   callInternalOrExternalCameraOnBox,
   fetchBoxData,
   saveMyBoxDetails,
+  updateControllerPassword,
 } from '../redux/actions/BoxState';
 import {useToast} from 'react-native-toast-notifications';
 import styles from '../styles/AppStyles';
 import {useIsFocused} from '@react-navigation/native';
+import {useForm, FormProvider} from 'react-hook-form';
+import {controllerPasswordSchema} from '../utils/ValidateSchema';
+import FormInput from '../components/FormInput';
+import FormButton from '../components/FormButton';
 
 export default function MyboxScreen({navigation, route}) {
   const dispatch = useDispatch();
@@ -36,6 +48,12 @@ export default function MyboxScreen({navigation, route}) {
   });
   const {loggedMember} = useSelector(state => state.AuthState);
   const {boxDetails} = useSelector(state => state.BoxState);
+  const [controllerPassword, setControllerPassword] = useState({
+    Password: '',
+  });
+  const [passwordError, setPasswordError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [pwdVisible, setPwdVisible] = useState(true);
 
   const getMyBoxData = useCallback(() => {
     setLoader(true);
@@ -177,12 +195,49 @@ export default function MyboxScreen({navigation, route}) {
       });
   };
 
+  const methods = useForm({
+    criteriaMode: 'all',
+    defaultValues: {
+      Password: boxDetails.PassCodeX !== '' ? boxDetails.PassCodeX : '',
+    },
+    mode: 'all',
+    reValidateMode: 'onChange',
+    resolver: yupResolver(controllerPasswordSchema),
+  });
+  const {
+    handleSubmit,
+    formState: {errors},
+  } = methods;
+
+  const onResetSubmit = async user => {
+    setLoader(true);
+    const formData = {
+      Password: user.Password,
+    };
+    setControllerPassword(() => formData);
+    updateControllerPassword(user, loggedMember.ControllerID)
+      .then(async resp => {
+        if (resp === 'Success') {
+          //Good
+          setLoader(false);
+          setPasswordError('Controller password updated');
+        } else {
+          // Not Good
+          setLoader(false);
+          setPasswordError('Controller password updation failed');
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        setPasswordError(error.message);
+      });
+  };
+
   useEffect(() => {
     if (isFocused) {
       getMyBoxData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused]);
+  }, [getMyBoxData, isFocused]);
 
   return (
     <>
@@ -581,6 +636,74 @@ export default function MyboxScreen({navigation, route}) {
                   onClose={() =>
                     this.setState({toolTipVisible: false})
                   }></Tooltip> */}
+
+                <View
+                  style={{
+                    paddingBottom: 10,
+                    flexDirection: 'row',
+                    alignSelf: 'center',
+                  }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                    }}>
+                    <Card
+                      style={{
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        width: '100%',
+                        // height: 160,
+                      }}>
+                      <View
+                        style={{
+                          width: '100%',
+                          padding: SIZES.base * 2,
+                        }}>
+                        <FormProvider {...methods}>
+                          <View style={{marginBottom: SIZES.base}}>
+                            <Text
+                              style={{
+                                fontSize: 16,
+                                opacity: 0.5,
+                                marginBottom: SIZES.base,
+                                color: '#0d8e8a',
+                              }}>
+                              Password
+                            </Text>
+                            <FormInput
+                              iconType="lock"
+                              defaultValues={
+                                boxDetails.PassCodeX !== ''
+                                  ? boxDetails.PassCodeX
+                                  : controllerPassword.Password
+                              }
+                              textLabel={'Password'}
+                              textName={'Password'}
+                              keyboardType="default"
+                              errorobj={errors}
+                              showHidePassword={() => {
+                                setPwdVisible(!pwdVisible);
+                                setShowPassword(!showPassword);
+                              }}
+                              showPassword={showPassword}
+                              pwdVisible={pwdVisible}
+                            />
+                          </View>
+                        </FormProvider>
+
+                        <FormButton
+                          buttonTitle="Update"
+                          isPrimary={true}
+                          style={{
+                            marginVertical: SIZES.base * 2,
+                          }}
+                          onPress={handleSubmit(onResetSubmit)}
+                        />
+                      </View>
+                    </Card>
+                  </View>
+                </View>
               </>
             )}
           />

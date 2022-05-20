@@ -20,15 +20,26 @@ import {CONFIG} from '../utils/Config';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 import styles from '../styles/AppStyles';
+import {NotificationUI} from '../components/NotificationUI';
+import {saveMemberMobileNotificationDetails} from '../redux/actions/MobileNotificationState';
+import {fetchNotifyData} from '../redux/actions/MobileNotificationState';
 
 export default function HomeScreen({navigation, route}) {
   const dispatch = useDispatch();
   const toast = useToast();
   const {loggedMember} = useSelector(state => state.AuthState);
   const {homeDetails} = useSelector(state => state.HomeState);
+  // const {mobilenotificationDetails} = useSelector(
+  //   state => state.MobileNotificationState,
+  // );
 
   const [loader, setLoader] = useState(true);
+  const [notificationData, setNotificationData] = useState([]);
   const [notifyDate, setNotifyDate] = useState(new Date());
+  const [mobileNotifyDate, setMobileNotifyDate] = useState({
+    fromDate: new Date(),
+    toDate: new Date(),
+  });
   const [refreshing, setRefreshing] = useState(false);
 
   const getHomeData = useCallback(
@@ -71,6 +82,34 @@ export default function HomeScreen({navigation, route}) {
         });
     },
     [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast],
+  );
+
+  const getNotifyData = useCallback(
+    (currentDate, toDate) => {
+      setLoader(true);
+      const convertDate = moment(currentDate).format('YYYY-MM-DD');
+      const convertToDate = moment(toDate).format('YYYY-MM-DD');
+      fetchNotifyData(loggedMember.CustID, convertDate, convertToDate)
+        .then(async resp => {
+          if (resp && resp.length) {
+            setNotificationData(resp);
+          }
+          // dispatch(saveMemberMobileNotificationDetails(resp));
+          setLoader(false);
+        })
+        .catch(error => {
+          setLoader(false);
+          toast.show(error.message, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'error',
+              title: 'Invalid data',
+            },
+          });
+        });
+    },
+    [loggedMember.CustID, toast],
   );
 
   const getNextNotify = () => {
@@ -132,6 +171,7 @@ export default function HomeScreen({navigation, route}) {
 
   useEffect(() => {
     getHomeData(notifyDate);
+    getNotifyData(mobileNotifyDate.fromDate, mobileNotifyDate.toDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -310,15 +350,6 @@ export default function HomeScreen({navigation, route}) {
                           ? homeDetails.Photos[0].DateTimeX
                           : ''}
                       </Text>
-                      {/* <Text
-                        style={{
-                          textAlign: 'center',
-                          top: 10,
-                          color: '#002060',
-                          fontWeight: 'bold',
-                        }}>
-                        Internal Camera
-                      </Text> */}
                     </Card>
                   </View>
                 </View>
@@ -362,99 +393,98 @@ export default function HomeScreen({navigation, route}) {
                     )}
                   />
                 </Card>
-                <FlatList
-                  keyboardShouldPersistTaps="always"
-                  showsVerticalScrollIndicator={false}
-                  data={[{ID: '1'}]}
-                  keyExtractor={item => `${item.ID}`}
-                  renderItem={() => (
-                    <>
-                      {homeDetails.Notifications &&
-                      homeDetails.Notifications.length ? (
-                        <FlatList
-                          data={homeDetails.Notifications}
-                          keyExtractor={(item, index) => index.toString()}
-                          renderItem={notification => (
-                            <View
+                {homeDetails.Notifications &&
+                homeDetails.Notifications.length ? (
+                  <FlatList
+                    keyboardShouldPersistTaps="always"
+                    showsVerticalScrollIndicator={false}
+                    data={homeDetails.Notifications}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={notification => (
+                      <View
+                        style={{
+                          maxWidth: '100%',
+                          bottom: 13,
+                          paddingHorizontal: 15,
+                          paddingVertical: 10,
+                          backgroundColor: '#fff',
+                          marginVertical: 4,
+                          borderRadius: 4,
+                          borderLeftColor: getColorCode(
+                            notification.item.MessageID,
+                          ),
+                          borderLeftWidth: 6,
+                          justifyContent: 'center',
+                          paddingLeft: 16,
+                        }}>
+                        <View style={{flex: 1, flexDirection: 'row'}}>
+                          <Avatar.Icon
+                            size={42}
+                            color={COLORS.white}
+                            icon="notification-clear-all"
+                            style={{
+                              backgroundColor: getColorCode(
+                                notification.item.MessageID,
+                              ),
+                            }}
+                          />
+                          <View
+                            style={{
+                              flexDirection: 'column',
+                              marginLeft: 10,
+                              width: '65%',
+                            }}>
+                            <Text
                               style={{
-                                maxWidth: '100%',
-                                bottom: 13,
-                                paddingHorizontal: 15,
-                                paddingVertical: 10,
-                                backgroundColor: '#fff',
-                                marginVertical: 4,
-                                borderRadius: 4,
-                                borderLeftColor: getColorCode(
-                                  notification.item.MessageID,
-                                ),
-                                borderLeftWidth: 6,
-                                justifyContent: 'center',
-                                paddingLeft: 16,
+                                fontSize: 16,
+                                color: '#333',
+                                fontWeight: 'bold',
                               }}>
-                              <View style={{flex: 1, flexDirection: 'row'}}>
-                                <Avatar.Icon
-                                  size={42}
-                                  color={COLORS.white}
-                                  icon="notification-clear-all"
-                                  style={{
-                                    backgroundColor: getColorCode(
-                                      notification.item.MessageID,
-                                    ),
-                                  }}
-                                />
-                                <View
-                                  style={{
-                                    flexDirection: 'column',
-                                    marginLeft: 10,
-                                    width: '65%',
-                                  }}>
-                                  <Text
-                                    style={{
-                                      fontSize: 16,
-                                      color: '#333',
-                                      fontWeight: 'bold',
-                                    }}>
-                                    {/* {moment(notification.item.Datex).format(
+                              {/* {moment(notification.item.Datex).format(
                                       'MMMM DD, YYYY hh:mm:ss',
                                     )} */}
-                                    {notification.item.Messagex}
-                                  </Text>
-                                  <Text
-                                    style={{
-                                      fontSize: 14,
-                                      color: '#a3a3a3',
-                                      marginTop: 2,
-                                    }}>
-                                    {notification.item.Datex}
-                                  </Text>
-                                </View>
-                                <View
-                                  style={{
-                                    alignSelf: 'center',
-                                    width: '35%',
-                                  }}>
-                                  <Text
-                                    style={{
-                                      textAlign: 'left',
-                                      color: COLORS.primary,
-                                    }}>
-                                    {getTypeOfMsg(notification.item.MessageID)}
-                                  </Text>
-                                </View>
-                              </View>
-                            </View>
-                          )}
-                        />
-                      ) : (
-                        <Card style={{backgroundColor: '#eef1f6', bottom: 10}}>
-                          <Card.Title
-                            title={'No notifications found.'}
-                            titleStyle={{fontSize: 14}}
-                          />
-                        </Card>
-                      )}
-                    </>
-                  )}
+                              {notification.item.Messagex}
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                color: '#a3a3a3',
+                                marginTop: 2,
+                              }}>
+                              {notification.item.Datex}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              alignSelf: 'center',
+                              width: '35%',
+                            }}>
+                            <Text
+                              style={{
+                                textAlign: 'left',
+                                color: COLORS.primary,
+                              }}>
+                              {getTypeOfMsg(notification.item.MessageID)}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    )}
+                  />
+                ) : (
+                  <Card style={{backgroundColor: '#eef1f6', bottom: 10}}>
+                    <Card.Title
+                      title={'No notifications found.'}
+                      titleStyle={{fontSize: 14}}
+                    />
+                  </Card>
+                )}
+
+                <NotificationUI
+                  mobileNotifyDate={mobileNotifyDate}
+                  setMobileNotifyDate={setMobileNotifyDate}
+                  notificationData={notificationData}
+                  getNotifyData={getNotifyData}
                 />
               </>
             )}
