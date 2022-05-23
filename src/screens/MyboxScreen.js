@@ -1,12 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {
-  View,
-  SafeAreaView,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  RefreshControl,
-} from 'react-native';
+import {View, SafeAreaView, Text, FlatList, RefreshControl} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {Card, Button} from 'react-native-paper';
@@ -57,8 +50,22 @@ export default function MyboxScreen({navigation, route}) {
   const [passwordError, setPasswordError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
-
   const [refreshing, setRefreshing] = useState(false);
+
+  const methods = useForm({
+    criteriaMode: 'all',
+    defaultValues: {
+      Password: boxDetails.PassCodeX !== '' ? boxDetails.PassCodeX : '',
+    },
+    mode: 'all',
+    reValidateMode: 'onChange',
+    resolver: yupResolver(controllerPasswordSchema),
+  });
+
+  const {
+    handleSubmit,
+    formState: {errors},
+  } = methods;
 
   const getMyBoxData = useCallback(() => {
     setLoader(true);
@@ -149,6 +156,7 @@ export default function MyboxScreen({navigation, route}) {
         ? {external: cameraType === 1 ? false : true}
         : {}),
     }));
+
     callInternalOrExternalCameraOnBox(
       loggedMember.LoginID,
       loggedMember.ControllerID,
@@ -200,20 +208,6 @@ export default function MyboxScreen({navigation, route}) {
       });
   };
 
-  const methods = useForm({
-    criteriaMode: 'all',
-    defaultValues: {
-      Password: boxDetails.PassCodeX !== '' ? boxDetails.PassCodeX : '',
-    },
-    mode: 'all',
-    reValidateMode: 'onChange',
-    resolver: yupResolver(controllerPasswordSchema),
-  });
-  const {
-    handleSubmit,
-    formState: {errors},
-  } = methods;
-
   const onResetSubmit = async user => {
     setLoader(true);
     const formData = {
@@ -238,13 +232,13 @@ export default function MyboxScreen({navigation, route}) {
       });
   };
 
-  // const onRefresh = useCallback(async () => {
-  //   setRefreshing(true);
-  //   setNotifyDate(moment(new Date()));
-  //   getMyBoxData(setOnTakePhoto());
-  //   setRefreshing(false);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    getMyBoxData();
+    setRefreshing(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (isFocused) {
       getMyBoxData();
@@ -276,7 +270,7 @@ export default function MyboxScreen({navigation, route}) {
               <RefreshControl
                 colors={[COLORS.secondary, COLORS.white]}
                 refreshing={refreshing}
-                //onRefresh={onRefresh}
+                onRefresh={onRefresh}
               />
             }
             data={[{ID: '1'}]}
@@ -296,97 +290,6 @@ export default function MyboxScreen({navigation, route}) {
                   }}>
                   Action
                 </Text>
-                {/* <View
-                  style={{
-                    paddingTop: 10,
-                    paddingBottom: 10,
-                    flexDirection: 'row',
-                    alignSelf: 'center',
-                  }}>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
-                    <Card
-                      style={{
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        width: '48%',
-                      }}>
-                      <Text
-                        style={{
-                          alignSelf: 'center',
-                          fontSize: 16,
-                          color: '#002060',
-                        }}>
-                        Internal Camera
-                      </Text>
-                      <Card.Cover
-                        style={{
-                          alignSelf: 'center',
-                          width: '100%',
-                          height: 170,
-                          resizeMode: 'contain',
-                        }}
-                        source={
-                          boxDetails.OnDemandPhoto1 != ''
-                            ? {
-                                uri: `${CONFIG.IMAGE_URL}/${boxDetails.OnDemandPhoto1}`,
-                              }
-                            : require('../../assets/images/no-image.jpg')
-                        }
-                      />
-                      <Card.Actions
-                        style={{
-                          justifyContent: 'center',
-                        }}>
-                        <Button onPress={() => captureCamera(1)}>
-                          Take a photo
-                        </Button>
-                      </Card.Actions>
-                    </Card>
-                    <Card
-                      style={{
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        width: '48%',
-                      }}>
-                      <Text
-                        style={{
-                          alignSelf: 'center',
-                          fontSize: 16,
-                          color: '#002060',
-                        }}>
-                        External Camera
-                      </Text>
-                      <Card.Cover
-                        style={{
-                          alignSelf: 'center',
-                          width: '100%',
-                          height: 170,
-                          resizeMode: 'contain',
-                        }}
-                        source={
-                          boxDetails.OnDemandPhoto2
-                            ? {
-                                uri: `${CONFIG.IMAGE_URL}/${boxDetails.OnDemandPhoto2}`,
-                              }
-                            : require('../../assets/images/no-image.jpg')
-                        }
-                      />
-                      <Card.Actions
-                        style={{
-                          justifyContent: 'center',
-                        }}>
-                        <Button onPress={() => captureCamera(2)}>
-                          Take a photo
-                        </Button>
-                      </Card.Actions>
-                    </Card>
-                  </View>
-                </View> */}
 
                 <View
                   style={{
@@ -440,45 +343,6 @@ export default function MyboxScreen({navigation, route}) {
                       </View>
                     </Card>
 
-                    {/* <Card
-                      style={{
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        width: '48%',
-                        height: 150,
-                      }}>
-                      <Text
-                        style={{
-                          alignSelf: 'center',
-                          fontSize: 16,
-                          color: '#002060',
-                        }}>
-                        EXTERNAL CAMERA
-                      </Text>
-                      <View style={{height: '60%'}}>
-                        <Entypo
-                          style={{
-                            alignSelf: 'center',
-                            marginTop: 10,
-                          }}
-                          name={'camera'}
-                          color={
-                            onTakePhoto.external
-                              ? COLORS.messageColor4
-                              : 'green'
-                          }
-                          size={80}
-                        />
-                      </View>
-
-                      <View style={{height: '40%'}}>
-                        {
-                          <Button onPress={() => captureCamera(1, 'external')}>
-                            Take a photo
-                          </Button>
-                        }
-                      </View>
-                    </Card> */}
                     <Card
                       style={{
                         flexDirection: 'column',

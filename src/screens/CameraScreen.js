@@ -1,4 +1,4 @@
-import React, {useState, useRef, useCallback} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   SafeAreaView,
@@ -8,19 +8,14 @@ import {
   Text,
   RefreshControl,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import AppStatusBar from '../components/AppStatusBar';
-import {CONFIG} from '../utils/Config';
 
 import Feather from 'react-native-vector-icons/Feather';
 import {COLORS} from '../constants';
 import {useSelector} from 'react-redux';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import styles from '../styles/AppStyles';
-import {Divider} from 'react-native-paper';
-//import {Modal} from 'react-native';
-//import ImageViewer from 'react-native-image-zoom-viewer';
 import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 
 const viewConfigRef = {viewAreaCoveragePercentThreshold: 95};
@@ -57,8 +52,7 @@ const CameraScreen = ({navigation, route}) => {
             minZoom={0.5}
             zoomStep={1.5}
             initialZoom={1}
-            bindToBorders={true}
-            onZoomAfter={this.logOutZoomState}>
+            bindToBorders={true}>
             <Image
               style={[styles.cameraImage, styles.mt5, styles.mb5]}
               source={

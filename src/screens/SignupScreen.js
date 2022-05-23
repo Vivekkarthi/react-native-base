@@ -74,9 +74,9 @@ const SignupScreen = ({navigation}) => {
           //Good
           setLoader(false);
           navigation.navigate('Login', {
-              content: 'The account has been created successfully. Kindly enter your mobile number and password to login.'
-            }
-          );
+            content:
+              'The account has been created successfully. Kindly enter your mobile number and password to login.',
+          });
         } else {
           // Not Good
           setLoader(false);

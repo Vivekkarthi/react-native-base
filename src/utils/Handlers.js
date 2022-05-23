@@ -76,6 +76,10 @@ const firebaseAuthErrors = error => {
 };
 
 const getRequest = props => {
+  console.log(
+    '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',
+    `${CONFIG.API_URL}${props.url}?${props.queryParams}`,
+  );
   return axios
     .get(`${CONFIG.API_URL}${props.url}?${props.queryParams}`)
     .then(response => {

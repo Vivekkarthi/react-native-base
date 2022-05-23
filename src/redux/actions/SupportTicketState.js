@@ -1,3 +1,4 @@
+import {isEmpty} from 'lodash';
 import {ENDPOINTURL} from '../../utils/Constants';
 import {getRequest, postRequest} from '../../utils/Handlers';
 
@@ -8,8 +9,17 @@ export const initialState = {
 export const TICKET_SUCCESS = 'TICKETState/TICKET_SUCCESS';
 export const TICKET_FAILURE = 'TICKETState/TICKET_FAILURE';
 
-export const addNewTicket = (loggedMember, item, description) => {
-  const queryParams = `sK=token&iUSERID=${loggedMember.USERRECORDID}&iCustID=${loggedMember.CustID}&iSCID=${item}&sMessage=${description}&iSTID=0`;
+export const addNewTicket = (
+  loggedMember,
+  item,
+  description,
+  hasSupportData,
+) => {
+  const queryParams = `sK=token&iUSERID=${loggedMember.USERRECORDID}&iCustID=${
+    loggedMember.CustID
+  }&iSCID=${item}&sMessage=${description}&iSTID=${
+    !isEmpty(hasSupportData) ? 1 : 0
+  }`;
 
   const params = {
     url: ENDPOINTURL.MemberSaveTicketResponse,

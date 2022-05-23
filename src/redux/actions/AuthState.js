@@ -109,15 +109,14 @@ export function memberAdduser(userData, loggedMember) {
     });
 }
 
-export function memberDeleteuser(userData, loggedMember) {
-  const queryParams = `sK=token&userid=${userData.USERRECORDID}`;
+export function memberDeleteuser(recordId) {
+  const queryParams = `sK=token&userid=${recordId}`;
   const params = {
     url: ENDPOINTURL.MemberDeleteuser,
-    token: '',
     queryParams,
   };
 
-  return getRequest(params)
+  return postRequest(params)
     .then(response => {
       return response;
     })

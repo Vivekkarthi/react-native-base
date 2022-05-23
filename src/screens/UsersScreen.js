@@ -14,9 +14,11 @@ import AppStatusBar from '../components/AppStatusBar';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {COLORS} from '../constants';
 import styles from '../styles/AppStyles';
+import {Loader} from '../components/Loader';
 
 const UsersScreen = ({navigation, route}) => {
   const [listData, setListData] = useState([]);
+  const [loader, setLoader] = useState(false);
 
   const {loggedMember} = useSelector(state => state.AuthState);
   const isFocused = useIsFocused();
@@ -27,26 +29,27 @@ const UsersScreen = ({navigation, route}) => {
     }
   };
 
-  const deleteRow = (rowMap, rowKey) => {
-    closeRow(rowMap, rowKey);
-    const newData = [...listData];
-    const prevIndex = listData.findIndex(item => item.key === rowKey);
-    newData.splice(prevIndex, 1);
-    setListData(newData);
-    memberDeleteuser(user, loggedMember, rowMap, rowKey)
-      .then(async resp => {
+  const deleteRow = async (rowMap, user) => {
+    setLoader(true);
+    // closeRow(rowMap, rowKey);
+    await memberDeleteuser(user.UserrecordID)
+      .then(resp => {
         if (resp === 'Success') {
           //Good
+          const newData = [...listData];
+          const prevIndex = listData.findIndex(
+            item => item.UserrecordID === user.UserrecordID,
+          );
+          newData.splice(prevIndex, 1);
+          setListData(newData);
           setLoader(false);
         } else {
           // Not Good
           setLoader(false);
-          setAddUserError(resp);
         }
       })
       .catch(error => {
         setLoader(false);
-        setAddUserError(error.message);
       });
   };
   const fetchUserInfo = useCallback(async () => {
@@ -73,6 +76,8 @@ const UsersScreen = ({navigation, route}) => {
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
             <Text style={styles.f18}> Users</Text>
           </Ionicons>
+
+          {loader ? <Loader /> : null}
           <View
             style={{
               flexDirection: 'row',
@@ -171,7 +176,7 @@ const UsersScreen = ({navigation, route}) => {
                   </TouchableOpacity> */}
                   <TouchableOpacity
                     style={[styles.backRightBtn, styles.backRightBtnRight]}
-                    onPress={() => deleteRow(rowMap, data.item.key)}>
+                    onPress={() => deleteRow(rowMap, data.item)}>
                     <Ionicons
                       name="md-trash-outline"
                       size={36}
@@ -185,8 +190,9 @@ const UsersScreen = ({navigation, route}) => {
                 </View>
               )
             }
-            leftOpenValue={75}
-            //rightOpenValue={-75}
+            // leftOpenValue={75}
+            leftOpenValue={50}
+            // rightOpenValue={-75}
             rightOpenValue={-50}
             previewRowKey={'0'}
             previewOpenValue={-40}

@@ -1,5 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, SafeAreaView, Text, FlatList} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import {Avatar, Button} from 'react-native-paper';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -81,8 +87,7 @@ const ContactScreen = ({navigation, route}) => {
 
   useEffect(() => {
     getTicketsData(notifyDate.fromDate, notifyDate.toDate);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getTicketsData, route.params, notifyDate.fromDate, notifyDate.toDate]);
 
   // const [supportType, setSupportType] = useState([
   //   {id: 1, name: 'Billing'},
@@ -129,7 +134,7 @@ const ContactScreen = ({navigation, route}) => {
               )}`}
               // subtitle={moment(new Date(notifyDate.toDate)).format('MMMM DD, YYYY')}
               titleStyle={{fontSize: 14, alignSelf: 'center'}}
-              subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
+              subtitleStyle={{fontSize: 14, alignSelf: 'center'}}
               left={props => (
                 <Ionicons
                   name="arrow-back-circle-outline"
@@ -150,10 +155,11 @@ const ContactScreen = ({navigation, route}) => {
 
           {ticketDetails.length ? (
             <FlatList
+              showsVerticalScrollIndicator={false}
               data={ticketDetails}
               keyExtractor={(item, index) => index.toString()}
               renderItem={support => (
-                <View
+                <TouchableOpacity
                   style={{
                     maxWidth: '100%',
                     paddingHorizontal: 15,
@@ -165,6 +171,11 @@ const ContactScreen = ({navigation, route}) => {
                     borderLeftWidth: 6,
                     justifyContent: 'center',
                     paddingLeft: 8,
+                  }}
+                  onPress={() => {
+                    navigation.navigate('ContactDetails', {
+                      state: support.item,
+                    });
                   }}>
                   <View style={{flex: 1, flexDirection: 'row'}}>
                     <Avatar.Icon
@@ -179,12 +190,12 @@ const ContactScreen = ({navigation, route}) => {
                     <View
                       style={{
                         flexDirection: 'column',
-                        marginLeft: 10,
-                        width: '65%',
+                        marginLeft: 5,
+                        width: '50%',
                       }}>
                       <Text
                         style={{
-                          fontSize: 16,
+                          fontSize: 14,
                           color: '#333',
                           fontWeight: 'bold',
                         }}>
@@ -192,7 +203,7 @@ const ContactScreen = ({navigation, route}) => {
                       </Text>
                       <Text
                         style={{
-                          fontSize: 16,
+                          fontSize: 14,
                           color: '#a3a3a3',
                           marginTop: 2,
                         }}>
@@ -200,7 +211,7 @@ const ContactScreen = ({navigation, route}) => {
                       </Text>
                       <Text
                         style={{
-                          fontSize: 16,
+                          fontSize: 14,
                           color: '#a3a3a3',
                           marginTop: 2,
                         }}>
@@ -209,30 +220,29 @@ const ContactScreen = ({navigation, route}) => {
                     </View>
                     <View
                       style={{
-                        alignSelf: 'center',
-                        width: '35%',
+                        flexDirection: 'column',
+                        width: '40%',
+                        marginRight: 5,
                       }}>
                       <Text
                         style={{
-                          textAlign: 'left',
-                          color: COLORS.primary,
-                          fontSize: 12,
-                          right: 38,
+                          fontSize: 14,
+                          color: '#333',
                         }}>
                         Category: {support.item.SCDesc}
                       </Text>
+
                       <Text
                         style={{
-                          textAlign: 'left',
-                          color: COLORS.primary,
                           fontSize: 12,
-                          right: 38,
+                          color: COLORS.primary,
+                          marginTop: 2,
                         }}>
-                        Date: {support.item.sLastUpdatedDate}
+                        {support.item.sLastUpdatedDate}
                       </Text>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               )}
             />
           ) : (

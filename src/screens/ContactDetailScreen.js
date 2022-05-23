@@ -9,11 +9,16 @@ import {COLORS} from '../constants';
 import styles from '../styles/AppStyles';
 import {addNewTicket} from '../redux/actions/SupportTicketState';
 import {useSelector} from 'react-redux';
+import {getColorCode} from '../utils/Handlers';
+import {isEmpty} from 'lodash';
 
 const ContactDetailScreen = ({navigation, route}) => {
+  const hasSupportData = route.params && route.params.state;
   const {loggedMember} = useSelector(state => state.AuthState);
   const [open, setOpen] = useState(false);
-  const [supportValue, setSupportValue] = useState(null);
+  const [supportValue, setSupportValue] = useState(
+    !isEmpty(hasSupportData) ? hasSupportData.SCID : null,
+  );
   const [supportTextValue, setSupportTextValue] = useState(null);
   const [items, setItems] = useState([
     {label: 'Billing', value: 1},
@@ -26,15 +31,14 @@ const ContactDetailScreen = ({navigation, route}) => {
   });
 
   const onsubmit = () => {
-    addNewTicket(loggedMember, supportValue, supportTextValue)
+    addNewTicket(loggedMember, supportValue, supportTextValue, hasSupportData)
       .then(resp => {
-        console.log('++++++++++++++++++++++++++++++++++', resp);
         if (resp === 'Success') {
           // setSupportError({
           //   success: 1,
           //   message: 'Ticket Created Successfully.',
           // });
-          navigation.navigate('Contacts');
+          navigation.navigate('Contacts', {reload: true});
         } else {
           setSupportError({
             success: 2,
@@ -44,6 +48,7 @@ const ContactDetailScreen = ({navigation, route}) => {
       })
       .catch(e => console.log(e));
   };
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
       <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
@@ -63,6 +68,49 @@ const ContactDetailScreen = ({navigation, route}) => {
           Go Back
         </Button>
 
+        {!isEmpty(hasSupportData) && (
+          <View
+            style={{
+              maxWidth: '100%',
+              paddingHorizontal: 15,
+              paddingVertical: 10,
+              backgroundColor: '#fff',
+              marginVertical: 4,
+              borderRadius: 4,
+              borderLeftColor: getColorCode(
+                isEmpty(hasSupportData) ? 1 : hasSupportData.SCID,
+              ),
+              borderLeftWidth: 6,
+              justifyContent: 'center',
+              paddingLeft: 8,
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <View
+                style={{
+                  flexDirection: 'column',
+                  marginLeft: 5,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: '#333',
+                    fontWeight: 'bold',
+                  }}>
+                  Message: {hasSupportData.Message}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: COLORS.primary,
+                    marginTop: 2,
+                  }}>
+                  Date: {hasSupportData.sLastUpdatedDate}
+                </Text>
+              </View>
+            </View>
+          </View>
+        )}
+
         <View style={{flexDirection: 'column'}}>
           <DropDownPicker
             style={{
@@ -74,6 +122,7 @@ const ContactDetailScreen = ({navigation, route}) => {
             setOpen={setOpen}
             setValue={setSupportValue}
             setItems={setItems}
+            disabled={!isEmpty(hasSupportData) ? true : false}
           />
           <TextInput
             multiline={true}

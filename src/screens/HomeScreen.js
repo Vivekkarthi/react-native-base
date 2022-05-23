@@ -93,6 +93,8 @@ export default function HomeScreen({navigation, route}) {
         .then(async resp => {
           if (resp && resp.length) {
             setNotificationData(resp);
+          } else {
+            setNotificationData([]);
           }
           // dispatch(saveMemberMobileNotificationDetails(resp));
           setLoader(false);
