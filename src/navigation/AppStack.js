@@ -2,6 +2,7 @@ import React from 'react';
 import {Image, TouchableOpacity, View} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Foundation from 'react-native-vector-icons/Foundation';
 import Feather from 'react-native-vector-icons/Feather';
 import {useDispatch} from 'react-redux';
 
@@ -209,12 +210,17 @@ const AppStack = () => {
         }}
       />
       <Drawer.Screen
-        name="MobileNotifications"
+        name="   Mobile Notifications"
         component={MobileNotificationsScreen}
         options={{
           headerShown: true,
           drawerIcon: ({color}) => (
-            <Ionicons name="notifications" size={22} color={color} />
+            <Foundation
+              name="mobile-signal"
+              size={24}
+              color={color}
+              style={{left: 6}}
+            />
           ),
           headerTitleAlign: 'center',
           headerTitle: () => (

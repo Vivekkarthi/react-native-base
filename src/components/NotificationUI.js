@@ -3,6 +3,7 @@ import React from 'react';
 import {FlatList, Text, View} from 'react-native';
 import {Card, Avatar} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Foundation from 'react-native-vector-icons/Foundation';
 import {COLORS} from '../constants';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 
@@ -47,13 +48,14 @@ const NotificationUI = ({
             backgroundColor: '#178b93',
             width: '100%',
           }}>
-          <Ionicons
-            name="notifications"
-            size={14}
+          <Foundation
+            name="mobile-signal"
+            size={16}
             style={{textAlign: 'center', justifyContent: 'center'}}
             color={COLORS.white}>
+            {' '}
             Mobile Notifications
-          </Ionicons>
+          </Foundation>
         </View>
         <Card.Title
           title={`${moment(new Date(mobileNotifyDate.fromDate)).format(

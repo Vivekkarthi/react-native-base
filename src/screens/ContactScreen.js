@@ -128,7 +128,7 @@ const ContactScreen = ({navigation, route}) => {
                 'MMMM DD, YYYY',
               )}`}
               // subtitle={moment(new Date(notifyDate.toDate)).format('MMMM DD, YYYY')}
-              titleStyle={{fontSize: 16, alignSelf: 'center'}}
+              titleStyle={{fontSize: 14, alignSelf: 'center'}}
               subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
               left={props => (
                 <Ionicons
@@ -164,7 +164,7 @@ const ContactScreen = ({navigation, route}) => {
                     borderLeftColor: getColorCode(support.item.SCID),
                     borderLeftWidth: 6,
                     justifyContent: 'center',
-                    paddingLeft: 16,
+                    paddingLeft: 8,
                   }}>
                   <View style={{flex: 1, flexDirection: 'row'}}>
                     <Avatar.Icon
@@ -172,6 +172,7 @@ const ContactScreen = ({navigation, route}) => {
                       color={COLORS.white}
                       icon="notification-clear-all"
                       style={{
+                        alignSelf: 'center',
                         backgroundColor: getColorCode(support.item.SCID),
                       }}
                     />
@@ -187,7 +188,7 @@ const ContactScreen = ({navigation, route}) => {
                           color: '#333',
                           fontWeight: 'bold',
                         }}>
-                        {support.item.SCDesc}
+                        Message: {support.item.Message}
                       </Text>
                       <Text
                         style={{
@@ -195,7 +196,15 @@ const ContactScreen = ({navigation, route}) => {
                           color: '#a3a3a3',
                           marginTop: 2,
                         }}>
-                        {support.item.TicketName}
+                        Ticket: {support.item.TicketName}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color: '#a3a3a3',
+                          marginTop: 2,
+                        }}>
+                        Status: {support.item.StatusX === 1 ? 'Open' : 'Close'}
                       </Text>
                     </View>
                     <View
@@ -207,8 +216,19 @@ const ContactScreen = ({navigation, route}) => {
                         style={{
                           textAlign: 'left',
                           color: COLORS.primary,
+                          fontSize: 12,
+                          right: 38,
                         }}>
-                        {support.item.Namex}
+                        Category: {support.item.SCDesc}
+                      </Text>
+                      <Text
+                        style={{
+                          textAlign: 'left',
+                          color: COLORS.primary,
+                          fontSize: 12,
+                          right: 38,
+                        }}>
+                        Date: {support.item.sLastUpdatedDate}
                       </Text>
                     </View>
                   </View>

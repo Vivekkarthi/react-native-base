@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, TextInput, SafeAreaView} from 'react-native';
 import {Button} from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import AppStatusBar from '../components/AppStatusBar';
 import {COLORS} from '../constants';
@@ -47,7 +48,13 @@ const ContactDetailScreen = ({navigation, route}) => {
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
       <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
       <View style={styles.MainContainer}>
-        <Text style={{fontSize: 18}}>Contact Details</Text>
+        <Ionicons
+          name="ios-people-outline"
+          size={23}
+          color={COLORS.primary}
+          style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+          <Text style={styles.f18}> Contact Details</Text>
+        </Ionicons>
 
         <Button
           mode="contained"
@@ -102,10 +109,10 @@ const ContactDetailScreen = ({navigation, route}) => {
             style={{
               alignSelf: 'flex-start',
               marginTop: 20,
-              backgroundColor: 'red',
+              backgroundColor: 'green',
               width: 88,
             }}>
-            Send
+            Save
           </Button>
           <Button
             mode="contained"
@@ -113,7 +120,7 @@ const ContactDetailScreen = ({navigation, route}) => {
             style={{
               alignSelf: 'flex-start',
               marginTop: 20,
-              backgroundColor: 'blue',
+              backgroundColor: '#f17012',
             }}>
             Cancel
           </Button>

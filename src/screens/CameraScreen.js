@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useCallback} from 'react';
 import {
   View,
   SafeAreaView,
@@ -19,9 +19,20 @@ import {useSelector} from 'react-redux';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import styles from '../styles/AppStyles';
 import {Divider} from 'react-native-paper';
+//import {Modal} from 'react-native';
+//import ImageViewer from 'react-native-image-zoom-viewer';
+import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
+
 const viewConfigRef = {viewAreaCoveragePercentThreshold: 95};
 
 const CameraScreen = ({navigation, route}) => {
+  /**
+   * Log out an example event after zooming
+   *
+   * @param event
+   * @param gestureState
+   * @param zoomableViewEventObject
+   */
   const flatListRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const {homeDetails} = useSelector(state => state.HomeState);
@@ -40,16 +51,26 @@ const CameraScreen = ({navigation, route}) => {
   const renderItem = ({item, index}) => {
     return (
       <TouchableOpacity onPress={() => {}} activeOpacity={1}>
-        <Image
-          style={[styles.cameraImage, styles.mt5, styles.mb5]}
-          source={
-            item.Filename
-              ? {
-                  uri: item.Filename,
-                }
-              : require('../../assets/images/no-image.jpg')
-          }
-        />
+        <View style={{flex: 1}}>
+          <ReactNativeZoomableView
+            maxZoom={2.5}
+            minZoom={0.5}
+            zoomStep={1.5}
+            initialZoom={1}
+            bindToBorders={true}
+            onZoomAfter={this.logOutZoomState}>
+            <Image
+              style={[styles.cameraImage, styles.mt5, styles.mb5]}
+              source={
+                item.Filename
+                  ? {
+                      uri: item.Filename,
+                    }
+                  : require('../../assets/images/no-image.jpg')
+              }
+            />
+          </ReactNativeZoomableView>
+        </View>
         <Text
           style={{
             textAlign: 'center',
@@ -62,6 +83,13 @@ const CameraScreen = ({navigation, route}) => {
       </TouchableOpacity>
     );
   };
+  // const onRefresh = useCallback(async () => {
+  //   setRefreshing(true);
+  //   setNotifyDate(moment(new Date()));
+  //   getMyBoxData(setOnTakePhoto());
+  //   setRefreshing(false);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <>
@@ -86,6 +114,7 @@ const CameraScreen = ({navigation, route}) => {
               <RefreshControl
                 colors={[COLORS.secondary, COLORS.white]}
                 refreshing={refreshing}
+                // onRefresh={onRefresh}
               />
             }
             data={[{ID: '1'}]}
@@ -135,6 +164,9 @@ const CameraScreen = ({navigation, route}) => {
                               scrollToIndex(index)
                             }></TouchableOpacity>
                         ))}
+                        {/* <Modal visible={true} transparent={true}>
+                          <ImageViewer imageUrls={image} />
+                        </Modal> */}
                       </View>
                     )}
                   </>

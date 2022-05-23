@@ -5,6 +5,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -12,6 +13,7 @@ import {Card, Button} from 'react-native-paper';
 import RNSpeedometer from 'react-native-speedometer';
 import {yupResolver} from '@hookform/resolvers/yup';
 //import Tooltip from 'react-native-walkthrough-tooltip';
+//import {Tooltip} from 'native-base';
 
 import {COLORS, SIZES} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
@@ -55,6 +57,8 @@ export default function MyboxScreen({navigation, route}) {
   const [passwordError, setPasswordError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const getMyBoxData = useCallback(() => {
     setLoader(true);
@@ -234,6 +238,13 @@ export default function MyboxScreen({navigation, route}) {
       });
   };
 
+  // const onRefresh = useCallback(async () => {
+  //   setRefreshing(true);
+  //   setNotifyDate(moment(new Date()));
+  //   getMyBoxData(setOnTakePhoto());
+  //   setRefreshing(false);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
   useEffect(() => {
     if (isFocused) {
       getMyBoxData();
@@ -261,6 +272,13 @@ export default function MyboxScreen({navigation, route}) {
           <FlatList
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                colors={[COLORS.secondary, COLORS.white]}
+                refreshing={refreshing}
+                //onRefresh={onRefresh}
+              />
+            }
             data={[{ID: '1'}]}
             keyExtractor={item => `${item.ID}`}
             renderItem={() => (
@@ -395,7 +413,7 @@ export default function MyboxScreen({navigation, route}) {
                           fontSize: 16,
                           color: '#002060',
                         }}>
-                        INTERNAL CAMERA
+                        On Demand Photo
                       </Text>
                       <View style={{height: '60%'}}>
                         <Entypo
@@ -550,6 +568,8 @@ export default function MyboxScreen({navigation, route}) {
                       }}>
                       <View style={{height: '25%'}}>
                         <Button>Battery</Button>
+                        {/* <Tooltip label="Hey, I'm here!" openDelay={500}>
+                        </Tooltip>; */}
                       </View>
                       <View style={{height: '65%', bottom: 8}}>
                         <MaterialCommunityIcons
@@ -706,7 +726,7 @@ export default function MyboxScreen({navigation, route}) {
                         ) : null}
 
                         <FormButton
-                          buttonTitle="Update"
+                          buttonTitle="Reset"
                           isPrimary={true}
                           style={{
                             marginVertical: SIZES.base * 2,

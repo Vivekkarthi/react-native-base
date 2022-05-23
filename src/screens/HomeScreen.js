@@ -265,7 +265,7 @@ export default function HomeScreen({navigation, route}) {
                           paddingTop: 9,
                           color: COLORS.white,
                         }}>
-                        <Feather name="box" size={22} /> Box status
+                        <Feather name="box" size={22} /> Box Status
                       </Text>
                       <Card.Cover
                         style={{
@@ -322,7 +322,7 @@ export default function HomeScreen({navigation, route}) {
                           paddingBottom: 10,
                           paddingTop: 9,
                         }}>
-                        <Feather name="camera" size={22} /> Internal camera
+                        <Feather name="camera" size={22} /> Internal Camera
                       </Text>
                       <Card.Cover
                         style={{
@@ -353,6 +353,12 @@ export default function HomeScreen({navigation, route}) {
                     </Card>
                   </View>
                 </View>
+                <NotificationUI
+                  mobileNotifyDate={mobileNotifyDate}
+                  setMobileNotifyDate={setMobileNotifyDate}
+                  notificationData={notificationData}
+                  getNotifyData={getNotifyData}
+                />
                 <Card style={{marginBottom: 13, marginTop: 2}}>
                   <View
                     style={{
@@ -479,13 +485,6 @@ export default function HomeScreen({navigation, route}) {
                     />
                   </Card>
                 )}
-
-                <NotificationUI
-                  mobileNotifyDate={mobileNotifyDate}
-                  setMobileNotifyDate={setMobileNotifyDate}
-                  notificationData={notificationData}
-                  getNotifyData={getNotifyData}
-                />
               </>
             )}
           />

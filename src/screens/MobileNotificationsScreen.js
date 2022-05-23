@@ -4,6 +4,7 @@ import {View, Text, SafeAreaView, FlatList} from 'react-native';
 import {Avatar, Card} from 'react-native-paper';
 import {useSelector, useDispatch} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Foundation from 'react-native-vector-icons/Foundation';
 import {useToast} from 'react-native-toast-notifications';
 
 import AppStatusBar from '../components/AppStatusBar';
@@ -98,13 +99,13 @@ const MobileNotificationsScreen = ({navigation, route}) => {
         <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           {loader ? <Loader /> : null}
-          <Ionicons
-            name="notifications"
+          <Foundation
+            name="mobile-signal"
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
             <Text style={styles.f18}> Mobile Notifications</Text>
-          </Ionicons>
+          </Foundation>
           <View style={{flex: 1, paddingTop: 19}}>
             <Card style={{marginBottom: 5}}>
               <Card.Title
