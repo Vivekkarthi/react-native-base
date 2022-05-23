@@ -60,43 +60,51 @@ const ProfileScreen = ({navigation, route}) => {
   const PhoneNumberRef = useRef(null);
   const PasswordRef = useRef(null);
 
-  const onUserSubmit = useCallback(async user => {
-    setLoader(true);
-    const formData = {
-      Name: user.Name,
-      Email: user.Email,
-      PhoneNumber: user.PhoneNumber,
-      Password: user.Password,
-    };
-    // setInputUser(() => formData);
-    formData.CustID = loggedMember.CustID;
-    formData.ControllerId = loggedMember.ControllerName;
-    formData.UserRecordId = loggedMember.USERRECORDID;
-    memberEdituser(formData)
-      .then(async resp => {
-        if (resp === 'Success') {
-          //Good
+  const onUserSubmit = useCallback(
+    async user => {
+      setLoader(true);
+      const formData = {
+        Name: user.Name,
+        Email: user.Email,
+        PhoneNumber: user.PhoneNumber,
+        Password: user.Password,
+      };
+      // setInputUser(() => formData);
+      formData.CustID = loggedMember.CustID;
+      formData.ControllerId = loggedMember.ControllerName;
+      formData.UserRecordId = loggedMember.USERRECORDID;
+      memberEdituser(formData)
+        .then(async resp => {
+          if (resp === 'Success') {
+            //Good
+            setLoader(false);
+            navigation.navigate('Users');
+          } else {
+            // Not Good
+            setLoader(false);
+            setAddUserError(resp);
+          }
+        })
+        .catch(error => {
           setLoader(false);
-          navigation.navigate('Users');
-        } else {
-          // Not Good
-          setLoader(false);
-          setAddUserError(resp);
-        }
-      })
-      .catch(error => {
-        setLoader(false);
-        setAddUserError(error.message);
-        // toast.show(error.message, {
-        //   type: 'custom_type',
-        //   animationDuration: 100,
-        //   data: {
-        //     type: 'error',
-        //     title: 'Failure',
-        //   },
-        // });
-      });
-  }, []);
+          setAddUserError(error.message);
+          // toast.show(error.message, {
+          //   type: 'custom_type',
+          //   animationDuration: 100,
+          //   data: {
+          //     type: 'error',
+          //     title: 'Failure',
+          //   },
+          // });
+        });
+    },
+    [
+      loggedMember.ControllerName,
+      loggedMember.CustID,
+      loggedMember.USERRECORDID,
+      navigation,
+    ],
+  );
 
   const fetchUserInfo = useCallback(async () => {
     const response = await memberGetuser(loggedMember.ControllerID);

@@ -172,7 +172,7 @@ const UsersScreen = ({navigation, route}) => {
             }
             leftOpenValue={75}
             //rightOpenValue={-75}
-            rightOpenValue={-35}
+            rightOpenValue={-50}
             previewRowKey={'0'}
             previewOpenValue={-40}
             previewOpenDelay={3000}
