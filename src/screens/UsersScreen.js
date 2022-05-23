@@ -33,6 +33,21 @@ const UsersScreen = ({navigation, route}) => {
     const prevIndex = listData.findIndex(item => item.key === rowKey);
     newData.splice(prevIndex, 1);
     setListData(newData);
+    memberDeleteuser(user, loggedMember, rowMap, rowKey)
+      .then(async resp => {
+        if (resp === 'Success') {
+          //Good
+          setLoader(false);
+        } else {
+          // Not Good
+          setLoader(false);
+          setAddUserError(resp);
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        setAddUserError(error.message);
+      });
   };
   const fetchUserInfo = useCallback(async () => {
     const response = await memberGetuser(loggedMember.ControllerID);
