@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useCallback} from 'react';
 import {
   View,
   SafeAreaView,
@@ -11,6 +11,7 @@ import {
 
 import AppStatusBar from '../components/AppStatusBar';
 
+import {Loader} from '../components/Loader';
 import Feather from 'react-native-vector-icons/Feather';
 import {COLORS} from '../constants';
 import {useSelector} from 'react-redux';
@@ -28,6 +29,7 @@ const CameraScreen = ({navigation, route}) => {
    * @param gestureState
    * @param zoomableViewEventObject
    */
+  const [loader] = useState(true);
   const flatListRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const {homeDetails} = useSelector(state => state.HomeState);
@@ -79,8 +81,7 @@ const CameraScreen = ({navigation, route}) => {
   };
   // const onRefresh = useCallback(async () => {
   //   setRefreshing(true);
-  //   setNotifyDate(moment(new Date()));
-  //   getMyBoxData(setOnTakePhoto());
+  //   homeDetails();
   //   setRefreshing(false);
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, []);
@@ -90,6 +91,7 @@ const CameraScreen = ({navigation, route}) => {
       <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
         <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
+          {/*{loader ? <Loader /> : null}*/}
           <Feather
             name="camera"
             size={23}
@@ -108,7 +110,7 @@ const CameraScreen = ({navigation, route}) => {
               <RefreshControl
                 colors={[COLORS.secondary, COLORS.white]}
                 refreshing={refreshing}
-                // onRefresh={onRefresh}
+                //onRefresh={onRefresh}
               />
             }
             data={[{ID: '1'}]}

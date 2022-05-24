@@ -228,6 +228,60 @@ const getBatteryTypeColor = percent => {
   }
 };
 
+const getTemperatureType = type => {
+  switch (type) {
+    case 10:
+      return 'thermometer-1';
+    case 20:
+      return 'thermometer-1';
+    case 30:
+      return 'thermometer-2';
+    case 40:
+      return 'thermometer-2';
+    case 50:
+      return 'thermometer-3';
+    case 60:
+      return 'thermometer-3';
+    case 70:
+      return 'thermometer-3';
+    case 80:
+      return 'thermometer-3';
+    case 90:
+      return 'thermometer-4';
+    case 100:
+      return 'thermometer-4';
+    default:
+      return 'thermometer-0';
+  }
+};
+
+const getTemperatureTypeColor = percent => {
+  switch (percent) {
+    case 10:
+      return COLORS.batter10;
+    case 20:
+      return COLORS.batter20;
+    case 30:
+      return COLORS.batter30;
+    case 40:
+      return COLORS.batter40;
+    case 50:
+      return COLORS.batter50;
+    case 60:
+      return COLORS.batter60;
+    case 70:
+      return COLORS.batter70;
+    case 80:
+      return COLORS.batter80;
+    case 90:
+      return COLORS.batter90;
+    case 100:
+      return COLORS.batter100;
+    default:
+      return COLORS.batter0;
+  }
+};
+
 export {
   Headers,
   AuthHeaders,
@@ -241,4 +295,6 @@ export {
   getTypeOfMsg,
   getBatteryType,
   getBatteryTypeColor,
+  getTemperatureType,
+  getTemperatureTypeColor,
 };

@@ -177,27 +177,28 @@ export default function HomeScreen({navigation, route}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   const intervalCall = setInterval(() => {
+  useEffect(() => {
+    const intervalCall = setInterval(() => {
+      console.log(
+        '*******************************************************',
+        moment(notifyDate).format('YYYY-MM-DD'),
+      );
+      fetchHomeData(
+        loggedMember.LoginID,
+        loggedMember.ControllerID,
+        moment(notifyDate).format('YYYY-MM-DD'),
+      ).then(async resp => {
+        if (resp.LastSyncDate) {
+          dispatch(saveMemberHomeDetails(resp));
+        }
+      });
+    }, 1000 * homeDetails.MobileAppPageRefreshInterval);
 
-  //   console.log('*******************************************************',moment(notifyDate).format('YYYY-MM-DD'));
-  //     fetchHomeData(
-  //       loggedMember.LoginID,
-  //       loggedMember.ControllerID,
-  //       moment(notifyDate).format('YYYY-MM-DD'),
-  //     )
-  //       .then(async resp => {
-  //         if (resp.LastSyncDate) {
-  //           dispatch(saveMemberHomeDetails(resp));
-  //         }
-  //       });
-  //   }, 1000 * homeDetails.MobileAppPageRefreshInterval);
-
-  //   return () => {
-  //     // clean up
-  //     clearInterval(intervalCall);
-  //   };
-  // }, []);
+    return () => {
+      // clean up
+      clearInterval(intervalCall);
+    };
+  }, []);
 
   return (
     <>

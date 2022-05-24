@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, SafeAreaView, Text, FlatList, RefreshControl} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {Card, Button} from 'react-native-paper';
 import RNSpeedometer from 'react-native-speedometer';
@@ -15,6 +16,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import {Loader} from '../components/Loader';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {getBatteryType, getBatteryTypeColor} from '../utils/Handlers';
+import {getTemperatureType, getTemperatureTypeColor} from '../utils/Handlers';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 import {
@@ -376,6 +378,39 @@ export default function MyboxScreen({navigation, route}) {
                     </Card>
                   </View>
                 </View>
+                <Card
+                  style={{
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    width: '48%',
+                    height: 150,
+                  }}>
+                  <View style={{marginBottom: 10}}>
+                    <Button>PIR Sensor</Button>
+                  </View>
+                  <View style={{height: '75%'}}>
+                    <MaterialCommunityIcons
+                      onPress={() =>
+                        toggleAlarm(boxDetails.AlarmState === 1 ? 2 : 1)
+                      }
+                      style={{
+                        alignSelf: 'center',
+                        marginTop: -5,
+                      }}
+                      name={
+                        boxDetails.AlarmState === 1
+                          ? 'motion-sensor'
+                          : 'motion-sensor-off'
+                      }
+                      color={
+                        boxDetails.AlarmState === 1
+                          ? 'green'
+                          : COLORS.messageColor4
+                      }
+                      size={100}
+                    />
+                  </View>
+                </Card>
 
                 <Text
                   style={{
@@ -466,7 +501,48 @@ export default function MyboxScreen({navigation, route}) {
                     </Card>
                   </View>
                 </View>
-                <View
+                <Card
+                  style={{
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    width: '48%',
+                    height: 160,
+                  }}>
+                  <View style={{height: '25%'}}>
+                    <Button>Temperature</Button>
+                    {/* <Tooltip label="Hey, I'm here!" openDelay={500}>
+                        </Tooltip>; */}
+                  </View>
+                  <View style={{height: '65%', bottom: 8}}>
+                    <FontAwesome
+                      style={{
+                        alignSelf: 'center',
+                      }}
+                      name={getTemperatureType(
+                        boxDetails.Battery
+                          ? Math.round(boxDetails.Battery / 10) * 10
+                          : 0,
+                      )}
+                      color={getTemperatureTypeColor(
+                        boxDetails.Battery
+                          ? Math.round(boxDetails.Battery / 10) * 10
+                          : 0,
+                      )}
+                      size={92}
+                    />
+                  </View>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      justifyContent: 'center',
+                      bottom: 17,
+                      fontSize: 24,
+                      fontWeight: 'bold',
+                    }}>
+                    {boxDetails.TEMPER ? boxDetails.TEMPER : 0}
+                  </Text>
+                </Card>
+                {/* <View
                   style={{
                     paddingBottom: 10,
                     flexDirection: 'row',
@@ -500,7 +576,7 @@ export default function MyboxScreen({navigation, route}) {
                       </View>
                     </Card>
                   </View>
-                </View>
+                </View> */}
                 <Text
                   style={{
                     textAlign: 'center',
