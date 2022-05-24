@@ -18,20 +18,21 @@ import {useSelector} from 'react-redux';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import styles from '../styles/AppStyles';
 import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
+import moment from 'moment';
+import {fetchHomeData, saveMemberHomeDetails} from '../redux/actions/HomeState';
+import {useToast} from 'react-native-toast-notifications';
+import {useDispatch} from 'react-redux';
 
 const viewConfigRef = {viewAreaCoveragePercentThreshold: 95};
 
 const CameraScreen = ({navigation, route}) => {
-  /**
-   * Log out an example event after zooming
-   *
-   * @param event
-   * @param gestureState
-   * @param zoomableViewEventObject
-   */
-  const [loader] = useState(true);
+  const dispatch = useDispatch();
+  const toast = useToast();
+
+  const [loader, setLoader] = useState(false);
   const flatListRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const {loggedMember} = useSelector(state => state.AuthState);
   const {homeDetails} = useSelector(state => state.HomeState);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -40,6 +41,47 @@ const CameraScreen = ({navigation, route}) => {
       setCurrentIndex(changed[0].index);
     }
   });
+
+  const getHomeData = useCallback(
+    currentDate => {
+      setLoader(true);
+      const convertDate = moment(currentDate).format('YYYY-MM-DD');
+      fetchHomeData(
+        loggedMember.LoginID,
+        loggedMember.ControllerID,
+        convertDate,
+      )
+        .then(async resp => {
+          if (resp.LastSyncDate) {
+            setLoader(false);
+            dispatch(saveMemberHomeDetails(resp));
+          } else {
+            // Not Good
+            setLoader(false);
+            toast.show(resp, {
+              type: 'custom_type',
+              animationDuration: 100,
+              data: {
+                type: 'error',
+                title: 'Invalid data',
+              },
+            });
+          }
+        })
+        .catch(error => {
+          setLoader(false);
+          toast.show(error.message, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'error',
+              title: 'Invalid data',
+            },
+          });
+        });
+    },
+    [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast],
+  );
 
   const scrollToIndex = index => {
     flatListRef.current?.scrollToIndex({animated: true, index: index});
@@ -79,19 +121,19 @@ const CameraScreen = ({navigation, route}) => {
       </TouchableOpacity>
     );
   };
-  // const onRefresh = useCallback(async () => {
-  //   setRefreshing(true);
-  //   homeDetails();
-  //   setRefreshing(false);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    getHomeData(new Date());
+    setRefreshing(false);
+  }, [getHomeData]);
 
   return (
     <>
       <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
         <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
-          {/*{loader ? <Loader /> : null}*/}
+          {loader ? <Loader /> : null}
           <Feather
             name="camera"
             size={23}
@@ -110,7 +152,7 @@ const CameraScreen = ({navigation, route}) => {
               <RefreshControl
                 colors={[COLORS.secondary, COLORS.white]}
                 refreshing={refreshing}
-                //onRefresh={onRefresh}
+                onRefresh={onRefresh}
               />
             }
             data={[{ID: '1'}]}

@@ -22,6 +22,7 @@ import {useDispatch} from 'react-redux';
 import {
   callAlarmOnOffBox,
   callInternalOrExternalCameraOnBox,
+  callPIRSensor,
   fetchBoxData,
   saveMyBoxDetails,
   updateControllerPassword,
@@ -119,6 +120,41 @@ export default function MyboxScreen({navigation, route}) {
         if (resp === 'SUCCESS-1' || resp === 'SUCCESS-2') {
           //Good
           boxDetails['AlarmState'] = alarmState;
+          dispatch(saveMyBoxDetails(boxDetails));
+          setLoader(false);
+        } else {
+          // Not Good
+          setLoader(false);
+          toast.show(resp, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'error',
+              title: 'Invalid data',
+            },
+          });
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        toast.show(error.message, {
+          type: 'custom_type',
+          animationDuration: 100,
+          data: {
+            type: 'error',
+            title: 'Invalid data',
+          },
+        });
+      });
+  };
+
+  const togglePIR = sensor => {
+    setLoader(true);
+    callPIRSensor(loggedMember.LoginID, loggedMember.ControllerID, sensor)
+      .then(async resp => {
+        if (resp === 'Success') {
+          //Good
+          boxDetails['PIRSensor'] = sensor;
           dispatch(saveMyBoxDetails(boxDetails));
           setLoader(false);
         } else {
@@ -391,19 +427,19 @@ export default function MyboxScreen({navigation, route}) {
                   <View style={{height: '75%'}}>
                     <MaterialCommunityIcons
                       onPress={() =>
-                        toggleAlarm(boxDetails.AlarmState === 1 ? 2 : 1)
+                        togglePIR(boxDetails.PIRSensor === 1 ? 2 : 1)
                       }
                       style={{
                         alignSelf: 'center',
                         marginTop: -5,
                       }}
                       name={
-                        boxDetails.AlarmState === 1
+                        boxDetails.PIRSensor === 1
                           ? 'motion-sensor'
                           : 'motion-sensor-off'
                       }
                       color={
-                        boxDetails.AlarmState === 1
+                        boxDetails.PIRSensor === 1
                           ? 'green'
                           : COLORS.messageColor4
                       }

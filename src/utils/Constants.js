@@ -4,6 +4,7 @@ export const ENDPOINTURL = {
   MemberHome: 'ApiGetHomePageData/',
   MemberLock: 'APIOpenCloseBox/',
   MemberUpdateAlarm: 'APIUpdateAlarm/',
+  MemberUpdatePIR: 'APIUpdatePIRSensor/',
   MemberUpdateOnDemandCamera: 'APIUpdateOnDemandCamera/',
   MemberMyBox: 'ApiGetMyBoxPageData/',
   MemberAdduser: 'APIAddNewUser/',

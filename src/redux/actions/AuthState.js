@@ -49,8 +49,8 @@ export async function memberLogin(userData, navigation) {
             );
             throw error;
           });
-        return userResp;
       }
+      return userResp;
     })
     .catch(error => {
       console.log('################# Error #################', error);

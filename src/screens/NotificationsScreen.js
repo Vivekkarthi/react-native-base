@@ -25,7 +25,7 @@ const NotificationsScreen = ({navigation, route}) => {
   const [loader, setLoader] = useState(true);
   const [notifyDate, setNotifyDate] = useState({
     fromDate: new Date(),
-    toDate: new Date(),
+    toDate: new Date().setDate(new Date().getDate() + 7),
   });
 
   const getNotifyData = useCallback(
@@ -54,27 +54,28 @@ const NotificationsScreen = ({navigation, route}) => {
   );
 
   const getNextNotify = () => {
+    let numDays = 1;
+    let now = new Date(notifyDate.toDate);
+    now.setDate(now.getDate() + numDays);
+
     setNotifyDate(prevState => ({
       ...prevState,
-      fromDate: notifyDate.toDate,
-      toDate: moment(new Date(notifyDate.toDate)).add(1, 'weeks'),
+      fromDate: now,
+      toDate: moment(now).add(1, 'weeks'),
     }));
-    getNotifyData(
-      notifyDate.toDate,
-      moment(new Date(notifyDate.toDate)).add(1, 'weeks'),
-    );
+    getNotifyData(now, moment(now).add(1, 'weeks'));
   };
 
   const getPreviousNotify = () => {
+    let numDays = 1;
+    let now = new Date(notifyDate.fromDate);
+    now.setDate(now.getDate() - numDays);
     setNotifyDate(prevState => ({
       ...prevState,
-      toDate: notifyDate.fromDate,
-      fromDate: moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks'),
+      toDate: now,
+      fromDate: moment(now).subtract(1, 'weeks'),
     }));
-    getNotifyData(
-      moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks'),
-      notifyDate.fromDate,
-    );
+    getNotifyData(moment(now).subtract(1, 'weeks'), now);
   };
 
   useEffect(() => {

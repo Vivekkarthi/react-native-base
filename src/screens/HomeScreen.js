@@ -16,12 +16,11 @@ import {COLORS} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
 
 import {Loader} from '../components/Loader';
-import {CONFIG} from '../utils/Config';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 import styles from '../styles/AppStyles';
 import {NotificationUI} from '../components/NotificationUI';
-import {saveMemberMobileNotificationDetails} from '../redux/actions/MobileNotificationState';
+
 import {fetchNotifyData} from '../redux/actions/MobileNotificationState';
 
 export default function HomeScreen({navigation, route}) {
@@ -29,9 +28,6 @@ export default function HomeScreen({navigation, route}) {
   const toast = useToast();
   const {loggedMember} = useSelector(state => state.AuthState);
   const {homeDetails} = useSelector(state => state.HomeState);
-  // const {mobilenotificationDetails} = useSelector(
-  //   state => state.MobileNotificationState,
-  // );
 
   const [loader, setLoader] = useState(true);
   const [notificationData, setNotificationData] = useState([]);
@@ -177,28 +173,28 @@ export default function HomeScreen({navigation, route}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    const intervalCall = setInterval(() => {
-      console.log(
-        '*******************************************************',
-        moment(notifyDate).format('YYYY-MM-DD'),
-      );
-      fetchHomeData(
-        loggedMember.LoginID,
-        loggedMember.ControllerID,
-        moment(notifyDate).format('YYYY-MM-DD'),
-      ).then(async resp => {
-        if (resp.LastSyncDate) {
-          dispatch(saveMemberHomeDetails(resp));
-        }
-      });
-    }, 1000 * homeDetails.MobileAppPageRefreshInterval);
+  // useEffect(() => {
+  //   const intervalCall = setInterval(() => {
+  //     console.log(
+  //       '*******************************************************',
+  //       moment(notifyDate).format('YYYY-MM-DD'),
+  //     );
+  //     fetchHomeData(
+  //       loggedMember.LoginID,
+  //       loggedMember.ControllerID,
+  //       moment(notifyDate).format('YYYY-MM-DD'),
+  //     ).then(async resp => {
+  //       if (resp.LastSyncDate) {
+  //         dispatch(saveMemberHomeDetails(resp));
+  //       }
+  //     });
+  //   }, 1000 * homeDetails.MobileAppPageRefreshInterval);
 
-    return () => {
-      // clean up
-      clearInterval(intervalCall);
-    };
-  }, []);
+  //   return () => {
+  //     // clean up
+  //     clearInterval(intervalCall);
+  //   };
+  // }, []);
 
   return (
     <>
