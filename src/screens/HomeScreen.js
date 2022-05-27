@@ -20,8 +20,8 @@ import StaticBottomTabs from '../components/StaticBottomTabs';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 import styles from '../styles/AppStyles';
 import {NotificationUI} from '../components/NotificationUI';
-
-import {fetchNotifyData} from '../redux/actions/MobileNotificationState';
+//import {ToastProvider} from 'react-native-toast-notifications';
+import {fetchMobileNotifyData} from '../redux/actions/MobileNotificationState';
 
 export default function HomeScreen({navigation, route}) {
   const dispatch = useDispatch();
@@ -85,7 +85,7 @@ export default function HomeScreen({navigation, route}) {
       setLoader(true);
       const convertDate = moment(currentDate).format('YYYY-MM-DD');
       const convertToDate = moment(toDate).format('YYYY-MM-DD');
-      fetchNotifyData(loggedMember.CustID, convertDate, convertToDate)
+      fetchMobileNotifyData(loggedMember.CustID, convertDate, convertToDate)
         .then(async resp => {
           if (resp && resp.length) {
             setNotificationData(resp);
@@ -202,6 +202,15 @@ export default function HomeScreen({navigation, route}) {
         <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           {loader ? <Loader /> : null}
+          {/* <ToastProvider
+            renderType={{
+              custom_type: toast => (
+                <View style={{padding: 15, backgroundColor: 'grey'}}>
+                  <Text>{toast.message}</Text>
+                </View>
+              ),
+            }}
+          /> */}
           <Text
             style={{
               alignSelf: 'flex-end',
@@ -358,7 +367,7 @@ export default function HomeScreen({navigation, route}) {
                   notificationData={notificationData}
                   getNotifyData={getNotifyData}
                 />
-                <Card style={{marginBottom: 13, marginTop: 2}}>
+                <Card style={{marginBottom: 13, marginTop: 2, height: 105}}>
                   <View
                     style={{
                       alignSelf: 'center',
@@ -379,7 +388,7 @@ export default function HomeScreen({navigation, route}) {
                   <Card.Title
                     title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
                     // subtitle={'subtitle'}
-                    titleStyle={{fontSize: 16, alignSelf: 'center'}}
+                    titleStyle={{fontSize: 14, alignSelf: 'center'}}
                     subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
                     left={props => (
                       <Ionicons

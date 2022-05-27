@@ -14,6 +14,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import CameraScreen from '../screens/CameraScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import PackagesScreen from '../screens/PackagesScreen';
+import PackageDetailScreen from '../screens/PackageDetailScreen';
 import MyboxScreen from '../screens/MyboxScreen';
 import ContactDetailScreen from '../screens/ContactDetailScreen';
 import ContactScreen from '../screens/ContactScreen';
@@ -76,6 +77,35 @@ const ContactStack = ({navigation}) => {
       <Stack.Screen
         name="ContactDetails"
         component={ContactDetailScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const PackageStack = ({navigation}) => {
+  const dispatch = useDispatch();
+  const logoutUser = async () => {
+    try {
+      dispatch(logoutSuccess());
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Packages"
+        component={PackagesScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="PackageDetails"
+        component={PackageDetailScreen}
         options={{
           headerShown: false,
         }}
@@ -246,8 +276,8 @@ const AppStack = () => {
         }}
       />
       <Drawer.Screen
-        name="Packages"
-        component={PackagesScreen}
+        name="Delivery"
+        component={PackageStack}
         options={{
           headerShown: true,
           drawerIcon: ({color}) => (

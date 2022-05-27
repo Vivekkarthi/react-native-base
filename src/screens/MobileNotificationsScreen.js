@@ -11,7 +11,7 @@ import AppStatusBar from '../components/AppStatusBar';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {COLORS} from '../constants';
 import {
-  fetchNotifyData,
+  fetchMobileNotifyData,
   saveMemberMobileNotificationDetails,
 } from '../redux/actions/MobileNotificationState';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
@@ -22,27 +22,26 @@ const MobileNotificationsScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const toast = useToast();
   const {loggedMember} = useSelector(state => state.AuthState);
-  // const {mobilenotificationDetails} = useSelector(
-  //   state => state.MobileNotificationState,
-  // );
+  const {mobilenotificationDetails} = useSelector(
+    state => state.MobileNotificationState,
+  );
   const [loader, setLoader] = useState(true);
   const [notifyDate, setNotifyDate] = useState({
     fromDate: new Date(),
-    toDate: new Date(),
+    toDate: new Date().setDate(new Date().getDate() + 7),
   });
-  const [notificationData, setNotificationData] = useState([]);
 
-  const getNotifyData = useCallback(
+  const getMobileNotifyData = useCallback(
     (currentDate, toDate) => {
       setLoader(true);
       const convertDate = moment(currentDate).format('YYYY-MM-DD');
       const convertToDate = moment(toDate).format('YYYY-MM-DD');
-      fetchNotifyData(loggedMember.CustID, convertDate, convertToDate)
+      fetchMobileNotifyData(loggedMember.CustID, convertDate, convertToDate)
         .then(async resp => {
-          if (resp && resp.length) {
-            setNotificationData(resp);
-          }
-          // dispatch(saveMemberMobileNotificationDetails(resp));
+          // if (resp && resp.length) {
+          //   setNotificationData(resp);
+          // }
+          dispatch(saveMemberMobileNotificationDetails(resp));
           setLoader(false);
         })
         .catch(error => {
@@ -57,19 +56,20 @@ const MobileNotificationsScreen = ({navigation, route}) => {
           });
         });
     },
-    [loggedMember.CustID, toast],
+    [dispatch, loggedMember.CustID, toast],
   );
 
   const getNextNotify = () => {
+    let numDays = 1;
+    let now = new Date(notifyDate.toDate);
+    now.setDate(now.getDate() + numDays);
+
     setNotifyDate(prevState => ({
       ...prevState,
-      fromDate: notifyDate.toDate,
-      toDate: moment(new Date(notifyDate.toDate)).add(1, 'weeks'),
+      fromDate: now,
+      toDate: moment(now).add(1, 'weeks'),
     }));
-    getNotifyData(
-      notifyDate.toDate,
-      moment(new Date(notifyDate.toDate)).add(1, 'weeks'),
-    );
+    getMobileNotifyData(now, moment(now).add(1, 'weeks'));
   };
 
   const getPreviousNotify = () => {
@@ -78,14 +78,14 @@ const MobileNotificationsScreen = ({navigation, route}) => {
       toDate: notifyDate.fromDate,
       fromDate: moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks'),
     }));
-    getNotifyData(
+    getMobileNotifyData(
       moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks'),
       notifyDate.fromDate,
     );
   };
 
   useEffect(() => {
-    getNotifyData(notifyDate.fromDate, notifyDate.toDate);
+    getMobileNotifyData(notifyDate.fromDate, notifyDate.toDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -138,11 +138,11 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                 )}
               />
             </Card>
-            {notificationData.length ? (
+            {mobilenotificationDetails.length ? (
               <FlatList
                 keyboardShouldPersistTaps="always"
                 showsVerticalScrollIndicator={false}
-                data={notificationData}
+                data={mobilenotificationDetails}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={mobilenotification => (
                   <View

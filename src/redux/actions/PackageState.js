@@ -8,8 +8,8 @@ export const initialState = {
 export const PACKAGE_SUCCESS = 'PACKAGE_SUCCESS';
 export const PACKAGE_FAILURE = 'PACKAGE_FAILURE';
 
-export function fetchNotifyData(loggedMember, fromDate, toDate) {
-  const queryParams = `sK=token&sidx=${loggedMember.ControllerName}&sfromdate=${fromDate}&stodate=${toDate}`;
+export function fetchPackageData(ControllerID, fromDate, toDate) {
+  const queryParams = `sK=token&sidx=${ControllerID}&sfromdate=${fromDate}&stodate=${toDate}`;
   const params = {
     url: ENDPOINTURL.MemberPackage,
     token: '',

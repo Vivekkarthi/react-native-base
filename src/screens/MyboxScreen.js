@@ -342,6 +342,7 @@ export default function MyboxScreen({navigation, route}) {
                       justifyContent: 'space-between',
                     }}>
                     <Card
+                      onPress={() => captureCamera(2, 'internal')}
                       style={{
                         flexDirection: 'column',
                         justifyContent: 'center',
@@ -352,9 +353,10 @@ export default function MyboxScreen({navigation, route}) {
                         style={{
                           alignSelf: 'center',
                           fontSize: 16,
-                          color: '#002060',
+                          color: COLORS.primary,
                         }}>
-                        On Demand Photo
+                        On Demand Photo:{' '}
+                        {boxDetails.internal === 1 ? 'OFF' : 'ON'}
                       </Text>
                       <View style={{height: '60%'}}>
                         <Entypo
@@ -372,13 +374,22 @@ export default function MyboxScreen({navigation, route}) {
                         />
                       </View>
 
-                      <View style={{height: '40%'}}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          fontSize: 16,
+                          color: COLORS.primary,
+                          marginTop: 10,
+                        }}>
+                        Take a photo
+                      </Text>
+                      {/* <View style={{height: '40%'}}>
                         {
                           <Button onPress={() => captureCamera(2, 'internal')}>
                             Take a photo
                           </Button>
                         }
-                      </View>
+                      </View> */}
                     </Card>
 
                     <Card
@@ -389,7 +400,9 @@ export default function MyboxScreen({navigation, route}) {
                         height: 150,
                       }}>
                       <View style={{marginBottom: 10}}>
-                        <Button>Alarm</Button>
+                        <Button>
+                          Alarm: {boxDetails.AlarmState === 1 ? 'On' : 'Off'}
+                        </Button>
                       </View>
                       <View style={{height: '75%'}}>
                         <Entypo
@@ -422,12 +435,14 @@ export default function MyboxScreen({navigation, route}) {
                     height: 150,
                   }}>
                   <View style={{marginBottom: 10}}>
-                    <Button>PIR Sensor</Button>
+                    <Button>
+                      PIR Sensor: {boxDetails.PIRSensor === 1 ? 'On' : 'Off'}
+                    </Button>
                   </View>
                   <View style={{height: '75%'}}>
                     <MaterialCommunityIcons
                       onPress={() =>
-                        togglePIR(boxDetails.PIRSensor === 1 ? 2 : 1)
+                        togglePIR(boxDetails.PIRSensor === 1 ? 0 : 1)
                       }
                       style={{
                         alignSelf: 'center',
@@ -556,12 +571,12 @@ export default function MyboxScreen({navigation, route}) {
                       }}
                       name={getTemperatureType(
                         boxDetails.Battery
-                          ? Math.round(boxDetails.Battery / 10) * 10
+                          ? Math.round(boxDetails.TEMPER / 10) * 10
                           : 0,
                       )}
                       color={getTemperatureTypeColor(
                         boxDetails.Battery
-                          ? Math.round(boxDetails.Battery / 10) * 10
+                          ? Math.round(boxDetails.TEMPER / 10) * 10
                           : 0,
                       )}
                       size={92}
@@ -624,7 +639,7 @@ export default function MyboxScreen({navigation, route}) {
                     paddingTop: 9,
                     paddingBottom: 10,
                   }}>
-                  Controller password
+                  Reset Controller Password
                 </Text>
                 {/* <Tooltip
                   isVisible={this.state.toolTipVisible}

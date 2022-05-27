@@ -5,6 +5,7 @@ import HomeStateReducer from './actions/HomeState';
 import MobileNotificatationStateReducer from './actions/MobileNotificationState';
 import NotificatationStateReducer from './actions/NotificationState';
 import TicketStateReducer from './actions/SupportTicketState';
+import PackageStateReducer from './actions/PackageState';
 
 const appReducer = combineReducers({
   AuthState: AuthStateReducer,
@@ -13,6 +14,7 @@ const appReducer = combineReducers({
   TicketStateState: TicketStateReducer,
   BoxState: BoxStateReducer,
   MobileNotificationState: MobileNotificatationStateReducer,
+  PackageState: PackageStateReducer,
 });
 
 // reset the state of a redux store

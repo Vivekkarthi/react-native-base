@@ -1,5 +1,6 @@
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-simple-toast';
 
 export async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -32,7 +33,7 @@ export const getFcmToken = async () => {
   }
 };
 
-export const notificationListener = async () => {
+export const NotificationListener = async () => {
   messaging().onNotificationOpenedApp(remoteMessage => {
     console.log(
       'Notification caused app to open from background state:',
@@ -41,6 +42,7 @@ export const notificationListener = async () => {
   });
 
   messaging().onMessage(async remoteMessage => {
+    Toast.show(remoteMessage.notification.body);
     console.log('Received in foreground.....', remoteMessage);
   });
 

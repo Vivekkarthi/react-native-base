@@ -258,25 +258,25 @@ const getTemperatureType = type => {
 const getTemperatureTypeColor = percent => {
   switch (percent) {
     case 10:
-      return COLORS.batter10;
+      return COLORS.Temperature10;
     case 20:
-      return COLORS.batter20;
+      return COLORS.Temperature20;
     case 30:
-      return COLORS.batter30;
+      return COLORS.Temperature30;
     case 40:
-      return COLORS.batter40;
+      return COLORS.Temperature40;
     case 50:
-      return COLORS.batter50;
+      return COLORS.Temperature50;
     case 60:
-      return COLORS.batter60;
+      return COLORS.Temperature60;
     case 70:
-      return COLORS.batter70;
+      return COLORS.Temperature70;
     case 80:
-      return COLORS.batter80;
+      return COLORS.Temperature80;
     case 90:
-      return COLORS.batter90;
+      return COLORS.Temperature90;
     case 100:
-      return COLORS.batter100;
+      return COLORS.Temperature100;
     default:
       return COLORS.batter0;
   }

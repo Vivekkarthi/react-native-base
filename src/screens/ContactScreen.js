@@ -19,7 +19,9 @@ import styles from '../styles/AppStyles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   fetchTicketData,
+  fetchTicketResponseData,
   saveTicketDetails,
+  saveTicketResponseDetails,
 } from '../redux/actions/SupportTicketState';
 import {useToast} from 'react-native-toast-notifications';
 import {Loader} from '../components/Loader';
@@ -33,8 +35,34 @@ const ContactScreen = ({navigation, route}) => {
   const [loader, setLoader] = useState(true);
   const [notifyDate, setNotifyDate] = useState({
     fromDate: new Date(),
-    toDate: new Date(),
+    toDate: new Date().setDate(new Date().getDate() + 7),
   });
+
+  const getTicketResponseData = useCallback(
+    ticketData => {
+      setLoader(true);
+      fetchTicketResponseData(ticketData.STID)
+        .then(async resp => {
+          dispatch(saveTicketResponseDetails(resp));
+          setLoader(false);
+          navigation.navigate('ContactDetails', {
+            state: ticketData,
+          });
+        })
+        .catch(error => {
+          setLoader(false);
+          toast.show(error.massage, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'error',
+              title: 'Invalid data',
+            },
+          });
+        });
+    },
+    [dispatch, toast, navigation],
+  );
 
   const getTicketsData = useCallback(
     (currentDate, toDate) => {
@@ -62,27 +90,27 @@ const ContactScreen = ({navigation, route}) => {
   );
 
   const getNextNotify = () => {
+    let numDays = 1;
+    let now = new Date(notifyDate.toDate);
+    now.setDate(now.getDate() + numDays);
     setNotifyDate(prevState => ({
       ...prevState,
-      fromDate: notifyDate.toDate,
-      toDate: moment(new Date(notifyDate.toDate)).add(1, 'weeks'),
+      fromDate: now,
+      toDate: moment(now).add(1, 'weeks'),
     }));
-    getTicketsData(
-      notifyDate.toDate,
-      moment(new Date(notifyDate.toDate)).add(1, 'weeks'),
-    );
+    getTicketsData(now, moment(now).add(1, 'weeks'));
   };
 
   const getPreviousNotify = () => {
+    let numDays = 1;
+    let now = new Date(notifyDate.fromDate);
+    now.setDate(now.getDate() - numDays);
     setNotifyDate(prevState => ({
       ...prevState,
-      toDate: notifyDate.fromDate,
-      fromDate: moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks'),
+      toDate: now,
+      fromDate: moment(now).subtract(1, 'weeks'),
     }));
-    getTicketsData(
-      moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks'),
-      notifyDate.fromDate,
-    );
+    getTicketsData(moment(now).subtract(1, 'weeks'), now);
   };
 
   useEffect(() => {
@@ -173,9 +201,7 @@ const ContactScreen = ({navigation, route}) => {
                     paddingLeft: 8,
                   }}
                   onPress={() => {
-                    navigation.navigate('ContactDetails', {
-                      state: support.item,
-                    });
+                    getTicketResponseData(support.item);
                   }}>
                   <View style={{flex: 1, flexDirection: 'row'}}>
                     <Avatar.Icon

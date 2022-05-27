@@ -39,7 +39,7 @@ const NotificationUI = ({
 
   return (
     <View>
-      <Card style={{marginBottom: 13, marginTop: 2}}>
+      <Card style={{marginBottom: 13, marginTop: 2, height: 105}}>
         <View
           style={{
             alignSelf: 'center',
