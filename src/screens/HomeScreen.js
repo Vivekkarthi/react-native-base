@@ -21,7 +21,8 @@ import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 import styles from '../styles/AppStyles';
 import {NotificationUI} from '../components/NotificationUI';
 //import {ToastProvider} from 'react-native-toast-notifications';
-import {fetchMobileNotifyData} from '../redux/actions/MobileNotificationState';
+import {fetchHomeMobileNotifyData} from '../redux/actions/MobileNotificationState';
+import {fetchBoxData, saveMyBoxDetails} from '../redux/actions/BoxState';
 
 export default function HomeScreen({navigation, route}) {
   const dispatch = useDispatch();
@@ -32,10 +33,7 @@ export default function HomeScreen({navigation, route}) {
   const [loader, setLoader] = useState(true);
   const [notificationData, setNotificationData] = useState([]);
   const [notifyDate, setNotifyDate] = useState(new Date());
-  const [mobileNotifyDate, setMobileNotifyDate] = useState({
-    fromDate: new Date(),
-    toDate: new Date(),
-  });
+  const [mobileNotifyDate, setMobileNotifyDate] = useState(new Date());
   const [refreshing, setRefreshing] = useState(false);
 
   const getHomeData = useCallback(
@@ -80,12 +78,45 @@ export default function HomeScreen({navigation, route}) {
     [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast],
   );
 
-  const getNotifyData = useCallback(
-    (currentDate, toDate) => {
+  const getMyBoxData = useCallback(() => {
+    setLoader(true);
+    fetchBoxData(loggedMember.LoginID, loggedMember.ControllerID)
+      .then(async resp => {
+        if (resp.SyncDateTime) {
+          //Good
+          dispatch(saveMyBoxDetails(resp));
+          setLoader(false);
+        } else {
+          // Not Good
+          setLoader(false);
+          toast.show(resp, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'error',
+              title: 'Invalid data',
+            },
+          });
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        toast.show(error.message, {
+          type: 'custom_type',
+          animationDuration: 100,
+          data: {
+            type: 'error',
+            title: 'Invalid data',
+          },
+        });
+      });
+  }, [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast]);
+
+  const getMobileNotifyData = useCallback(
+    currentDate => {
       setLoader(true);
       const convertDate = moment(currentDate).format('YYYY-MM-DD');
-      const convertToDate = moment(toDate).format('YYYY-MM-DD');
-      fetchMobileNotifyData(loggedMember.CustID, convertDate, convertToDate)
+      fetchHomeMobileNotifyData(loggedMember.CustID, convertDate)
         .then(async resp => {
           if (resp && resp.length) {
             setNotificationData(resp);
@@ -169,7 +200,8 @@ export default function HomeScreen({navigation, route}) {
 
   useEffect(() => {
     getHomeData(notifyDate);
-    getNotifyData(mobileNotifyDate.fromDate, mobileNotifyDate.toDate);
+    getMobileNotifyData(mobileNotifyDate.fromDate, mobileNotifyDate.toDate);
+    getMyBoxData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -365,7 +397,7 @@ export default function HomeScreen({navigation, route}) {
                   mobileNotifyDate={mobileNotifyDate}
                   setMobileNotifyDate={setMobileNotifyDate}
                   notificationData={notificationData}
-                  getNotifyData={getNotifyData}
+                  getMobileNotifyData={getMobileNotifyData}
                 />
                 <Card style={{marginBottom: 13, marginTop: 2, height: 105}}>
                   <View

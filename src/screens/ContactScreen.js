@@ -61,7 +61,7 @@ const ContactScreen = ({navigation, route}) => {
           });
         });
     },
-    [dispatch, toast, navigation],
+    [dispatch, navigation, toast],
   );
 
   const getTicketsData = useCallback(

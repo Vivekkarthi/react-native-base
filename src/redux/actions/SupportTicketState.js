@@ -21,7 +21,7 @@ export const addNewTicket = (
   const queryParams = `sK=token&iUSERID=${loggedMember.USERRECORDID}&iCustID=${
     loggedMember.CustID
   }&iSCID=${item}&sMessage=${description}&iSTID=${
-    !isEmpty(hasSupportData) ? 1 : 0
+    !isEmpty(hasSupportData) ? Number(hasSupportData.STID) : 0
   }`;
 
   const params = {

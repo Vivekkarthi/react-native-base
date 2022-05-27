@@ -349,15 +349,12 @@ export default function MyboxScreen({navigation, route}) {
                         width: '48%',
                         height: 150,
                       }}>
-                      <Text
-                        style={{
-                          alignSelf: 'center',
-                          fontSize: 16,
-                          color: COLORS.primary,
-                        }}>
-                        On Demand Photo:{' '}
-                        {boxDetails.internal === 1 ? 'OFF' : 'ON'}
-                      </Text>
+                      <View style={{marginBottom: 10}}>
+                        <Button>
+                          On Demand: {boxDetails.internal === 1 ? 'ON' : 'OFF'}
+                        </Button>
+                      </View>
+
                       <View style={{height: '60%'}}>
                         <Entypo
                           style={{
@@ -373,23 +370,6 @@ export default function MyboxScreen({navigation, route}) {
                           size={80}
                         />
                       </View>
-
-                      <Text
-                        style={{
-                          alignSelf: 'center',
-                          fontSize: 16,
-                          color: COLORS.primary,
-                          marginTop: 10,
-                        }}>
-                        Take a photo
-                      </Text>
-                      {/* <View style={{height: '40%'}}>
-                        {
-                          <Button onPress={() => captureCamera(2, 'internal')}>
-                            Take a photo
-                          </Button>
-                        }
-                      </View> */}
                     </Card>
 
                     <Card
