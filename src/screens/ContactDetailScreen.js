@@ -23,10 +23,12 @@ const ContactDetailScreen = ({navigation, route}) => {
   const hasSupportData = route.params && route.params.state;
   const {loggedMember} = useSelector(state => state.AuthState);
   const {ticketResponseDetails} = useSelector(state => state.TicketStateState);
+  const [btnDisable, setBtnDisable] = useState(true);
   const [open, setOpen] = useState(false);
   const [supportValue, setSupportValue] = useState(
     !isEmpty(hasSupportData) ? hasSupportData.SCID : null,
   );
+
   const [supportTextValue, setSupportTextValue] = useState(null);
   const [items, setItems] = useState([
     {label: 'Billing', value: 1},
@@ -37,17 +39,15 @@ const ContactDetailScreen = ({navigation, route}) => {
     success: 0,
     message: 'No Error Found.',
   });
-  //console.log({hasSupportData, ticketResponseDetails});
   const onsubmit = () => {
+    setBtnDisable(false);
     addNewTicket(loggedMember, supportValue, supportTextValue, hasSupportData)
       .then(resp => {
         if (resp === 'Success') {
-          // setSupportError({
-          //   success: 1,
-          //   message: 'Ticket Created Successfully.',
-          // });
+          setBtnDisable(true);
           navigation.navigate('Contacts', {reload: true});
         } else {
+          setBtnDisable(true);
           setSupportError({
             success: 2,
             message: 'Something went wrong, Please try again.',
@@ -75,58 +75,81 @@ const ContactDetailScreen = ({navigation, route}) => {
           style={{alignSelf: 'flex-end'}}>
           Go Back
         </Button>
-
         {!isEmpty(hasSupportData) && (
           <FlatList
+            keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
-            data={ticketResponseDetails}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={support => (
-              <TouchableOpacity
-                style={{
-                  maxWidth: '100%',
-                  paddingHorizontal: 15,
-                  paddingVertical: 10,
-                  backgroundColor: '#fff',
-                  marginVertical: 4,
-                  borderRadius: 4,
-                  borderLeftColor: getColorCode(
-                    isEmpty(hasSupportData) ? 1 : hasSupportData.SCID,
-                  ),
-                  borderLeftWidth: 6,
-                  justifyContent: 'center',
-                  paddingLeft: 8,
-                }}>
-                <View style={{flexDirection: 'row'}}>
-                  <View
-                    style={{
-                      flexDirection: 'column',
-                      marginLeft: 5,
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        color: '#333',
-                        fontWeight: 'bold',
-                      }}>
-                      Message: {support.item.Message}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: COLORS.primary,
-                        marginTop: 2,
-                      }}>
-                      Date: {support.item.sDateX}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
+            data={[{ID: '1'}]}
+            keyExtractor={item => `${item.ID}`}
+            renderItem={() => (
+              <View>
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  data={ticketResponseDetails}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={support => (
+                    <TouchableOpacity
+                      style={[
+                        support.item.TypeX && support.item.TypeX === 1
+                          ? {
+                              borderRightWidth: 6,
+                              borderRightColor: getColorCode(
+                                isEmpty(hasSupportData)
+                                  ? 1
+                                  : hasSupportData.SCID,
+                              ),
+                            }
+                          : {
+                              borderLeftWidth: 6,
+                              borderLeftColor: getColorCode(
+                                isEmpty(hasSupportData)
+                                  ? 1
+                                  : hasSupportData.SCID,
+                              ),
+                            },
+                        {
+                          maxWidth: '100%',
+                          paddingHorizontal: 15,
+                          paddingVertical: 10,
+                          backgroundColor: '#fff',
+                          marginVertical: 4,
+                          borderRadius: 4,
+                          justifyContent: 'center',
+                          paddingLeft: 8,
+                        },
+                      ]}>
+                      <View style={{flexDirection: 'row'}}>
+                        <View
+                          style={{
+                            flexDirection: 'column',
+                            marginLeft: 5,
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              color: '#333',
+                              fontWeight: 'bold',
+                            }}>
+                            Message: {support.item.Message}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: COLORS.primary,
+                              marginTop: 2,
+                            }}>
+                            Date: {support.item.sDateX}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                />
+              </View>
             )}
           />
         )}
-
-        <View style={{flexDirection: 'column'}}>
+        <View>
           <DropDownPicker
             style={{
               marginTop: 5,
@@ -166,10 +189,16 @@ const ContactDetailScreen = ({navigation, route}) => {
             </Text>
           ) : null}
         </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginBottom: 5,
+          }}>
           <Button
             mode="contained"
             onPress={() => onsubmit()}
+            disabled={btnDisable}
             style={{
               alignSelf: 'flex-start',
               marginTop: 20,

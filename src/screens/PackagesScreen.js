@@ -1,6 +1,12 @@
 import moment from 'moment';
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, SafeAreaView, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import {Avatar, Card, Button} from 'react-native-paper';
 import {useSelector, useDispatch} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -106,14 +112,7 @@ const PackagesScreen = ({navigation, route}) => {
             style={{
               flexDirection: 'row',
               justifyContent: 'flex-end',
-            }}>
-            {/* <Button
-              style={{margin: 5}}
-              mode="contained"
-              onPress={() => navigation.navigate('PackageDetails')}>
-              Add
-            </Button> */}
-          </View>
+            }}></View>
           <View style={{flex: 1, paddingTop: 19}}>
             <Card style={{marginBottom: 5}}>
               <Card.Title
@@ -152,8 +151,8 @@ const PackagesScreen = ({navigation, route}) => {
                 showsVerticalScrollIndicator={false}
                 data={packageDetails}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={packageDetails => (
-                  <View
+                renderItem={packageDetail => (
+                  <TouchableOpacity
                     style={{
                       maxWidth: '100%',
                       paddingHorizontal: 15,
@@ -167,7 +166,9 @@ const PackagesScreen = ({navigation, route}) => {
                       paddingLeft: 16,
                     }}
                     onPress={() => {
-                      navigation.navigate('PackageDetails');
+                      navigation.navigate('PackageDetails', {
+                        deliverData: packageDetail.item,
+                      });
                     }}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                       <Avatar.Icon
@@ -189,26 +190,19 @@ const PackagesScreen = ({navigation, route}) => {
                             color: '#333',
                             fontWeight: 'bold',
                           }}>
-                          {packageDetails.item.CustomerNamex}
+                          {packageDetail.item.CustomerNamex}
                         </Text>
-                        {/* <Text
-                          style={{
-                            fontSize: 14,
-                            color: '#333',
-                          }}>
-                          {packageDetails.item.}
-                        </Text> */}
                         <Text
                           style={{
                             fontSize: 14,
                             color: '#a3a3a3',
                             marginTop: 2,
                           }}>
-                          {packageDetails.item.DateX}
+                          {packageDetail.item.DateX}
                         </Text>
                       </View>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 )}
               />
             ) : (

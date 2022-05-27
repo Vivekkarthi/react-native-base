@@ -42,7 +42,11 @@ export const NotificationListener = async () => {
   });
 
   messaging().onMessage(async remoteMessage => {
-    Toast.show(remoteMessage.notification.body);
+    Toast.showWithGravity(
+      remoteMessage.notification.body,
+      Toast.LONG,
+      Toast.BOTTOM,
+    );
     console.log('Received in foreground.....', remoteMessage);
   });
 

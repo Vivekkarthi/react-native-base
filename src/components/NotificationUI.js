@@ -11,30 +11,16 @@ const NotificationUI = ({
   mobileNotifyDate,
   setMobileNotifyDate,
   notificationData,
-  getNotifyData,
+  getMobileNotifyData,
 }) => {
   const getNextNotify = () => {
-    setMobileNotifyDate(prevState => ({
-      ...prevState,
-      fromDate: mobileNotifyDate.toDate,
-      toDate: moment(new Date(mobileNotifyDate.toDate)).add(1, 'days'),
-    }));
-    getNotifyData(
-      mobileNotifyDate.toDate,
-      moment(new Date(mobileNotifyDate.toDate)).add(1, 'days'),
-    );
+    setMobileNotifyDate(moment(new Date(mobileNotifyDate)).add(1, 'days'));
+    getMobileNotifyData(moment(new Date(mobileNotifyDate)).add(1, 'days'));
   };
 
   const getPreviousNotify = () => {
-    setMobileNotifyDate(prevState => ({
-      ...prevState,
-      toDate: mobileNotifyDate.fromDate,
-      fromDate: moment(new Date(mobileNotifyDate.fromDate)).subtract(1, 'days'),
-    }));
-    getNotifyData(
-      moment(new Date(mobileNotifyDate.fromDate)).subtract(1, 'days'),
-      mobileNotifyDate.fromDate,
-    );
+    setMobileNotifyDate(moment(new Date(mobileNotifyDate)).subtract(1, 'days'));
+    getMobileNotifyData(moment(new Date(mobileNotifyDate)).subtract(1, 'days'));
   };
 
   return (
@@ -58,7 +44,7 @@ const NotificationUI = ({
           </Foundation>
         </View>
         <Card.Title
-          title={`${moment(new Date(mobileNotifyDate.toDate)).format(
+          title={`${moment(new Date(mobileNotifyDate)).format(
             'MMMM DD, YYYY',
           )}`}
           titleStyle={{
