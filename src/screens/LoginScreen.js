@@ -32,7 +32,6 @@ import {isEmpty, isUndefined} from 'lodash';
 
 const LoginScreen = ({navigation, route}) => {
   const content = route.params && route.params.content;
-  console.log('contentcontentcontentcontentcontentcontent', content);
   const {rememberLogin} = useSelector(state => state.AuthState);
   const [inputUser, setInputUser] = useState({PhoneNumber: '', Password: ''});
   const [loginError, setLoginError] = useState('');

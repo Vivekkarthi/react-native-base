@@ -39,7 +39,7 @@ const NotificationUI = ({
 
   return (
     <View>
-      <Card style={{marginBottom: 13, marginTop: 2}}>
+      <Card style={{marginBottom: 13, marginTop: 2, height: 105}}>
         <View
           style={{
             alignSelf: 'center',
@@ -58,9 +58,7 @@ const NotificationUI = ({
           </Foundation>
         </View>
         <Card.Title
-          title={`${moment(new Date(mobileNotifyDate.fromDate)).format(
-            'MMMM DD, YYYY',
-          )} - ${moment(new Date(mobileNotifyDate.toDate)).format(
+          title={`${moment(new Date(mobileNotifyDate.toDate)).format(
             'MMMM DD, YYYY',
           )}`}
           titleStyle={{

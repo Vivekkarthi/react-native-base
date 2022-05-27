@@ -1,13 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {
-  View,
-  SafeAreaView,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  RefreshControl,
-} from 'react-native';
+import {View, SafeAreaView, Text, FlatList, RefreshControl} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {Card, Button} from 'react-native-paper';
 import RNSpeedometer from 'react-native-speedometer';
@@ -22,11 +16,13 @@ import Feather from 'react-native-vector-icons/Feather';
 import {Loader} from '../components/Loader';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {getBatteryType, getBatteryTypeColor} from '../utils/Handlers';
+import {getTemperatureType, getTemperatureTypeColor} from '../utils/Handlers';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 import {
   callAlarmOnOffBox,
   callInternalOrExternalCameraOnBox,
+  callPIRSensor,
   fetchBoxData,
   saveMyBoxDetails,
   updateControllerPassword,
@@ -57,8 +53,22 @@ export default function MyboxScreen({navigation, route}) {
   const [passwordError, setPasswordError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
-
   const [refreshing, setRefreshing] = useState(false);
+
+  const methods = useForm({
+    criteriaMode: 'all',
+    defaultValues: {
+      Password: boxDetails.PassCodeX !== '' ? boxDetails.PassCodeX : '',
+    },
+    mode: 'all',
+    reValidateMode: 'onChange',
+    resolver: yupResolver(controllerPasswordSchema),
+  });
+
+  const {
+    handleSubmit,
+    formState: {errors},
+  } = methods;
 
   const getMyBoxData = useCallback(() => {
     setLoader(true);
@@ -138,6 +148,41 @@ export default function MyboxScreen({navigation, route}) {
       });
   };
 
+  const togglePIR = sensor => {
+    setLoader(true);
+    callPIRSensor(loggedMember.LoginID, loggedMember.ControllerID, sensor)
+      .then(async resp => {
+        if (resp === 'Success') {
+          //Good
+          boxDetails['PIRSensor'] = sensor;
+          dispatch(saveMyBoxDetails(boxDetails));
+          setLoader(false);
+        } else {
+          // Not Good
+          setLoader(false);
+          toast.show(resp, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'error',
+              title: 'Invalid data',
+            },
+          });
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        toast.show(error.message, {
+          type: 'custom_type',
+          animationDuration: 100,
+          data: {
+            type: 'error',
+            title: 'Invalid data',
+          },
+        });
+      });
+  };
+
   const captureCamera = (cameraType, type) => {
     setLoader(true);
     setOnTakePhoto(prev => ({
@@ -149,6 +194,7 @@ export default function MyboxScreen({navigation, route}) {
         ? {external: cameraType === 1 ? false : true}
         : {}),
     }));
+
     callInternalOrExternalCameraOnBox(
       loggedMember.LoginID,
       loggedMember.ControllerID,
@@ -200,20 +246,6 @@ export default function MyboxScreen({navigation, route}) {
       });
   };
 
-  const methods = useForm({
-    criteriaMode: 'all',
-    defaultValues: {
-      Password: boxDetails.PassCodeX !== '' ? boxDetails.PassCodeX : '',
-    },
-    mode: 'all',
-    reValidateMode: 'onChange',
-    resolver: yupResolver(controllerPasswordSchema),
-  });
-  const {
-    handleSubmit,
-    formState: {errors},
-  } = methods;
-
   const onResetSubmit = async user => {
     setLoader(true);
     const formData = {
@@ -238,13 +270,13 @@ export default function MyboxScreen({navigation, route}) {
       });
   };
 
-  // const onRefresh = useCallback(async () => {
-  //   setRefreshing(true);
-  //   setNotifyDate(moment(new Date()));
-  //   getMyBoxData(setOnTakePhoto());
-  //   setRefreshing(false);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    getMyBoxData();
+    setRefreshing(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (isFocused) {
       getMyBoxData();
@@ -276,7 +308,7 @@ export default function MyboxScreen({navigation, route}) {
               <RefreshControl
                 colors={[COLORS.secondary, COLORS.white]}
                 refreshing={refreshing}
-                //onRefresh={onRefresh}
+                onRefresh={onRefresh}
               />
             }
             data={[{ID: '1'}]}
@@ -296,97 +328,6 @@ export default function MyboxScreen({navigation, route}) {
                   }}>
                   Action
                 </Text>
-                {/* <View
-                  style={{
-                    paddingTop: 10,
-                    paddingBottom: 10,
-                    flexDirection: 'row',
-                    alignSelf: 'center',
-                  }}>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
-                    <Card
-                      style={{
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        width: '48%',
-                      }}>
-                      <Text
-                        style={{
-                          alignSelf: 'center',
-                          fontSize: 16,
-                          color: '#002060',
-                        }}>
-                        Internal Camera
-                      </Text>
-                      <Card.Cover
-                        style={{
-                          alignSelf: 'center',
-                          width: '100%',
-                          height: 170,
-                          resizeMode: 'contain',
-                        }}
-                        source={
-                          boxDetails.OnDemandPhoto1 != ''
-                            ? {
-                                uri: `${CONFIG.IMAGE_URL}/${boxDetails.OnDemandPhoto1}`,
-                              }
-                            : require('../../assets/images/no-image.jpg')
-                        }
-                      />
-                      <Card.Actions
-                        style={{
-                          justifyContent: 'center',
-                        }}>
-                        <Button onPress={() => captureCamera(1)}>
-                          Take a photo
-                        </Button>
-                      </Card.Actions>
-                    </Card>
-                    <Card
-                      style={{
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        width: '48%',
-                      }}>
-                      <Text
-                        style={{
-                          alignSelf: 'center',
-                          fontSize: 16,
-                          color: '#002060',
-                        }}>
-                        External Camera
-                      </Text>
-                      <Card.Cover
-                        style={{
-                          alignSelf: 'center',
-                          width: '100%',
-                          height: 170,
-                          resizeMode: 'contain',
-                        }}
-                        source={
-                          boxDetails.OnDemandPhoto2
-                            ? {
-                                uri: `${CONFIG.IMAGE_URL}/${boxDetails.OnDemandPhoto2}`,
-                              }
-                            : require('../../assets/images/no-image.jpg')
-                        }
-                      />
-                      <Card.Actions
-                        style={{
-                          justifyContent: 'center',
-                        }}>
-                        <Button onPress={() => captureCamera(2)}>
-                          Take a photo
-                        </Button>
-                      </Card.Actions>
-                    </Card>
-                  </View>
-                </View> */}
 
                 <View
                   style={{
@@ -401,6 +342,7 @@ export default function MyboxScreen({navigation, route}) {
                       justifyContent: 'space-between',
                     }}>
                     <Card
+                      onPress={() => captureCamera(2, 'internal')}
                       style={{
                         flexDirection: 'column',
                         justifyContent: 'center',
@@ -411,9 +353,10 @@ export default function MyboxScreen({navigation, route}) {
                         style={{
                           alignSelf: 'center',
                           fontSize: 16,
-                          color: '#002060',
+                          color: COLORS.primary,
                         }}>
-                        On Demand Photo
+                        On Demand Photo:{' '}
+                        {boxDetails.internal === 1 ? 'OFF' : 'ON'}
                       </Text>
                       <View style={{height: '60%'}}>
                         <Entypo
@@ -431,54 +374,24 @@ export default function MyboxScreen({navigation, route}) {
                         />
                       </View>
 
-                      <View style={{height: '40%'}}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          fontSize: 16,
+                          color: COLORS.primary,
+                          marginTop: 10,
+                        }}>
+                        Take a photo
+                      </Text>
+                      {/* <View style={{height: '40%'}}>
                         {
                           <Button onPress={() => captureCamera(2, 'internal')}>
                             Take a photo
                           </Button>
                         }
-                      </View>
+                      </View> */}
                     </Card>
 
-                    {/* <Card
-                      style={{
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        width: '48%',
-                        height: 150,
-                      }}>
-                      <Text
-                        style={{
-                          alignSelf: 'center',
-                          fontSize: 16,
-                          color: '#002060',
-                        }}>
-                        EXTERNAL CAMERA
-                      </Text>
-                      <View style={{height: '60%'}}>
-                        <Entypo
-                          style={{
-                            alignSelf: 'center',
-                            marginTop: 10,
-                          }}
-                          name={'camera'}
-                          color={
-                            onTakePhoto.external
-                              ? COLORS.messageColor4
-                              : 'green'
-                          }
-                          size={80}
-                        />
-                      </View>
-
-                      <View style={{height: '40%'}}>
-                        {
-                          <Button onPress={() => captureCamera(1, 'external')}>
-                            Take a photo
-                          </Button>
-                        }
-                      </View>
-                    </Card> */}
                     <Card
                       style={{
                         flexDirection: 'column',
@@ -487,7 +400,9 @@ export default function MyboxScreen({navigation, route}) {
                         height: 150,
                       }}>
                       <View style={{marginBottom: 10}}>
-                        <Button>Alarm</Button>
+                        <Button>
+                          Alarm: {boxDetails.AlarmState === 1 ? 'On' : 'Off'}
+                        </Button>
                       </View>
                       <View style={{height: '75%'}}>
                         <Entypo
@@ -512,6 +427,41 @@ export default function MyboxScreen({navigation, route}) {
                     </Card>
                   </View>
                 </View>
+                <Card
+                  style={{
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    width: '48%',
+                    height: 150,
+                  }}>
+                  <View style={{marginBottom: 10}}>
+                    <Button>
+                      PIR Sensor: {boxDetails.PIRSensor === 1 ? 'On' : 'Off'}
+                    </Button>
+                  </View>
+                  <View style={{height: '75%'}}>
+                    <MaterialCommunityIcons
+                      onPress={() =>
+                        togglePIR(boxDetails.PIRSensor === 1 ? 0 : 1)
+                      }
+                      style={{
+                        alignSelf: 'center',
+                        marginTop: -5,
+                      }}
+                      name={
+                        boxDetails.PIRSensor === 1
+                          ? 'motion-sensor'
+                          : 'motion-sensor-off'
+                      }
+                      color={
+                        boxDetails.PIRSensor === 1
+                          ? 'green'
+                          : COLORS.messageColor4
+                      }
+                      size={100}
+                    />
+                  </View>
+                </Card>
 
                 <Text
                   style={{
@@ -602,7 +552,48 @@ export default function MyboxScreen({navigation, route}) {
                     </Card>
                   </View>
                 </View>
-                <View
+                <Card
+                  style={{
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    width: '48%',
+                    height: 160,
+                  }}>
+                  <View style={{height: '25%'}}>
+                    <Button>Temperature</Button>
+                    {/* <Tooltip label="Hey, I'm here!" openDelay={500}>
+                        </Tooltip>; */}
+                  </View>
+                  <View style={{height: '65%', bottom: 8}}>
+                    <FontAwesome
+                      style={{
+                        alignSelf: 'center',
+                      }}
+                      name={getTemperatureType(
+                        boxDetails.Battery
+                          ? Math.round(boxDetails.TEMPER / 10) * 10
+                          : 0,
+                      )}
+                      color={getTemperatureTypeColor(
+                        boxDetails.Battery
+                          ? Math.round(boxDetails.TEMPER / 10) * 10
+                          : 0,
+                      )}
+                      size={92}
+                    />
+                  </View>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      justifyContent: 'center',
+                      bottom: 17,
+                      fontSize: 24,
+                      fontWeight: 'bold',
+                    }}>
+                    {boxDetails.TEMPER ? boxDetails.TEMPER : 0}
+                  </Text>
+                </Card>
+                {/* <View
                   style={{
                     paddingBottom: 10,
                     flexDirection: 'row',
@@ -636,7 +627,7 @@ export default function MyboxScreen({navigation, route}) {
                       </View>
                     </Card>
                   </View>
-                </View>
+                </View> */}
                 <Text
                   style={{
                     textAlign: 'center',
@@ -648,7 +639,7 @@ export default function MyboxScreen({navigation, route}) {
                     paddingTop: 9,
                     paddingBottom: 10,
                   }}>
-                  Controller password
+                  Reset Controller Password
                 </Text>
                 {/* <Tooltip
                   isVisible={this.state.toolTipVisible}

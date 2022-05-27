@@ -13,7 +13,8 @@ import UsersScreen from '../screens/UsersScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import CameraScreen from '../screens/CameraScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-//import PackagesScreen from '../screens/PackagesScreen';
+import PackagesScreen from '../screens/PackagesScreen';
+import PackageDetailScreen from '../screens/PackageDetailScreen';
 import MyboxScreen from '../screens/MyboxScreen';
 import ContactDetailScreen from '../screens/ContactDetailScreen';
 import ContactScreen from '../screens/ContactScreen';
@@ -76,6 +77,35 @@ const ContactStack = ({navigation}) => {
       <Stack.Screen
         name="ContactDetails"
         component={ContactDetailScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const PackageStack = ({navigation}) => {
+  const dispatch = useDispatch();
+  const logoutUser = async () => {
+    try {
+      dispatch(logoutSuccess());
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Packages"
+        component={PackagesScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="PackageDetails"
+        component={PackageDetailScreen}
         options={{
           headerShown: false,
         }}
@@ -246,6 +276,37 @@ const AppStack = () => {
         }}
       />
       <Drawer.Screen
+        name="Delivery"
+        component={PackageStack}
+        options={{
+          headerShown: true,
+          drawerIcon: ({color}) => (
+            <Feather name="package" size={22} color={color} />
+          ),
+          headerTitleAlign: 'center',
+          headerTitle: () => (
+            <Image
+              source={require('../../assets/images/icon.png')}
+              style={{
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
+          ),
+          headerRight: () => (
+            <View
+              style={{
+                paddingRight: 16,
+              }}>
+              <TouchableOpacity onPress={() => logoutUser()}>
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
+              </TouchableOpacity>
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
@@ -307,37 +368,6 @@ const AppStack = () => {
           ),
         }}
       />
-      {/* <Drawer.Screen
-        name="Packages"
-        component={PackagesScreen}
-        options={{
-          headerShown: true,
-          drawerIcon: ({color}) => (
-            <Feather name="package" size={22} color={color} />
-          ),
-          headerTitleAlign: 'center',
-          headerTitle: () => (
-            <Image
-              source={require('../../assets/images/icon.png')}
-              style={{
-                width: 185,
-                height: 88,
-              }}
-              imageStyle={{borderRadius: 25}}
-            />
-          ),
-          headerRight: () => (
-            <View
-              style={{
-                paddingRight: 16,
-              }}>
-              <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
-              </TouchableOpacity>
-            </View>
-          ),
-        }}
-      /> */}
       <Drawer.Screen
         name="Contact Us"
         component={ContactStack}

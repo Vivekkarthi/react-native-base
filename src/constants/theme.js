@@ -31,6 +31,23 @@ export const COLORS = {
 
   batter90: '#00fd60',
   batter100: '#00fd60',
+
+  Temperature0: '#80d4ff',
+
+  Temperature10: '#80d4ff',
+  Temperature20: '#80d4ff',
+
+  Temperature30: '#b3ffb3',
+  Temperature40: '#ffd699',
+
+  Temperature50: '#ffd699',
+  Temperature60: '#ffd699',
+
+  Temperature70: '#ffd699',
+  Temperature80: '#ffd699',
+
+  Temperature90: '#ffd699',
+  Temperature100: '#ffd699',
 };
 
 export const SIZES = {

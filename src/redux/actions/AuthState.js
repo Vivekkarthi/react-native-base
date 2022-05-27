@@ -49,8 +49,8 @@ export async function memberLogin(userData, navigation) {
             );
             throw error;
           });
-        return userResp;
       }
+      return userResp;
     })
     .catch(error => {
       console.log('################# Error #################', error);
@@ -109,15 +109,14 @@ export function memberAdduser(userData, loggedMember) {
     });
 }
 
-export function memberDeleteuser(userData, loggedMember) {
-  const queryParams = `sK=token&userid=${userData.USERRECORDID}`;
+export function memberDeleteuser(recordId) {
+  const queryParams = `sK=token&userid=${recordId}`;
   const params = {
     url: ENDPOINTURL.MemberDeleteuser,
-    token: '',
     queryParams,
   };
 
-  return getRequest(params)
+  return postRequest(params)
     .then(response => {
       return response;
     })
@@ -126,6 +125,21 @@ export function memberDeleteuser(userData, loggedMember) {
     });
 }
 
+export function memberManualURL() {
+  const queryParams = 'sK=token';
+  const params = {
+    url: ENDPOINTURL.MemberManualURL,
+    queryParams,
+  };
+
+  return postRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      throw error;
+    });
+}
 export function memberEdituser(userData) {
   const queryParams = `sK=token&namex=${userData.Name}&spass=${
     userData.Password

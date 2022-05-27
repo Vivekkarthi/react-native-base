@@ -143,7 +143,7 @@ const CameraScreen = ({navigation, route}) => {
               alignSelf: 'flex-start',
               marginBottom: 20,
             }}>
-            <Text style={{fontSize: 23}}> Images</Text>
+            <Text style={styles.f18}> Images</Text>
           </Feather>
           <FlatList
             keyboardShouldPersistTaps="always"

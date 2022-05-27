@@ -56,6 +56,22 @@ export const callAlarmOnOffBox = (LoginId, controllerId, Alarm) => {
     });
 };
 
+export const callPIRSensor = (LoginId, controllerId, Sensor) => {
+  const queryParams = `&sK=token&iHWID=${controllerId}&ivalue=${Sensor}`;
+
+  const params = {
+    url: ENDPOINTURL.MemberUpdatePIR,
+    queryParams,
+  };
+  return postRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      throw error;
+    });
+};
+
 export const callInternalOrExternalCameraOnBox = (
   LoginId,
   controllerId,

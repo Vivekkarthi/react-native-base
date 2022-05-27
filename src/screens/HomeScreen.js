@@ -16,22 +16,18 @@ import {COLORS} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
 
 import {Loader} from '../components/Loader';
-import {CONFIG} from '../utils/Config';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 import styles from '../styles/AppStyles';
 import {NotificationUI} from '../components/NotificationUI';
-import {saveMemberMobileNotificationDetails} from '../redux/actions/MobileNotificationState';
-import {fetchNotifyData} from '../redux/actions/MobileNotificationState';
+//import {ToastProvider} from 'react-native-toast-notifications';
+import {fetchMobileNotifyData} from '../redux/actions/MobileNotificationState';
 
 export default function HomeScreen({navigation, route}) {
   const dispatch = useDispatch();
   const toast = useToast();
   const {loggedMember} = useSelector(state => state.AuthState);
   const {homeDetails} = useSelector(state => state.HomeState);
-  // const {mobilenotificationDetails} = useSelector(
-  //   state => state.MobileNotificationState,
-  // );
 
   const [loader, setLoader] = useState(true);
   const [notificationData, setNotificationData] = useState([]);
@@ -89,10 +85,12 @@ export default function HomeScreen({navigation, route}) {
       setLoader(true);
       const convertDate = moment(currentDate).format('YYYY-MM-DD');
       const convertToDate = moment(toDate).format('YYYY-MM-DD');
-      fetchNotifyData(loggedMember.CustID, convertDate, convertToDate)
+      fetchMobileNotifyData(loggedMember.CustID, convertDate, convertToDate)
         .then(async resp => {
           if (resp && resp.length) {
             setNotificationData(resp);
+          } else {
+            setNotificationData([]);
           }
           // dispatch(saveMemberMobileNotificationDetails(resp));
           setLoader(false);
@@ -177,18 +175,19 @@ export default function HomeScreen({navigation, route}) {
 
   // useEffect(() => {
   //   const intervalCall = setInterval(() => {
-
-  //   console.log('*******************************************************',moment(notifyDate).format('YYYY-MM-DD'));
+  //     console.log(
+  //       '*******************************************************',
+  //       moment(notifyDate).format('YYYY-MM-DD'),
+  //     );
   //     fetchHomeData(
   //       loggedMember.LoginID,
   //       loggedMember.ControllerID,
   //       moment(notifyDate).format('YYYY-MM-DD'),
-  //     )
-  //       .then(async resp => {
-  //         if (resp.LastSyncDate) {
-  //           dispatch(saveMemberHomeDetails(resp));
-  //         }
-  //       });
+  //     ).then(async resp => {
+  //       if (resp.LastSyncDate) {
+  //         dispatch(saveMemberHomeDetails(resp));
+  //       }
+  //     });
   //   }, 1000 * homeDetails.MobileAppPageRefreshInterval);
 
   //   return () => {
@@ -203,6 +202,15 @@ export default function HomeScreen({navigation, route}) {
         <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           {loader ? <Loader /> : null}
+          {/* <ToastProvider
+            renderType={{
+              custom_type: toast => (
+                <View style={{padding: 15, backgroundColor: 'grey'}}>
+                  <Text>{toast.message}</Text>
+                </View>
+              ),
+            }}
+          /> */}
           <Text
             style={{
               alignSelf: 'flex-end',
@@ -359,7 +367,7 @@ export default function HomeScreen({navigation, route}) {
                   notificationData={notificationData}
                   getNotifyData={getNotifyData}
                 />
-                <Card style={{marginBottom: 13, marginTop: 2}}>
+                <Card style={{marginBottom: 13, marginTop: 2, height: 105}}>
                   <View
                     style={{
                       alignSelf: 'center',
@@ -380,7 +388,7 @@ export default function HomeScreen({navigation, route}) {
                   <Card.Title
                     title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
                     // subtitle={'subtitle'}
-                    titleStyle={{fontSize: 16, alignSelf: 'center'}}
+                    titleStyle={{fontSize: 14, alignSelf: 'center'}}
                     subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
                     left={props => (
                       <Ionicons

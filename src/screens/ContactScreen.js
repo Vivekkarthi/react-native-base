@@ -1,5 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, SafeAreaView, Text, FlatList} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import {Avatar, Button} from 'react-native-paper';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -13,7 +19,9 @@ import styles from '../styles/AppStyles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   fetchTicketData,
+  fetchTicketResponseData,
   saveTicketDetails,
+  saveTicketResponseDetails,
 } from '../redux/actions/SupportTicketState';
 import {useToast} from 'react-native-toast-notifications';
 import {Loader} from '../components/Loader';
@@ -27,8 +35,34 @@ const ContactScreen = ({navigation, route}) => {
   const [loader, setLoader] = useState(true);
   const [notifyDate, setNotifyDate] = useState({
     fromDate: new Date(),
-    toDate: new Date(),
+    toDate: new Date().setDate(new Date().getDate() + 7),
   });
+
+  const getTicketResponseData = useCallback(
+    ticketData => {
+      setLoader(true);
+      fetchTicketResponseData(ticketData.STID)
+        .then(async resp => {
+          dispatch(saveTicketResponseDetails(resp));
+          setLoader(false);
+          navigation.navigate('ContactDetails', {
+            state: ticketData,
+          });
+        })
+        .catch(error => {
+          setLoader(false);
+          toast.show(error.massage, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'error',
+              title: 'Invalid data',
+            },
+          });
+        });
+    },
+    [dispatch, toast, navigation],
+  );
 
   const getTicketsData = useCallback(
     (currentDate, toDate) => {
@@ -56,33 +90,32 @@ const ContactScreen = ({navigation, route}) => {
   );
 
   const getNextNotify = () => {
+    let numDays = 1;
+    let now = new Date(notifyDate.toDate);
+    now.setDate(now.getDate() + numDays);
     setNotifyDate(prevState => ({
       ...prevState,
-      fromDate: notifyDate.toDate,
-      toDate: moment(new Date(notifyDate.toDate)).add(1, 'weeks'),
+      fromDate: now,
+      toDate: moment(now).add(1, 'weeks'),
     }));
-    getTicketsData(
-      notifyDate.toDate,
-      moment(new Date(notifyDate.toDate)).add(1, 'weeks'),
-    );
+    getTicketsData(now, moment(now).add(1, 'weeks'));
   };
 
   const getPreviousNotify = () => {
+    let numDays = 1;
+    let now = new Date(notifyDate.fromDate);
+    now.setDate(now.getDate() - numDays);
     setNotifyDate(prevState => ({
       ...prevState,
-      toDate: notifyDate.fromDate,
-      fromDate: moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks'),
+      toDate: now,
+      fromDate: moment(now).subtract(1, 'weeks'),
     }));
-    getTicketsData(
-      moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks'),
-      notifyDate.fromDate,
-    );
+    getTicketsData(moment(now).subtract(1, 'weeks'), now);
   };
 
   useEffect(() => {
     getTicketsData(notifyDate.fromDate, notifyDate.toDate);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getTicketsData, route.params, notifyDate.fromDate, notifyDate.toDate]);
 
   // const [supportType, setSupportType] = useState([
   //   {id: 1, name: 'Billing'},
@@ -129,7 +162,7 @@ const ContactScreen = ({navigation, route}) => {
               )}`}
               // subtitle={moment(new Date(notifyDate.toDate)).format('MMMM DD, YYYY')}
               titleStyle={{fontSize: 14, alignSelf: 'center'}}
-              subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
+              subtitleStyle={{fontSize: 14, alignSelf: 'center'}}
               left={props => (
                 <Ionicons
                   name="arrow-back-circle-outline"
@@ -150,10 +183,11 @@ const ContactScreen = ({navigation, route}) => {
 
           {ticketDetails.length ? (
             <FlatList
+              showsVerticalScrollIndicator={false}
               data={ticketDetails}
               keyExtractor={(item, index) => index.toString()}
               renderItem={support => (
-                <View
+                <TouchableOpacity
                   style={{
                     maxWidth: '100%',
                     paddingHorizontal: 15,
@@ -165,6 +199,9 @@ const ContactScreen = ({navigation, route}) => {
                     borderLeftWidth: 6,
                     justifyContent: 'center',
                     paddingLeft: 8,
+                  }}
+                  onPress={() => {
+                    getTicketResponseData(support.item);
                   }}>
                   <View style={{flex: 1, flexDirection: 'row'}}>
                     <Avatar.Icon
@@ -179,12 +216,12 @@ const ContactScreen = ({navigation, route}) => {
                     <View
                       style={{
                         flexDirection: 'column',
-                        marginLeft: 10,
-                        width: '65%',
+                        marginLeft: 5,
+                        width: '50%',
                       }}>
                       <Text
                         style={{
-                          fontSize: 16,
+                          fontSize: 14,
                           color: '#333',
                           fontWeight: 'bold',
                         }}>
@@ -192,7 +229,7 @@ const ContactScreen = ({navigation, route}) => {
                       </Text>
                       <Text
                         style={{
-                          fontSize: 16,
+                          fontSize: 14,
                           color: '#a3a3a3',
                           marginTop: 2,
                         }}>
@@ -200,7 +237,7 @@ const ContactScreen = ({navigation, route}) => {
                       </Text>
                       <Text
                         style={{
-                          fontSize: 16,
+                          fontSize: 14,
                           color: '#a3a3a3',
                           marginTop: 2,
                         }}>
@@ -209,30 +246,29 @@ const ContactScreen = ({navigation, route}) => {
                     </View>
                     <View
                       style={{
-                        alignSelf: 'center',
-                        width: '35%',
+                        flexDirection: 'column',
+                        width: '40%',
+                        marginRight: 5,
                       }}>
                       <Text
                         style={{
-                          textAlign: 'left',
-                          color: COLORS.primary,
-                          fontSize: 12,
-                          right: 38,
+                          fontSize: 14,
+                          color: '#333',
                         }}>
                         Category: {support.item.SCDesc}
                       </Text>
+
                       <Text
                         style={{
-                          textAlign: 'left',
-                          color: COLORS.primary,
                           fontSize: 12,
-                          right: 38,
+                          color: COLORS.primary,
+                          marginTop: 2,
                         }}>
-                        Date: {support.item.sLastUpdatedDate}
+                        {support.item.sLastUpdatedDate}
                       </Text>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               )}
             />
           ) : (

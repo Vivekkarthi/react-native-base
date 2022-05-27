@@ -8,10 +8,27 @@ export const initialState = {
 export const MOBILENOTIFICATION_SUCCESS = 'MOBILENOTIFICATION_SUCCESS';
 export const MOBILENOTIFICATION_FAILURE = 'MOBILENOTIFICATION_FAILURE';
 
-export function fetchNotifyData(CustID, fromDate, toDate) {
+export function fetchMobileNotifyData(CustID, fromDate, toDate) {
   const queryParams = `sK=token&sfromdate=${fromDate}&stodate=${toDate}&custid=${CustID}`;
   const params = {
     url: ENDPOINTURL.MemberMobileNotification,
+    token: '',
+    queryParams,
+  };
+
+  return getRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      throw error;
+    });
+}
+
+export function fetchHomeMobileNotifyData(CustID, fromDate) {
+  const queryParams = `sK=token&sfromdate=${fromDate}&custid=${CustID}`;
+  const params = {
+    url: ENDPOINTURL.MemberHomeMobileNotification,
     token: '',
     queryParams,
   };

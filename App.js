@@ -8,7 +8,7 @@ import NetInfo, {ipAddress} from '@react-native-community/netinfo';
 import {persistor, store} from './src/redux/Store';
 import {View, ActivityIndicator} from 'react-native';
 import {
-  notificationListener,
+  NotificationListener,
   requestUserPermission,
 } from './src/utils/NotificationServices';
 
@@ -25,7 +25,7 @@ export default function App() {
 
   useEffect(() => {
     requestUserPermission();
-    notificationListener();
+    NotificationListener();
     RNBootSplash.hide({fade: true});
     internetCheck();
   }, []);

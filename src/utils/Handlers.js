@@ -76,6 +76,10 @@ const firebaseAuthErrors = error => {
 };
 
 const getRequest = props => {
+  console.log(
+    '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',
+    `${CONFIG.API_URL}${props.url}?${props.queryParams}`,
+  );
   return axios
     .get(`${CONFIG.API_URL}${props.url}?${props.queryParams}`)
     .then(response => {
@@ -224,6 +228,60 @@ const getBatteryTypeColor = percent => {
   }
 };
 
+const getTemperatureType = type => {
+  switch (type) {
+    case 10:
+      return 'thermometer-1';
+    case 20:
+      return 'thermometer-1';
+    case 30:
+      return 'thermometer-2';
+    case 40:
+      return 'thermometer-2';
+    case 50:
+      return 'thermometer-3';
+    case 60:
+      return 'thermometer-3';
+    case 70:
+      return 'thermometer-3';
+    case 80:
+      return 'thermometer-3';
+    case 90:
+      return 'thermometer-4';
+    case 100:
+      return 'thermometer-4';
+    default:
+      return 'thermometer-0';
+  }
+};
+
+const getTemperatureTypeColor = percent => {
+  switch (percent) {
+    case 10:
+      return COLORS.Temperature10;
+    case 20:
+      return COLORS.Temperature20;
+    case 30:
+      return COLORS.Temperature30;
+    case 40:
+      return COLORS.Temperature40;
+    case 50:
+      return COLORS.Temperature50;
+    case 60:
+      return COLORS.Temperature60;
+    case 70:
+      return COLORS.Temperature70;
+    case 80:
+      return COLORS.Temperature80;
+    case 90:
+      return COLORS.Temperature90;
+    case 100:
+      return COLORS.Temperature100;
+    default:
+      return COLORS.batter0;
+  }
+};
+
 export {
   Headers,
   AuthHeaders,
@@ -237,4 +295,6 @@ export {
   getTypeOfMsg,
   getBatteryType,
   getBatteryTypeColor,
+  getTemperatureType,
+  getTemperatureTypeColor,
 };
