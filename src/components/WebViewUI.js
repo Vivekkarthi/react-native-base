@@ -71,7 +71,8 @@ function WebViewUI(props) {
           <TouchableOpacity onPress={webViewgoback}>
             <Text style={{color: 'green'}}>Back</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => props.navigation.navigate('Home')}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('HomeStack')}>
             <Text style={{color: 'green'}}>Exit</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={webViewNext}>
