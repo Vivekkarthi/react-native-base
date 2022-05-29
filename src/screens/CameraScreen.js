@@ -23,6 +23,7 @@ import {fetchHomeData, saveMemberHomeDetails} from '../redux/actions/HomeState';
 import Toast from 'react-native-simple-toast';
 import {useDispatch} from 'react-redux';
 import Lightbox from 'react-native-lightbox-v2';
+import {Button} from 'react-native-paper';
 
 const viewConfigRef = {viewAreaCoveragePercentThreshold: 95};
 
@@ -35,6 +36,7 @@ const CameraScreen = ({navigation, route}) => {
   const {loggedMember} = useSelector(state => state.AuthState);
   const {homeDetails} = useSelector(state => state.HomeState);
   const [refreshing, setRefreshing] = useState(false);
+  const [rotation, setRotation] = useState(0);
 
   const onViewRef = useRef(({changed}) => {
     if (changed[0].isViewable) {
@@ -72,6 +74,21 @@ const CameraScreen = ({navigation, route}) => {
   const scrollToIndex = index => {
     flatListRef.current?.scrollToIndex({animated: true, index: index});
   };
+  const rotateRight = () => {
+    let newRotation = rotation + 90;
+    if (newRotation >= 360) {
+      newRotation = -360;
+    }
+    setRotation(newRotation);
+  };
+
+  const rotateleft = () => {
+    let newRotation = rotation - 90;
+    if (newRotation >= 360) {
+      newRotation = -360;
+    }
+    setRotation(newRotation);
+  };
 
   const renderItem = ({item, index}) => {
     return (
@@ -83,16 +100,46 @@ const CameraScreen = ({navigation, route}) => {
             doubleTapZoomStep={1}
             springConfig={{tension: 15, friction: 7}}
             swipeToDismiss={true}>
-            <Image
-              style={[styles.cameraImage, styles.mt5, styles.mb5]}
-              source={
-                item.Filename
-                  ? {
-                      uri: item.Filename,
-                    }
-                  : require('../../assets/images/no-image.jpg')
-              }
-            />
+            <>
+              <Feather
+                name="rotate-ccw"
+                size={23}
+                color={COLORS.primary}
+                onPress={rotateleft}
+                style={{
+                  flexDirection: 'row',
+                  alignSelf: 'flex-end',
+                  marginRight: 10,
+                }}></Feather>
+              <Image
+                style={{
+                  borderRadius: 4,
+                  width: 400,
+                  height: 200,
+                  resizeMode: 'cover',
+                  marginTop: 5,
+                  marginBottom: 5,
+                  transform: [{rotate: `${rotation}deg`}],
+                }}
+                source={
+                  item.Filename
+                    ? {
+                        uri: item.Filename,
+                      }
+                    : require('../../assets/images/no-image.jpg')
+                }
+              />
+              <Feather
+                name="rotate-cw"
+                size={23}
+                color={COLORS.primary}
+                onPress={rotateleft}
+                style={{
+                  flexDirection: 'row',
+                  alignSelf: 'flex-end',
+                  marginRight: 10,
+                }}></Feather>
+            </>
           </Lightbox>
         </View>
         <Text

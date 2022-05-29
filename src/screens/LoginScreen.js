@@ -40,7 +40,7 @@ const LoginScreen = ({navigation, route}) => {
   const [loader, setLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
-  const [rotation, setRotation] = useState(0);
+  //const [rotation, setRotation] = useState(0);
 
   const PasswordRef = useRef(null);
   const PhoneNumberRef = useRef(null);
@@ -105,21 +105,21 @@ const LoginScreen = ({navigation, route}) => {
     }
   }, [rememberLogin, setValue]);
 
-  const rotateRight = () => {
-    let newRotation = rotation + 90;
-    if (newRotation >= 360) {
-      newRotation = -360;
-    }
-    setRotation(newRotation);
-  };
+  // const rotateRight = () => {
+  //   let newRotation = rotation + 90;
+  //   if (newRotation >= 360) {
+  //     newRotation = -360;
+  //   }
+  //   setRotation(newRotation);
+  // };
 
-  const rotateleft = () => {
-    let newRotation = rotation - 90;
-    if (newRotation >= 360) {
-      newRotation = -360;
-    }
-    setRotation(newRotation);
-  };
+  // const rotateleft = () => {
+  //   let newRotation = rotation - 90;
+  //   if (newRotation >= 360) {
+  //     newRotation = -360;
+  //   }
+  //   setRotation(newRotation);
+  // };
 
   useEffect(() => {
     getRememberData();
@@ -138,28 +138,28 @@ const LoginScreen = ({navigation, route}) => {
           {loader ? <Loader /> : null}
 
           <View>
-            <Button
+            {/* <Button
               mode="contained"
               onPress={rotateleft}
               style={{alignSelf: 'flex-end'}}>
               left
-            </Button>
+            </Button> */}
             <Image
               source={require('../../assets/images/icon.png')}
               style={{
                 alignSelf: 'center',
                 height: 150,
                 width: 280,
-                transform: [{rotate: `${rotation}deg`}],
+                //transform: [{rotate: `${rotation}deg`}],
               }}
               resizeMode="stretch"
             />
-            <Button
+            {/* <Button
               mode="contained"
               onPress={rotateRight}
               style={{alignSelf: 'flex-end'}}>
               right
-            </Button>
+            </Button> */}
           </View>
 
           <View
