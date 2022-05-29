@@ -8,6 +8,7 @@ import {
   callOpenCloseBox,
   fetchHomeData,
   saveMemberHomeDetails,
+  saveMemberHomeNotifications,
 } from '../redux/actions/HomeState';
 import {Card, Avatar} from 'react-native-paper';
 import Feather from 'react-native-vector-icons/Feather';
@@ -20,7 +21,6 @@ import StaticBottomTabs from '../components/StaticBottomTabs';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 import styles from '../styles/AppStyles';
 import {NotificationUI} from '../components/NotificationUI';
-//import {ToastProvider} from 'react-native-toast-notifications';
 import {fetchHomeMobileNotifyData} from '../redux/actions/MobileNotificationState';
 import {fetchBoxData, saveMyBoxDetails} from '../redux/actions/BoxState';
 
@@ -28,22 +28,23 @@ export default function HomeScreen({navigation, route}) {
   const dispatch = useDispatch();
 
   const {loggedMember} = useSelector(state => state.AuthState);
-  const {homeDetails} = useSelector(state => state.HomeState);
+  const {homeDetails, homeNotification, homeMobileNotification} = useSelector(
+    state => state.HomeState,
+  );
 
   const [loader, setLoader] = useState(true);
   const [notificationData, setNotificationData] = useState([]);
-  const [notifyDate, setNotifyDate] = useState(new Date());
-  const [mobileNotifyDate, setMobileNotifyDate] = useState(new Date());
+  // const [notifyDate, setNotifyDate] = useState(new Date());
+  // const [mobileNotifyDate, setMobileNotifyDate] = useState(new Date());
   const [refreshing, setRefreshing] = useState(false);
 
   const getHomeData = useCallback(
     currentDate => {
       setLoader(true);
-      const convertDate = moment(currentDate).format('YYYY-MM-DD');
       fetchHomeData(
         loggedMember.LoginID,
         loggedMember.ControllerID,
-        convertDate,
+        currentDate !== '' ? moment(currentDate).format('YYYY-MM-DD') : '',
       )
         .then(async resp => {
           if (resp.LastSyncDate) {
@@ -88,8 +89,10 @@ export default function HomeScreen({navigation, route}) {
   const getMobileNotifyData = useCallback(
     currentDate => {
       setLoader(true);
-      const convertDate = moment(currentDate).format('YYYY-MM-DD');
-      fetchHomeMobileNotifyData(loggedMember.CustID, convertDate)
+      fetchHomeMobileNotifyData(
+        loggedMember.CustID,
+        currentDate !== '' ? moment(currentDate).format('YYYY-MM-DD') : '',
+      )
         .then(async resp => {
           if (resp && resp.length) {
             setNotificationData(resp);
@@ -108,13 +111,25 @@ export default function HomeScreen({navigation, route}) {
   );
 
   const getNextNotify = () => {
-    setNotifyDate(moment(new Date(notifyDate)).add(1, 'days'));
-    getHomeData(moment(new Date(notifyDate)).add(1, 'days'));
+    // setNotifyDate(moment(new Date(homeNotification)).add(1, 'days'));
+    getHomeData(moment(new Date(homeNotification)).add(1, 'days'));
+    dispatch(
+      saveMemberHomeNotifications(
+        false,
+        moment(new Date(homeNotification)).add(1, 'days'),
+      ),
+    );
   };
 
   const getPreviousNotify = () => {
-    setNotifyDate(moment(new Date(notifyDate)).subtract(1, 'days'));
-    getHomeData(moment(new Date(notifyDate)).subtract(1, 'days'));
+    // setNotifyDate(moment(new Date(homeNotification)).subtract(1, 'days'));
+    getHomeData(moment(new Date(homeNotification)).subtract(1, 'days'));
+    dispatch(
+      saveMemberHomeNotifications(
+        false,
+        moment(new Date(homeNotification)).subtract(1, 'days'),
+      ),
+    );
   };
 
   const toggleLockTheBox = packIsLocked => {
@@ -146,69 +161,43 @@ export default function HomeScreen({navigation, route}) {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    setNotifyDate(moment(new Date()));
+    // setNotifyDate(moment(new Date()));
+    dispatch(saveMemberHomeNotifications(false, moment(new Date())));
     getHomeData(new Date());
-    setMobileNotifyDate(new Date());
+    // setMobileNotifyDate(new Date());
     getMobileNotifyData(new Date());
+    dispatch(saveMemberHomeNotifications(true, new Date()));
     setRefreshing(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     function getAllApiData() {
-      getHomeData(notifyDate);
-      getMobileNotifyData(mobileNotifyDate.fromDate, mobileNotifyDate.toDate);
+      getHomeData('');
+      getMobileNotifyData('');
       getMyBoxData();
     }
     getAllApiData();
-    const interval = setInterval(
-      () => getAllApiData(),
-      1000 * homeDetails.MobileAppPageRefreshInterval || 10000,
-    );
+    if (route.anem === 'Home') {
+      const interval = setInterval(
+        () => getAllApiData(),
+        1000 * homeDetails.MobileAppPageRefreshInterval || 10000,
+      );
+    }
+
     return () => {
       clearInterval(interval);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   const intervalCall = setInterval(() => {
-  //     console.log(
-  //       '*******************************************************',
-  //       moment(notifyDate).format('YYYY-MM-DD'),
-  //     );
-  //     fetchHomeData(
-  //       loggedMember.LoginID,
-  //       loggedMember.ControllerID,
-  //       moment(notifyDate).format('YYYY-MM-DD'),
-  //     ).then(async resp => {
-  //       if (resp.LastSyncDate) {
-  //         dispatch(saveMemberHomeDetails(resp));
-  //       }
-  //     });
-  //   }, 1000 * homeDetails.MobileAppPageRefreshInterval);
-
-  //   return () => {
-  //     // clean up
-  //     clearInterval(intervalCall);
-  //   };
-  // }, []);
-
   return (
     <>
       <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
         <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
-          {loader ? <Loader /> : null}
-          {/* <ToastProvider
-            renderType={{
-              custom_type: toast => (
-                <View style={{padding: 15, backgroundColor: 'grey'}}>
-                  <Text>{toast.message}</Text>
-                </View>
-              ),
-            }}
-          /> */}
+          {/* {loader ? <Loader /> : null} */}
+
           <Text
             style={{
               alignSelf: 'flex-end',
@@ -360,8 +349,8 @@ export default function HomeScreen({navigation, route}) {
                   </View>
                 </View>
                 <NotificationUI
-                  mobileNotifyDate={mobileNotifyDate}
-                  setMobileNotifyDate={setMobileNotifyDate}
+                  mobileNotifyDate={homeMobileNotification}
+                  // setMobileNotifyDate={setMobileNotifyDate}
                   notificationData={notificationData}
                   getMobileNotifyData={getMobileNotifyData}
                 />
@@ -384,7 +373,9 @@ export default function HomeScreen({navigation, route}) {
                     </Ionicons>
                   </View>
                   <Card.Title
-                    title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
+                    title={moment(new Date(homeNotification)).format(
+                      'MMMM DD, YYYY',
+                    )}
                     // subtitle={'subtitle'}
                     titleStyle={{fontSize: 14, alignSelf: 'center'}}
                     subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
