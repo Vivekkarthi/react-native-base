@@ -351,7 +351,8 @@ export default function MyboxScreen({navigation, route}) {
                       }}>
                       <View style={{marginBottom: 10}}>
                         <Button>
-                          On Demand: {boxDetails.internal === 1 ? 'ON' : 'OFF'}
+                          On Demand:{' '}
+                          {boxDetails.OnDemandPhoto1 === 1 ? 'ON' : 'OFF'}
                         </Button>
                       </View>
 

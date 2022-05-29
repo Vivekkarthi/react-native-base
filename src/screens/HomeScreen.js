@@ -194,6 +194,8 @@ export default function HomeScreen({navigation, route}) {
     setRefreshing(true);
     setNotifyDate(moment(new Date()));
     getHomeData(new Date());
+    setMobileNotifyDate(new Date());
+    getMobileNotifyData(new Date());
     setRefreshing(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -301,8 +303,8 @@ export default function HomeScreen({navigation, route}) {
                           textAlign: 'center',
                           fontSize: 18,
                           backgroundColor: '#178b93',
-                          paddingBottom: 10,
-                          paddingTop: 9,
+                          paddingBottom: 6,
+                          paddingTop: 6,
                           color: COLORS.white,
                         }}>
                         <Feather name="box" size={22} /> Box Status
@@ -359,8 +361,8 @@ export default function HomeScreen({navigation, route}) {
                           fontSize: 18,
                           backgroundColor: '#178b93',
                           color: COLORS.white,
-                          paddingBottom: 10,
-                          paddingTop: 9,
+                          paddingBottom: 6,
+                          paddingTop: 6,
                         }}>
                         <Feather name="camera" size={22} /> Internal Camera
                       </Text>

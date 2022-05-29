@@ -108,6 +108,12 @@ const PackagesScreen = ({navigation, route}) => {
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
             <Text style={styles.f18}> Delivery</Text>
           </Feather>
+          <Button
+            mode="contained"
+            onPress={() => navigation.goBack()}
+            style={{alignSelf: 'flex-end'}}>
+            Back
+          </Button>
           <View
             style={{
               flexDirection: 'row',

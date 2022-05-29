@@ -1,10 +1,10 @@
-import React from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import React, {useCallback, useEffect} from 'react';
+import {Image, TouchableOpacity, View, Text} from 'react-native';
+import {createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Feather from 'react-native-vector-icons/Feather';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import BottomTabNavigator from './BottomTabNavigator';
 import NotificationsScreen from '../screens/NotificationsScreen';
@@ -23,6 +23,12 @@ import {logoutSuccess} from '../redux/actions/AuthState';
 import {createStackNavigator} from '@react-navigation/stack';
 import {COLORS} from '../constants';
 import UserDetailScreen from '../screens/UserDetailScreen';
+import {
+  saveURLDetails,
+  memberManualURL,
+} from '../redux/actions/SupportTicketState';
+import {useToast} from 'react-native-toast-notifications';
+import {Linking} from 'react-native';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -115,7 +121,9 @@ const PackageStack = ({navigation}) => {
 };
 
 const AppStack = () => {
+  const {URLDetails} = useSelector(state => state.TicketStateState);
   const dispatch = useDispatch();
+  const toast = useToast();
   const logoutUser = async () => {
     try {
       dispatch(logoutSuccess());
@@ -123,6 +131,35 @@ const AppStack = () => {
       console.log(e);
     }
   };
+
+  const getManualURLData = useCallback(
+    (currentDate, toDate) => {
+      //setLoader(true);
+      memberManualURL()
+        .then(async resp => {
+          dispatch(saveURLDetails(resp));
+          setLoader(false);
+        })
+        .catch(error => {
+          setLoader(false);
+          toast.show(error.message, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'error',
+              title: 'Invalid data',
+            },
+          });
+        });
+    },
+    [dispatch, toast],
+  );
+
+  useEffect(() => {
+    getManualURLData();
+  }, []);
+  //console.log('getManualURLData', URLDetails);
+
   return (
     <Drawer.Navigator
       drawerContent={props => <CustomDrawer {...props} />}
@@ -399,6 +436,24 @@ const AppStack = () => {
           ),
         }}
       />
+      <Drawer.Screen
+        name="User Manual"
+        component={() => Linking.openURL(URLDetails)}
+        // component={null}
+        options={{
+          headerShown: true,
+          drawerIcon: ({color}) => (
+            <Feather name="file" size={22} color={color} />
+          ),
+        }}
+      />
+      {/* <Ionicons
+        name="ios-people-outline"
+        size={23}
+        color={COLORS.primary}
+        style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+        <Text> Contact Us</Text>
+      </Ionicons> */}
     </Drawer.Navigator>
   );
 };

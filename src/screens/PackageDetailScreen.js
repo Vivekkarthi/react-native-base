@@ -7,7 +7,7 @@ import {
   Image,
   Text,
 } from 'react-native';
-
+import {Button} from 'react-native-paper';
 import AppStatusBar from '../components/AppStatusBar';
 
 import {Loader} from '../components/Loader';
@@ -24,11 +24,11 @@ const PackageDetailsScreen = ({navigation, route}) => {
   let photosArray = [];
   if (!isEmpty(deliverData)) {
     photosArray = [
-      'https://www.koimoi.com/wp-content/new-galleries/2022/01/when-kgf-fame-yash-ran-from-him-house-with-just-300-rupees-in-his-pocket-to-pursue-his-dream-to-be-an-actor-001.jpg',
-      'https://www.koimoi.com/wp-content/new-galleries/2022/01/when-kgf-fame-yash-ran-from-him-house-with-just-300-rupees-in-his-pocket-to-pursue-his-dream-to-be-an-actor-001.jpg',
-      'https://www.koimoi.com/wp-content/new-galleries/2022/01/when-kgf-fame-yash-ran-from-him-house-with-just-300-rupees-in-his-pocket-to-pursue-his-dream-to-be-an-actor-001.jpg',
-      'https://www.koimoi.com/wp-content/new-galleries/2022/01/when-kgf-fame-yash-ran-from-him-house-with-just-300-rupees-in-his-pocket-to-pursue-his-dream-to-be-an-actor-001.jpg',
-      'https://www.koimoi.com/wp-content/new-galleries/2022/01/when-kgf-fame-yash-ran-from-him-house-with-just-300-rupees-in-his-pocket-to-pursue-his-dream-to-be-an-actor-001.jpg',
+      deliverData.photo1,
+      deliverData.photo2,
+      deliverData.photo3,
+      deliverData.photo4,
+      deliverData.photo5,
     ];
   }
   const [loader, setLoader] = useState(false);
@@ -90,6 +90,12 @@ const PackageDetailsScreen = ({navigation, route}) => {
             }}>
             <Text style={styles.f18}> Images</Text>
           </Feather>
+          <Button
+            mode="contained"
+            onPress={() => navigation.goBack()}
+            style={{alignSelf: 'flex-end'}}>
+            Back
+          </Button>
           <FlatList
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}

@@ -22,6 +22,8 @@ import {
   fetchTicketResponseData,
   saveTicketDetails,
   saveTicketResponseDetails,
+  saveURLDetails,
+  memberManualURL,
 } from '../redux/actions/SupportTicketState';
 import {useToast} from 'react-native-toast-notifications';
 import {Loader} from '../components/Loader';
@@ -32,6 +34,7 @@ const ContactScreen = ({navigation, route}) => {
   const toast = useToast();
   const {loggedMember} = useSelector(state => state.AuthState);
   const {ticketDetails} = useSelector(state => state.TicketStateState);
+  //const {URLDetails} = useSelector(state => state.TicketStateState);
   const [loader, setLoader] = useState(true);
   const [notifyDate, setNotifyDate] = useState({
     fromDate: new Date(),
@@ -89,6 +92,29 @@ const ContactScreen = ({navigation, route}) => {
     [dispatch, loggedMember.CustID, toast],
   );
 
+  const getManualURLData = useCallback(
+    (currentDate, toDate) => {
+      setLoader(true);
+      memberManualURL()
+        .then(async resp => {
+          dispatch(saveURLDetails(resp));
+          setLoader(false);
+        })
+        .catch(error => {
+          setLoader(false);
+          toast.show(error.message, {
+            type: 'custom_type',
+            animationDuration: 100,
+            data: {
+              type: 'error',
+              title: 'Invalid data',
+            },
+          });
+        });
+    },
+    [dispatch, toast],
+  );
+
   const getNextNotify = () => {
     let numDays = 1;
     let now = new Date(notifyDate.toDate);
@@ -115,8 +141,10 @@ const ContactScreen = ({navigation, route}) => {
 
   useEffect(() => {
     getTicketsData(notifyDate.fromDate, notifyDate.toDate);
+    //getManualURLData();
   }, [getTicketsData, route.params, notifyDate.fromDate, notifyDate.toDate]);
 
+  //console.log('getManualURLData', saveURLDetails);
   // const [supportType, setSupportType] = useState([
   //   {id: 1, name: 'Billing'},
   //   {id: 2, name: 'Technical Support'},
