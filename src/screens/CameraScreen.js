@@ -22,6 +22,7 @@ import moment from 'moment';
 import {fetchHomeData, saveMemberHomeDetails} from '../redux/actions/HomeState';
 import Toast from 'react-native-simple-toast';
 import {useDispatch} from 'react-redux';
+import Lightbox from 'react-native-lightbox-v2';
 
 const viewConfigRef = {viewAreaCoveragePercentThreshold: 95};
 
@@ -76,12 +77,12 @@ const CameraScreen = ({navigation, route}) => {
     return (
       <TouchableOpacity onPress={() => {}} activeOpacity={1}>
         <View style={{flex: 1}}>
-          <ReactNativeZoomableView
-            maxZoom={2.5}
-            minZoom={0.5}
-            zoomStep={1.5}
-            initialZoom={1}
-            bindToBorders={true}>
+          <Lightbox
+            backgroundColor="black"
+            doubleTapMaxZoom={4}
+            doubleTapZoomStep={1}
+            springConfig={{tension: 15, friction: 7}}
+            swipeToDismiss={true}>
             <Image
               style={[styles.cameraImage, styles.mt5, styles.mb5]}
               source={
@@ -92,7 +93,7 @@ const CameraScreen = ({navigation, route}) => {
                   : require('../../assets/images/no-image.jpg')
               }
             />
-          </ReactNativeZoomableView>
+          </Lightbox>
         </View>
         <Text
           style={{
