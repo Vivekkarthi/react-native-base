@@ -12,7 +12,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import Foundation from 'react-native-vector-icons/Foundation';
-import {useToast} from 'react-native-toast-notifications';
+import Toast from 'react-native-simple-toast';
 
 import AppStatusBar from '../components/AppStatusBar';
 import StaticBottomTabs from '../components/StaticBottomTabs';
@@ -27,7 +27,7 @@ import styles from '../styles/AppStyles';
 
 const PackagesScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const toast = useToast();
+
   const {loggedMember} = useSelector(state => state.AuthState);
   const {packageDetails} = useSelector(state => state.PackageState);
   const [loader, setLoader] = useState(true);
@@ -48,17 +48,10 @@ const PackagesScreen = ({navigation, route}) => {
         })
         .catch(error => {
           setLoader(false);
-          toast.show(error.message, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+          Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
         });
     },
-    [dispatch, loggedMember.ControllerID, toast],
+    [dispatch, loggedMember.ControllerID],
   );
 
   const getNextNotify = () => {

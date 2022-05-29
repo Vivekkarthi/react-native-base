@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, TouchableOpacity} from 'react-native';
+import {View, Image, TouchableOpacity, Alert} from 'react-native';
 import {useDispatch} from 'react-redux';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -9,7 +9,14 @@ export default function CustomHeader({navigation}) {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      dispatch(logoutSuccess());
+      Alert.alert('DOORBOX App!', 'Are you sure you want to logout?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => dispatch(logoutSuccess())},
+      ]);
     } catch (e) {
       console.log(e);
     }

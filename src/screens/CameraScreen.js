@@ -20,14 +20,13 @@ import styles from '../styles/AppStyles';
 import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 import moment from 'moment';
 import {fetchHomeData, saveMemberHomeDetails} from '../redux/actions/HomeState';
-import {useToast} from 'react-native-toast-notifications';
+import Toast from 'react-native-simple-toast';
 import {useDispatch} from 'react-redux';
 
 const viewConfigRef = {viewAreaCoveragePercentThreshold: 95};
 
 const CameraScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const toast = useToast();
 
   const [loader, setLoader] = useState(false);
   const flatListRef = useRef(null);
@@ -58,29 +57,15 @@ const CameraScreen = ({navigation, route}) => {
           } else {
             // Not Good
             setLoader(false);
-            toast.show(resp, {
-              type: 'custom_type',
-              animationDuration: 100,
-              data: {
-                type: 'error',
-                title: 'Invalid data',
-              },
-            });
+            Toast.showWithGravity(resp, Toast.LONG, Toast.BOTTOM);
           }
         })
         .catch(error => {
           setLoader(false);
-          toast.show(error.message, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+          Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
         });
     },
-    [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast],
+    [dispatch, loggedMember.ControllerID, loggedMember.LoginID],
   );
 
   const scrollToIndex = index => {

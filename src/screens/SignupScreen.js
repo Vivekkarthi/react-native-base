@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native';
 import {FormProvider, useForm} from 'react-hook-form';
-// import {useToast} from 'react-native-toast-notifications';
+// import Toast from 'react-native-simple-toast';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
@@ -35,7 +35,7 @@ const SignupScreen = ({navigation}) => {
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
 
-  // const toast = useToast();
+  //
 
   const methods = useForm({
     defaultValues: {
@@ -85,7 +85,7 @@ const SignupScreen = ({navigation}) => {
       })
       .catch(error => {
         setLoader(false);
-        setRegistrationError(error.message);
+        setRegistrationError(error);
       });
   };
 

@@ -5,6 +5,7 @@ import {
   ImageBackground,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {
   DrawerContentScrollView,
@@ -22,7 +23,14 @@ const CustomDrawer = props => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      dispatch(logoutSuccess());
+      Alert.alert('DOORBOX App!', 'Are you sure you want to logout?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => dispatch(logoutSuccess())},
+      ]);
     } catch (e) {
       console.log(e);
     }

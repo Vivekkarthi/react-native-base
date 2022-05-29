@@ -19,7 +19,14 @@ const HomeStack = ({navigation}) => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      dispatch(logoutSuccess());
+      Alert.alert('DOORBOX App!', 'Are you sure you want to logout?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => dispatch(logoutSuccess())},
+      ]);
     } catch (e) {
       console.log(e);
     }
@@ -72,7 +79,14 @@ const SettingStack = ({navigation}) => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      dispatch(logoutSuccess());
+      Alert.alert('DOORBOX App!', 'Are you sure you want to logout?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => dispatch(logoutSuccess())},
+      ]);
     } catch (e) {
       console.log(e);
     }
@@ -124,7 +138,14 @@ const PackageStack = ({navigation}) => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      dispatch(logoutSuccess());
+      Alert.alert('DOORBOX App!', 'Are you sure you want to logout?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => dispatch(logoutSuccess())},
+      ]);
     } catch (e) {
       console.log(e);
     }

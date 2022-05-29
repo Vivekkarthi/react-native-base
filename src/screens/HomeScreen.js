@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {View, SafeAreaView, Text, FlatList, RefreshControl} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
-import {useToast} from 'react-native-toast-notifications';
+import Toast from 'react-native-simple-toast';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   callOpenCloseBox,
@@ -26,7 +26,7 @@ import {fetchBoxData, saveMyBoxDetails} from '../redux/actions/BoxState';
 
 export default function HomeScreen({navigation, route}) {
   const dispatch = useDispatch();
-  const toast = useToast();
+
   const {loggedMember} = useSelector(state => state.AuthState);
   const {homeDetails} = useSelector(state => state.HomeState);
 
@@ -53,29 +53,15 @@ export default function HomeScreen({navigation, route}) {
           } else {
             // Not Good
             setLoader(false);
-            toast.show(resp, {
-              type: 'custom_type',
-              animationDuration: 100,
-              data: {
-                type: 'error',
-                title: 'Invalid data',
-              },
-            });
+            Toast.showWithGravity(resp, Toast.LONG, Toast.BOTTOM);
           }
         })
         .catch(error => {
           setLoader(false);
-          toast.show(error.message, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+          Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
         });
     },
-    [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast],
+    [dispatch, loggedMember.ControllerID, loggedMember.LoginID],
   );
 
   const getMyBoxData = useCallback(() => {
@@ -89,28 +75,15 @@ export default function HomeScreen({navigation, route}) {
         } else {
           // Not Good
           setLoader(false);
-          toast.show(resp, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+
+          Toast.showWithGravity(resp, Toast.LONG, Toast.BOTTOM);
         }
       })
       .catch(error => {
         setLoader(false);
-        toast.show(error.message, {
-          type: 'custom_type',
-          animationDuration: 100,
-          data: {
-            type: 'error',
-            title: 'Invalid data',
-          },
-        });
+        Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
       });
-  }, [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast]);
+  }, [dispatch, loggedMember.ControllerID, loggedMember.LoginID]);
 
   const getMobileNotifyData = useCallback(
     currentDate => {
@@ -128,17 +101,10 @@ export default function HomeScreen({navigation, route}) {
         })
         .catch(error => {
           setLoader(false);
-          toast.show(error.message, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+          Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
         });
     },
-    [loggedMember.CustID, toast],
+    [loggedMember.CustID],
   );
 
   const getNextNotify = () => {
@@ -167,26 +133,14 @@ export default function HomeScreen({navigation, route}) {
         } else {
           // Not Good
           setLoader(false);
-          toast.show(resp, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+
+          Toast.showWithGravity(resp, Toast.LONG, Toast.BOTTOM);
         }
       })
       .catch(error => {
         setLoader(false);
-        toast.show(error.message, {
-          type: 'custom_type',
-          animationDuration: 100,
-          data: {
-            type: 'error',
-            title: 'Invalid data',
-          },
-        });
+
+        Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
       });
   };
 
@@ -201,9 +155,19 @@ export default function HomeScreen({navigation, route}) {
   }, []);
 
   useEffect(() => {
-    getHomeData(notifyDate);
-    getMobileNotifyData(mobileNotifyDate.fromDate, mobileNotifyDate.toDate);
-    getMyBoxData();
+    function getAllApiData() {
+      getHomeData(notifyDate);
+      getMobileNotifyData(mobileNotifyDate.fromDate, mobileNotifyDate.toDate);
+      getMyBoxData();
+    }
+    getAllApiData();
+    const interval = setInterval(
+      () => getAllApiData(),
+      1000 * homeDetails.MobileAppPageRefreshInterval || 10000,
+    );
+    return () => {
+      clearInterval(interval);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

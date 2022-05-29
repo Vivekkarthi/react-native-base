@@ -18,7 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import {loginSchema} from '../utils/ValidateSchema';
-// import {useToast} from 'react-native-toast-notifications';
+// import Toast from 'react-native-simple-toast';
 
 import {
   memberLogin,
@@ -39,7 +39,7 @@ const LoginScreen = ({navigation, route}) => {
   const [loader, setLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
-  // const toast = useToast();
+  //
   const PasswordRef = useRef(null);
   const PhoneNumberRef = useRef(null);
 
@@ -81,7 +81,7 @@ const LoginScreen = ({navigation, route}) => {
       })
       .catch(error => {
         setLoader(false);
-        setLoginError(error.message);
+        setLoginError(error);
       });
   };
 

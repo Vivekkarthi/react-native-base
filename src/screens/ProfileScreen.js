@@ -38,7 +38,7 @@ const ProfileScreen = ({navigation, route}) => {
   const [pwdVisible, setPwdVisible] = useState(true);
   const {loggedMember} = useSelector(state => state.AuthState);
 
-  // const toast = useToast();
+  //
 
   const methods = useForm({
     defaultValues: {
@@ -88,14 +88,7 @@ const ProfileScreen = ({navigation, route}) => {
         .catch(error => {
           setLoader(false);
           setAddUserError(error.message);
-          // toast.show(error.message, {
-          //   type: 'custom_type',
-          //   animationDuration: 100,
-          //   data: {
-          //     type: 'error',
-          //     title: 'Failure',
-          //   },
-          // });
+          // Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
         });
     },
     [

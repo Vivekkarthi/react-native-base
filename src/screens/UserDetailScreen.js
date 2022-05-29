@@ -12,7 +12,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {FormProvider, useForm} from 'react-hook-form';
 import {Button} from 'react-native-paper';
-// import {useToast} from 'react-native-toast-notifications';
+// import Toast from 'react-native-simple-toast';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
@@ -38,7 +38,7 @@ const UserDetailScreen = ({navigation, route}) => {
   const [pwdVisible, setPwdVisible] = useState(true);
   const {loggedMember} = useSelector(state => state.AuthState);
 
-  // const toast = useToast();
+  //
 
   const methods = useForm({
     defaultValues: {
@@ -83,14 +83,7 @@ const UserDetailScreen = ({navigation, route}) => {
       .catch(error => {
         setLoader(false);
         setAddUserError(error.message);
-        // toast.show(error.message, {
-        //   type: 'custom_type',
-        //   animationDuration: 100,
-        //   data: {
-        //     type: 'error',
-        //     title: 'Failure',
-        //   },
-        // });
+        // Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
       });
   };
 

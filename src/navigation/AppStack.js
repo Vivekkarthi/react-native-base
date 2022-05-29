@@ -1,16 +1,15 @@
-import React, {useCallback, useEffect} from 'react';
-import {Image, TouchableOpacity, View, Text} from 'react-native';
-import {createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
+import React from 'react';
+import {Alert, Image, TouchableOpacity, View} from 'react-native';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Feather from 'react-native-vector-icons/Feather';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 import BottomTabNavigator from './BottomTabNavigator';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import MobileNotificationsScreen from '../screens/MobileNotificationsScreen';
 import UsersScreen from '../screens/UsersScreen';
-import SettingsScreen from '../screens/SettingsScreen';
 import CameraScreen from '../screens/CameraScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import PackagesScreen from '../screens/PackagesScreen';
@@ -23,12 +22,8 @@ import {logoutSuccess} from '../redux/actions/AuthState';
 import {createStackNavigator} from '@react-navigation/stack';
 import {COLORS} from '../constants';
 import UserDetailScreen from '../screens/UserDetailScreen';
-import {
-  saveURLDetails,
-  memberManualURL,
-} from '../redux/actions/SupportTicketState';
-import {useToast} from 'react-native-toast-notifications';
-import {Linking} from 'react-native';
+
+import WebViewUI from '../components/WebViewUI';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -121,44 +116,21 @@ const PackageStack = ({navigation}) => {
 };
 
 const AppStack = () => {
-  const {URLDetails} = useSelector(state => state.TicketStateState);
   const dispatch = useDispatch();
-  const toast = useToast();
   const logoutUser = async () => {
     try {
-      dispatch(logoutSuccess());
+      Alert.alert('DOORBOX App!', 'Are you sure you want to logout?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => dispatch(logoutSuccess())},
+      ]);
     } catch (e) {
       console.log(e);
     }
   };
-
-  const getManualURLData = useCallback(
-    (currentDate, toDate) => {
-      //setLoader(true);
-      memberManualURL()
-        .then(async resp => {
-          dispatch(saveURLDetails(resp));
-          setLoader(false);
-        })
-        .catch(error => {
-          setLoader(false);
-          toast.show(error.message, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
-        });
-    },
-    [dispatch, toast],
-  );
-
-  useEffect(() => {
-    getManualURLData();
-  }, []);
-  //console.log('getManualURLData', URLDetails);
 
   return (
     <Drawer.Navigator
@@ -438,8 +410,7 @@ const AppStack = () => {
       />
       <Drawer.Screen
         name="User Manual"
-        component={() => Linking.openURL(URLDetails)}
-        // component={null}
+        component={WebViewUI}
         options={{
           headerShown: true,
           drawerIcon: ({color}) => (
