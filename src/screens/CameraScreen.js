@@ -101,7 +101,7 @@ const CameraScreen = ({navigation, route}) => {
             springConfig={{tension: 15, friction: 7}}
             swipeToDismiss={true}>
             <>
-              <Feather
+              {/* <Feather
                 name="rotate-ccw"
                 size={23}
                 color={COLORS.primary}
@@ -110,7 +110,7 @@ const CameraScreen = ({navigation, route}) => {
                   flexDirection: 'row',
                   alignSelf: 'flex-end',
                   marginRight: 10,
-                }}></Feather>
+                }}></Feather> */}
               <Image
                 style={{
                   borderRadius: 4,
@@ -261,6 +261,16 @@ const CameraScreen = ({navigation, route}) => {
 
                 {homeDetails.ExternalPhotos.length ? (
                   <>
+                    <Feather
+                      name="rotate-ccw"
+                      size={23}
+                      color={COLORS.primary}
+                      onPress={rotateleft}
+                      style={{
+                        flexDirection: 'row',
+                        alignSelf: 'flex-end',
+                        marginRight: 10,
+                      }}></Feather>
                     <FlatList
                       data={homeDetails.ExternalPhotos}
                       keyExtractor={(item, index) => index.toString()}
