@@ -2,12 +2,13 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {View, SafeAreaView, Text, FlatList, RefreshControl} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
-import {useToast} from 'react-native-toast-notifications';
+import Toast from 'react-native-simple-toast';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   callOpenCloseBox,
   fetchHomeData,
   saveMemberHomeDetails,
+  saveMemberHomeNotifications,
 } from '../redux/actions/HomeState';
 import {Card, Avatar} from 'react-native-paper';
 import Feather from 'react-native-vector-icons/Feather';
@@ -20,30 +21,30 @@ import StaticBottomTabs from '../components/StaticBottomTabs';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
 import styles from '../styles/AppStyles';
 import {NotificationUI} from '../components/NotificationUI';
-//import {ToastProvider} from 'react-native-toast-notifications';
 import {fetchHomeMobileNotifyData} from '../redux/actions/MobileNotificationState';
 import {fetchBoxData, saveMyBoxDetails} from '../redux/actions/BoxState';
 
 export default function HomeScreen({navigation, route}) {
   const dispatch = useDispatch();
-  const toast = useToast();
+
   const {loggedMember} = useSelector(state => state.AuthState);
-  const {homeDetails} = useSelector(state => state.HomeState);
+  const {homeDetails, homeNotification, homeMobileNotification} = useSelector(
+    state => state.HomeState,
+  );
 
   const [loader, setLoader] = useState(true);
   const [notificationData, setNotificationData] = useState([]);
-  const [notifyDate, setNotifyDate] = useState(new Date());
-  const [mobileNotifyDate, setMobileNotifyDate] = useState(new Date());
+  // const [notifyDate, setNotifyDate] = useState(new Date());
+  // const [mobileNotifyDate, setMobileNotifyDate] = useState(new Date());
   const [refreshing, setRefreshing] = useState(false);
 
   const getHomeData = useCallback(
     currentDate => {
       setLoader(true);
-      const convertDate = moment(currentDate).format('YYYY-MM-DD');
       fetchHomeData(
         loggedMember.LoginID,
         loggedMember.ControllerID,
-        convertDate,
+        currentDate !== '' ? moment(currentDate).format('YYYY-MM-DD') : '',
       )
         .then(async resp => {
           if (resp.LastSyncDate) {
@@ -53,29 +54,15 @@ export default function HomeScreen({navigation, route}) {
           } else {
             // Not Good
             setLoader(false);
-            toast.show(resp, {
-              type: 'custom_type',
-              animationDuration: 100,
-              data: {
-                type: 'error',
-                title: 'Invalid data',
-              },
-            });
+            Toast.showWithGravity(resp, Toast.LONG, Toast.BOTTOM);
           }
         })
         .catch(error => {
           setLoader(false);
-          toast.show(error.message, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+          Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
         });
     },
-    [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast],
+    [dispatch, loggedMember.ControllerID, loggedMember.LoginID],
   );
 
   const getMyBoxData = useCallback(() => {
@@ -89,34 +76,23 @@ export default function HomeScreen({navigation, route}) {
         } else {
           // Not Good
           setLoader(false);
-          toast.show(resp, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+
+          Toast.showWithGravity(resp, Toast.LONG, Toast.BOTTOM);
         }
       })
       .catch(error => {
         setLoader(false);
-        toast.show(error.message, {
-          type: 'custom_type',
-          animationDuration: 100,
-          data: {
-            type: 'error',
-            title: 'Invalid data',
-          },
-        });
+        Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
       });
-  }, [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast]);
+  }, [dispatch, loggedMember.ControllerID, loggedMember.LoginID]);
 
   const getMobileNotifyData = useCallback(
     currentDate => {
       setLoader(true);
-      const convertDate = moment(currentDate).format('YYYY-MM-DD');
-      fetchHomeMobileNotifyData(loggedMember.CustID, convertDate)
+      fetchHomeMobileNotifyData(
+        loggedMember.CustID,
+        currentDate !== '' ? moment(currentDate).format('YYYY-MM-DD') : '',
+      )
         .then(async resp => {
           if (resp && resp.length) {
             setNotificationData(resp);
@@ -128,27 +104,32 @@ export default function HomeScreen({navigation, route}) {
         })
         .catch(error => {
           setLoader(false);
-          toast.show(error.message, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+          Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
         });
     },
-    [loggedMember.CustID, toast],
+    [loggedMember.CustID],
   );
 
   const getNextNotify = () => {
-    setNotifyDate(moment(new Date(notifyDate)).add(1, 'days'));
-    getHomeData(moment(new Date(notifyDate)).add(1, 'days'));
+    // setNotifyDate(moment(new Date(homeNotification)).add(1, 'days'));
+    getHomeData(moment(new Date(homeNotification)).add(1, 'days'));
+    dispatch(
+      saveMemberHomeNotifications(
+        false,
+        moment(new Date(homeNotification)).add(1, 'days'),
+      ),
+    );
   };
 
   const getPreviousNotify = () => {
-    setNotifyDate(moment(new Date(notifyDate)).subtract(1, 'days'));
-    getHomeData(moment(new Date(notifyDate)).subtract(1, 'days'));
+    // setNotifyDate(moment(new Date(homeNotification)).subtract(1, 'days'));
+    getHomeData(moment(new Date(homeNotification)).subtract(1, 'days'));
+    dispatch(
+      saveMemberHomeNotifications(
+        false,
+        moment(new Date(homeNotification)).subtract(1, 'days'),
+      ),
+    );
   };
 
   const toggleLockTheBox = packIsLocked => {
@@ -167,82 +148,57 @@ export default function HomeScreen({navigation, route}) {
         } else {
           // Not Good
           setLoader(false);
-          toast.show(resp, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+
+          Toast.showWithGravity(resp, Toast.LONG, Toast.BOTTOM);
         }
       })
       .catch(error => {
         setLoader(false);
-        toast.show(error.message, {
-          type: 'custom_type',
-          animationDuration: 100,
-          data: {
-            type: 'error',
-            title: 'Invalid data',
-          },
-        });
+
+        Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
       });
   };
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    setNotifyDate(moment(new Date()));
+    // setNotifyDate(moment(new Date()));
+    dispatch(saveMemberHomeNotifications(false, moment(new Date())));
     getHomeData(new Date());
+    // setMobileNotifyDate(new Date());
+    getMobileNotifyData(new Date());
+    dispatch(saveMemberHomeNotifications(true, new Date()));
     setRefreshing(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    getHomeData(notifyDate);
-    getMobileNotifyData(mobileNotifyDate.fromDate, mobileNotifyDate.toDate);
-    getMyBoxData();
+    function getAllApiData() {
+      getHomeData('');
+      getMobileNotifyData('');
+      getMyBoxData();
+    }
+    getAllApiData();
+    let interval = 0;
+    if (route.name === 'Home') {
+      interval = setInterval(
+        () => getAllApiData(),
+        1000 * homeDetails.MobileAppPageRefreshInterval || 10000,
+      );
+    }
+
+    return () => {
+      clearInterval(interval);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // useEffect(() => {
-  //   const intervalCall = setInterval(() => {
-  //     console.log(
-  //       '*******************************************************',
-  //       moment(notifyDate).format('YYYY-MM-DD'),
-  //     );
-  //     fetchHomeData(
-  //       loggedMember.LoginID,
-  //       loggedMember.ControllerID,
-  //       moment(notifyDate).format('YYYY-MM-DD'),
-  //     ).then(async resp => {
-  //       if (resp.LastSyncDate) {
-  //         dispatch(saveMemberHomeDetails(resp));
-  //       }
-  //     });
-  //   }, 1000 * homeDetails.MobileAppPageRefreshInterval);
-
-  //   return () => {
-  //     // clean up
-  //     clearInterval(intervalCall);
-  //   };
-  // }, []);
 
   return (
     <>
       <SafeAreaView style={{flex: 1, backgroundColor: COLORS.background}}>
         <View style={styles.MainContainer}>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
-          {loader ? <Loader /> : null}
-          {/* <ToastProvider
-            renderType={{
-              custom_type: toast => (
-                <View style={{padding: 15, backgroundColor: 'grey'}}>
-                  <Text>{toast.message}</Text>
-                </View>
-              ),
-            }}
-          /> */}
+          {/* {loader ? <Loader /> : null} */}
+
           <Text
             style={{
               alignSelf: 'flex-end',
@@ -301,8 +257,8 @@ export default function HomeScreen({navigation, route}) {
                           textAlign: 'center',
                           fontSize: 18,
                           backgroundColor: '#178b93',
-                          paddingBottom: 10,
-                          paddingTop: 9,
+                          paddingBottom: 6,
+                          paddingTop: 6,
                           color: COLORS.white,
                         }}>
                         <Feather name="box" size={22} /> Box Status
@@ -359,8 +315,8 @@ export default function HomeScreen({navigation, route}) {
                           fontSize: 18,
                           backgroundColor: '#178b93',
                           color: COLORS.white,
-                          paddingBottom: 10,
-                          paddingTop: 9,
+                          paddingBottom: 6,
+                          paddingTop: 6,
                         }}>
                         <Feather name="camera" size={22} /> Internal Camera
                       </Text>
@@ -394,8 +350,8 @@ export default function HomeScreen({navigation, route}) {
                   </View>
                 </View>
                 <NotificationUI
-                  mobileNotifyDate={mobileNotifyDate}
-                  setMobileNotifyDate={setMobileNotifyDate}
+                  mobileNotifyDate={homeMobileNotification}
+                  // setMobileNotifyDate={setMobileNotifyDate}
                   notificationData={notificationData}
                   getMobileNotifyData={getMobileNotifyData}
                 />
@@ -418,7 +374,9 @@ export default function HomeScreen({navigation, route}) {
                     </Ionicons>
                   </View>
                   <Card.Title
-                    title={moment(new Date(notifyDate)).format('MMMM DD, YYYY')}
+                    title={moment(new Date(homeNotification)).format(
+                      'MMMM DD, YYYY',
+                    )}
                     // subtitle={'subtitle'}
                     titleStyle={{fontSize: 14, alignSelf: 'center'}}
                     subtitleStyle={{fontSize: 16, alignSelf: 'center'}}

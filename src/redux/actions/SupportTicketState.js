@@ -5,12 +5,15 @@ import {getRequest, postRequest} from '../../utils/Handlers';
 export const initialState = {
   ticketDetails: [],
   ticketResponseDetails: [],
+  URLDetails: '',
 };
 
 export const TICKET_SUCCESS = 'TICKETState/TICKET_SUCCESS';
 export const TICKET_FAILURE = 'TICKETState/TICKET_FAILURE';
 export const TICKET_RESPONSE_SUCCESS = 'TICKETState/TICKET_RESPONSE_SUCCESS';
 export const TICKET_RESPONSE_FAILURE = 'TICKETState/TICKET_RESPONSE_FAILURE';
+export const URL_SUCCESS = 'URL_SUCCESS';
+export const URL_FAILURE = 'URL_FAILURE';
 
 export const addNewTicket = (
   loggedMember,
@@ -71,6 +74,22 @@ export function fetchTicketResponseData(STID) {
     });
 }
 
+export function memberManualURL() {
+  const queryParams = 'sK=token';
+  const params = {
+    url: ENDPOINTURL.MemberManualURL,
+    queryParams,
+  };
+
+  return getRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      throw error;
+    });
+}
+
 export const saveTicketDetails = data => {
   return dispatch => {
     if (data) {
@@ -81,6 +100,22 @@ export const saveTicketDetails = data => {
     } else {
       dispatch({
         type: TICKET_FAILURE,
+        payload: {},
+      });
+    }
+  };
+};
+
+export const saveURLDetails = data => {
+  return dispatch => {
+    if (data) {
+      dispatch({
+        type: URL_SUCCESS,
+        payload: data,
+      });
+    } else {
+      dispatch({
+        type: URL_FAILURE,
         payload: {},
       });
     }
@@ -125,6 +160,18 @@ export default function TicketStateReducer(state = initialState, action) {
       return {
         ...state,
         ticketResponseDetails: [],
+      };
+    }
+    case URL_SUCCESS: {
+      return {
+        ...state,
+        URLDetails: action.payload,
+      };
+    }
+    case URL_FAILURE: {
+      return {
+        ...state,
+        URLDetails: [],
       };
     }
     default:

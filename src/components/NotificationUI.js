@@ -6,21 +6,36 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import {COLORS} from '../constants';
 import {getColorCode, getTypeOfMsg} from '../utils/Handlers';
+import {useDispatch} from 'react-redux';
+import {saveMemberHomeNotifications} from '../redux/actions/HomeState';
 
 const NotificationUI = ({
   mobileNotifyDate,
-  setMobileNotifyDate,
+  // setMobileNotifyDate,
   notificationData,
   getMobileNotifyData,
 }) => {
+  const dispatch = useDispatch();
   const getNextNotify = () => {
-    setMobileNotifyDate(moment(new Date(mobileNotifyDate)).add(1, 'days'));
+    // setMobileNotifyDate(moment(new Date(mobileNotifyDate)).add(1, 'days'));
     getMobileNotifyData(moment(new Date(mobileNotifyDate)).add(1, 'days'));
+    dispatch(
+      saveMemberHomeNotifications(
+        true,
+        moment(new Date(mobileNotifyDate)).add(1, 'days'),
+      ),
+    );
   };
 
   const getPreviousNotify = () => {
-    setMobileNotifyDate(moment(new Date(mobileNotifyDate)).subtract(1, 'days'));
+    // setMobileNotifyDate(moment(new Date(mobileNotifyDate)).subtract(1, 'days'));
     getMobileNotifyData(moment(new Date(mobileNotifyDate)).subtract(1, 'days'));
+    dispatch(
+      saveMemberHomeNotifications(
+        true,
+        moment(new Date(mobileNotifyDate)).subtract(1, 'days'),
+      ),
+    );
   };
 
   return (

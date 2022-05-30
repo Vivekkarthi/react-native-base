@@ -22,16 +22,19 @@ import {
   fetchTicketResponseData,
   saveTicketDetails,
   saveTicketResponseDetails,
+  saveURLDetails,
+  memberManualURL,
 } from '../redux/actions/SupportTicketState';
-import {useToast} from 'react-native-toast-notifications';
+import Toast from 'react-native-simple-toast';
 import {Loader} from '../components/Loader';
 import {Linking} from 'react-native';
 
 const ContactScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const toast = useToast();
+
   const {loggedMember} = useSelector(state => state.AuthState);
   const {ticketDetails} = useSelector(state => state.TicketStateState);
+  //const {URLDetails} = useSelector(state => state.TicketStateState);
   const [loader, setLoader] = useState(true);
   const [notifyDate, setNotifyDate] = useState({
     fromDate: new Date(),
@@ -51,17 +54,10 @@ const ContactScreen = ({navigation, route}) => {
         })
         .catch(error => {
           setLoader(false);
-          toast.show(error.massage, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+          Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
         });
     },
-    [dispatch, navigation, toast],
+    [dispatch, navigation],
   );
 
   const getTicketsData = useCallback(
@@ -76,17 +72,26 @@ const ContactScreen = ({navigation, route}) => {
         })
         .catch(error => {
           setLoader(false);
-          toast.show(error.message, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+          Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
         });
     },
-    [dispatch, loggedMember.CustID, toast],
+    [dispatch, loggedMember.CustID],
+  );
+
+  const getManualURLData = useCallback(
+    (currentDate, toDate) => {
+      setLoader(true);
+      memberManualURL()
+        .then(async resp => {
+          dispatch(saveURLDetails(resp));
+          setLoader(false);
+        })
+        .catch(error => {
+          setLoader(false);
+          Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
+        });
+    },
+    [dispatch],
   );
 
   const getNextNotify = () => {
@@ -115,8 +120,10 @@ const ContactScreen = ({navigation, route}) => {
 
   useEffect(() => {
     getTicketsData(notifyDate.fromDate, notifyDate.toDate);
+    //getManualURLData();
   }, [getTicketsData, route.params, notifyDate.fromDate, notifyDate.toDate]);
 
+  //console.log('getManualURLData', saveURLDetails);
   // const [supportType, setSupportType] = useState([
   //   {id: 1, name: 'Billing'},
   //   {id: 2, name: 'Technical Support'},

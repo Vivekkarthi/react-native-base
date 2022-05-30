@@ -27,7 +27,7 @@ import {
   saveMyBoxDetails,
   updateControllerPassword,
 } from '../redux/actions/BoxState';
-import {useToast} from 'react-native-toast-notifications';
+import Toast from 'react-native-simple-toast';
 import styles from '../styles/AppStyles';
 import {useIsFocused} from '@react-navigation/native';
 import {useForm, FormProvider} from 'react-hook-form';
@@ -39,7 +39,7 @@ import {isEmpty} from 'lodash';
 export default function MyboxScreen({navigation, route}) {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
-  const toast = useToast();
+
   const [loader, setLoader] = useState(true);
   const [onTakePhoto, setOnTakePhoto] = useState({
     internal: true,
@@ -86,28 +86,15 @@ export default function MyboxScreen({navigation, route}) {
         } else {
           // Not Good
           setLoader(false);
-          toast.show(resp, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+
+          Toast.showWithGravity(resp, Toast.LONG, Toast.BOTTOM);
         }
       })
       .catch(error => {
         setLoader(false);
-        toast.show(error.message, {
-          type: 'custom_type',
-          animationDuration: 100,
-          data: {
-            type: 'error',
-            title: 'Invalid data',
-          },
-        });
+        Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
       });
-  }, [dispatch, loggedMember.ControllerID, loggedMember.LoginID, toast]);
+  }, [dispatch, loggedMember.ControllerID, loggedMember.LoginID]);
 
   const toggleAlarm = alarmState => {
     setLoader(true);
@@ -125,26 +112,12 @@ export default function MyboxScreen({navigation, route}) {
         } else {
           // Not Good
           setLoader(false);
-          toast.show(resp, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+          Toast.showWithGravity(resp, Toast.LONG, Toast.BOTTOM);
         }
       })
       .catch(error => {
         setLoader(false);
-        toast.show(error.message, {
-          type: 'custom_type',
-          animationDuration: 100,
-          data: {
-            type: 'error',
-            title: 'Invalid data',
-          },
-        });
+        Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
       });
   };
 
@@ -160,26 +133,12 @@ export default function MyboxScreen({navigation, route}) {
         } else {
           // Not Good
           setLoader(false);
-          toast.show(resp, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+          Toast.showWithGravity(resp, Toast.LONG, Toast.BOTTOM);
         }
       })
       .catch(error => {
         setLoader(false);
-        toast.show(error.message, {
-          type: 'custom_type',
-          animationDuration: 100,
-          data: {
-            type: 'error',
-            title: 'Invalid data',
-          },
-        });
+        Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
       });
   };
 
@@ -218,14 +177,7 @@ export default function MyboxScreen({navigation, route}) {
             internal: true,
             external: true,
           }));
-          toast.show(resp, {
-            type: 'custom_type',
-            animationDuration: 100,
-            data: {
-              type: 'error',
-              title: 'Invalid data',
-            },
-          });
+          Toast.showWithGravity(resp, Toast.LONG, Toast.BOTTOM);
         }
       })
       .catch(error => {
@@ -235,14 +187,7 @@ export default function MyboxScreen({navigation, route}) {
           internal: true,
           external: true,
         }));
-        toast.show(error.message, {
-          type: 'custom_type',
-          animationDuration: 100,
-          data: {
-            type: 'error',
-            title: 'Invalid data',
-          },
-        });
+        Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
       });
   };
 
@@ -351,7 +296,8 @@ export default function MyboxScreen({navigation, route}) {
                       }}>
                       <View style={{marginBottom: 10}}>
                         <Button>
-                          On Demand: {boxDetails.internal === 1 ? 'ON' : 'OFF'}
+                          On Demand:{' '}
+                          {boxDetails.OnDemandPhoto1 === 1 ? 'ON' : 'OFF'}
                         </Button>
                       </View>
 

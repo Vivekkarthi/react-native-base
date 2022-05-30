@@ -125,21 +125,6 @@ export function memberDeleteuser(recordId) {
     });
 }
 
-export function memberManualURL() {
-  const queryParams = 'sK=token';
-  const params = {
-    url: ENDPOINTURL.MemberManualURL,
-    queryParams,
-  };
-
-  return postRequest(params)
-    .then(response => {
-      return response;
-    })
-    .catch(error => {
-      throw error;
-    });
-}
 export function memberEdituser(userData) {
   const queryParams = `sK=token&namex=${userData.Name}&spass=${
     userData.Password

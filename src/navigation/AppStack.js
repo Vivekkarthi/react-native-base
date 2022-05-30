@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, TouchableOpacity, View} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Foundation from 'react-native-vector-icons/Foundation';
@@ -10,7 +10,6 @@ import BottomTabNavigator from './BottomTabNavigator';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import MobileNotificationsScreen from '../screens/MobileNotificationsScreen';
 import UsersScreen from '../screens/UsersScreen';
-import SettingsScreen from '../screens/SettingsScreen';
 import CameraScreen from '../screens/CameraScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import PackagesScreen from '../screens/PackagesScreen';
@@ -23,6 +22,8 @@ import {logoutSuccess} from '../redux/actions/AuthState';
 import {createStackNavigator} from '@react-navigation/stack';
 import {COLORS} from '../constants';
 import UserDetailScreen from '../screens/UserDetailScreen';
+
+import WebViewUI from '../components/WebViewUI';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -118,11 +119,19 @@ const AppStack = () => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      dispatch(logoutSuccess());
+      Alert.alert('DOORBOX App!', 'Are you sure you want to logout?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => dispatch(logoutSuccess())},
+      ]);
     } catch (e) {
       console.log(e);
     }
   };
+
   return (
     <Drawer.Navigator
       drawerContent={props => <CustomDrawer {...props} />}
@@ -399,6 +408,23 @@ const AppStack = () => {
           ),
         }}
       />
+      <Drawer.Screen
+        name="User Manual"
+        component={WebViewUI}
+        options={{
+          headerShown: true,
+          drawerIcon: ({color}) => (
+            <Feather name="file" size={22} color={color} />
+          ),
+        }}
+      />
+      {/* <Ionicons
+        name="ios-people-outline"
+        size={23}
+        color={COLORS.primary}
+        style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+        <Text> Contact Us</Text>
+      </Ionicons> */}
     </Drawer.Navigator>
   );
 };

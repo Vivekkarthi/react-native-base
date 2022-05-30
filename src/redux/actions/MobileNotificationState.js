@@ -1,5 +1,7 @@
+import moment from 'moment';
 import {ENDPOINTURL} from '../../utils/Constants';
 import {getRequest} from '../../utils/Handlers';
+import {store} from '../Store';
 
 export const initialState = {
   mobilenotificationDetails: [],
@@ -26,7 +28,13 @@ export function fetchMobileNotifyData(CustID, fromDate, toDate) {
 }
 
 export function fetchHomeMobileNotifyData(CustID, fromDate) {
-  const queryParams = `sK=token&sfromdate=${fromDate}&custid=${CustID}`;
+  const queryParams = `sK=token&sfromdate=${
+    fromDate !== ''
+      ? fromDate
+      : moment(store.getState().HomeState.homeMobileNotification).format(
+          'YYYY-MM-DD',
+        )
+  }&custid=${CustID}`;
   const params = {
     url: ENDPOINTURL.MemberHomeMobileNotification,
     token: '',

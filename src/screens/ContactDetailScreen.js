@@ -73,7 +73,7 @@ const ContactDetailScreen = ({navigation, route}) => {
           mode="contained"
           onPress={() => navigation.goBack()}
           style={{alignSelf: 'flex-end'}}>
-          Go Back
+          Back
         </Button>
         {!isEmpty(hasSupportData) && (
           <FlatList
@@ -198,7 +198,7 @@ const ContactDetailScreen = ({navigation, route}) => {
           <Button
             mode="contained"
             onPress={() => onsubmit()}
-            disabled={btnDisable}
+            //disabled={btnDisable}
             style={{
               alignSelf: 'flex-start',
               marginTop: 20,

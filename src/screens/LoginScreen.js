@@ -18,7 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import {loginSchema} from '../utils/ValidateSchema';
-// import {useToast} from 'react-native-toast-notifications';
+// import Toast from 'react-native-simple-toast';
 
 import {
   memberLogin,
@@ -29,6 +29,7 @@ import {Loader} from '../components/Loader';
 import {COLORS, SIZES} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
 import {isEmpty, isUndefined} from 'lodash';
+import {Button} from 'react-native-paper';
 
 const LoginScreen = ({navigation, route}) => {
   const content = route.params && route.params.content;
@@ -39,7 +40,8 @@ const LoginScreen = ({navigation, route}) => {
   const [loader, setLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
-  // const toast = useToast();
+  //const [rotation, setRotation] = useState(0);
+
   const PasswordRef = useRef(null);
   const PhoneNumberRef = useRef(null);
 
@@ -81,7 +83,7 @@ const LoginScreen = ({navigation, route}) => {
       })
       .catch(error => {
         setLoader(false);
-        setLoginError(error.message);
+        setLoginError(error);
       });
   };
 
@@ -103,6 +105,22 @@ const LoginScreen = ({navigation, route}) => {
     }
   }, [rememberLogin, setValue]);
 
+  // const rotateRight = () => {
+  //   let newRotation = rotation + 90;
+  //   if (newRotation >= 360) {
+  //     newRotation = -360;
+  //   }
+  //   setRotation(newRotation);
+  // };
+
+  // const rotateleft = () => {
+  //   let newRotation = rotation - 90;
+  //   if (newRotation >= 360) {
+  //     newRotation = -360;
+  //   }
+  //   setRotation(newRotation);
+  // };
+
   useEffect(() => {
     getRememberData();
   }, [getRememberData]);
@@ -118,15 +136,31 @@ const LoginScreen = ({navigation, route}) => {
         <View>
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           {loader ? <Loader /> : null}
-          <Image
-            source={require('../../assets/images/icon.png')}
-            style={{
-              alignSelf: 'center',
-              height: 150,
-              width: 280,
-            }}
-            resizeMode="stretch"
-          />
+
+          <View>
+            {/* <Button
+              mode="contained"
+              onPress={rotateleft}
+              style={{alignSelf: 'flex-end'}}>
+              left
+            </Button> */}
+            <Image
+              source={require('../../assets/images/icon.png')}
+              style={{
+                alignSelf: 'center',
+                height: 150,
+                width: 280,
+                //transform: [{rotate: `${rotation}deg`}],
+              }}
+              resizeMode="stretch"
+            />
+            {/* <Button
+              mode="contained"
+              onPress={rotateRight}
+              style={{alignSelf: 'flex-end'}}>
+              right
+            </Button> */}
+          </View>
 
           <View
             style={{
