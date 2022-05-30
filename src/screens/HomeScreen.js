@@ -178,8 +178,9 @@ export default function HomeScreen({navigation, route}) {
       getMyBoxData();
     }
     getAllApiData();
-    if (route.anem === 'Home') {
-      const interval = setInterval(
+    let interval = 0;
+    if (route.name === 'Home') {
+      interval = setInterval(
         () => getAllApiData(),
         1000 * homeDetails.MobileAppPageRefreshInterval || 10000,
       );

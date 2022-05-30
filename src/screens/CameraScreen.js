@@ -36,7 +36,8 @@ const CameraScreen = ({navigation, route}) => {
   const {loggedMember} = useSelector(state => state.AuthState);
   const {homeDetails} = useSelector(state => state.HomeState);
   const [refreshing, setRefreshing] = useState(false);
-  const [rotation, setRotation] = useState(0);
+  const [internalRotation, setInternalRotation] = useState(0);
+  const [externalRotation, setExternalRotation] = useState(0);
 
   const onViewRef = useRef(({changed}) => {
     if (changed[0].isViewable) {
@@ -74,23 +75,34 @@ const CameraScreen = ({navigation, route}) => {
   const scrollToIndex = index => {
     flatListRef.current?.scrollToIndex({animated: true, index: index});
   };
-  const rotateRight = () => {
-    let newRotation = rotation + 90;
+
+  const rotateRight = internalOrExternal => {
+    let newRotation =
+      internalOrExternal === 'internal'
+        ? internalRotation + 90
+        : externalRotation + 90;
     if (newRotation >= 360) {
       newRotation = -360;
     }
-    setRotation(newRotation);
+    internalOrExternal === 'internal'
+      ? setInternalRotation(newRotation)
+      : setExternalRotation(newRotation);
   };
 
-  const rotateleft = () => {
-    let newRotation = rotation - 90;
+  const rotateLeft = internalOrExternal => {
+    let newRotation =
+      internalOrExternal === 'internal'
+        ? internalRotation - 90
+        : externalRotation - 90;
     if (newRotation >= 360) {
       newRotation = -360;
     }
-    setRotation(newRotation);
+    internalOrExternal === 'internal'
+      ? setInternalRotation(newRotation)
+      : setExternalRotation(newRotation);
   };
 
-  const renderItem = ({item, index}) => {
+  const renderItemInternal = ({item, index}) => {
     return (
       <TouchableOpacity onPress={() => {}} activeOpacity={1}>
         <View style={{flex: 1}}>
@@ -99,18 +111,50 @@ const CameraScreen = ({navigation, route}) => {
             doubleTapMaxZoom={4}
             doubleTapZoomStep={1}
             springConfig={{tension: 15, friction: 7}}
-            swipeToDismiss={true}>
+            swipeToDismiss={true}
+            renderHeader={close => (
+              <>
+                <TouchableOpacity
+                  onPress={() => {
+                    setInternalRotation(0);
+                    close();
+                  }}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      borderWidth: 1,
+                      borderColor: 'white',
+                      padding: 8,
+                      borderRadius: 3,
+                      textAlign: 'center',
+                      margin: 10,
+                      alignSelf: 'flex-end',
+                    }}>
+                    Close
+                  </Text>
+                </TouchableOpacity>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    margin: 10,
+                  }}>
+                  <Feather
+                    name="rotate-ccw"
+                    size={23}
+                    color={COLORS.secondary}
+                    onPress={() => rotateLeft('internal')}
+                  />
+                  <Feather
+                    name="rotate-cw"
+                    size={23}
+                    color={COLORS.secondary}
+                    onPress={() => rotateRight('internal')}
+                  />
+                </View>
+              </>
+            )}>
             <>
-              {/* <Feather
-                name="rotate-ccw"
-                size={23}
-                color={COLORS.primary}
-                onPress={rotateleft}
-                style={{
-                  flexDirection: 'row',
-                  alignSelf: 'flex-end',
-                  marginRight: 10,
-                }}></Feather> */}
               <Image
                 style={{
                   borderRadius: 4,
@@ -119,7 +163,7 @@ const CameraScreen = ({navigation, route}) => {
                   resizeMode: 'cover',
                   marginTop: 5,
                   marginBottom: 5,
-                  transform: [{rotate: `${rotation}deg`}],
+                  transform: [{rotate: `${internalRotation}deg`}],
                 }}
                 source={
                   item.Filename
@@ -129,16 +173,93 @@ const CameraScreen = ({navigation, route}) => {
                     : require('../../assets/images/no-image.jpg')
                 }
               />
-              <Feather
-                name="rotate-cw"
-                size={23}
-                color={COLORS.primary}
-                onPress={rotateleft}
+            </>
+          </Lightbox>
+        </View>
+        <Text
+          style={{
+            textAlign: 'center',
+            color: '#000000',
+            fontWeight: 'bold',
+            lineHeight: 35,
+          }}>
+          {item.DateTimeX}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderItemExternal = ({item, index}) => {
+    return (
+      <TouchableOpacity onPress={() => {}} activeOpacity={1}>
+        <View style={{flex: 1}}>
+          <Lightbox
+            backgroundColor="black"
+            doubleTapMaxZoom={4}
+            doubleTapZoomStep={1}
+            springConfig={{tension: 15, friction: 7}}
+            swipeToDismiss={false}
+            renderHeader={close => (
+              <>
+                <TouchableOpacity
+                  onPress={() => {
+                    setExternalRotation(0);
+                    close();
+                  }}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      borderWidth: 1,
+                      borderColor: 'white',
+                      padding: 8,
+                      borderRadius: 3,
+                      textAlign: 'center',
+                      margin: 10,
+                      alignSelf: 'flex-end',
+                    }}>
+                    Close
+                  </Text>
+                </TouchableOpacity>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    margin: 10,
+                  }}>
+                  <Feather
+                    name="rotate-ccw"
+                    size={23}
+                    color={COLORS.secondary}
+                    onPress={() => rotateLeft('external')}
+                  />
+                  <Feather
+                    name="rotate-cw"
+                    size={23}
+                    color={COLORS.secondary}
+                    onPress={() => rotateRight('external')}
+                  />
+                </View>
+              </>
+            )}>
+            <>
+              <Image
                 style={{
-                  flexDirection: 'row',
-                  alignSelf: 'flex-end',
-                  marginRight: 10,
-                }}></Feather>
+                  borderRadius: 4,
+                  width: 400,
+                  height: 200,
+                  resizeMode: 'cover',
+                  marginTop: 5,
+                  marginBottom: 5,
+                  transform: [{rotate: `${externalRotation}deg`}],
+                }}
+                source={
+                  item.Filename
+                    ? {
+                        uri: item.Filename,
+                      }
+                    : require('../../assets/images/no-image.jpg')
+                }
+              />
             </>
           </Lightbox>
         </View>
@@ -208,7 +329,7 @@ const CameraScreen = ({navigation, route}) => {
                     <FlatList
                       data={homeDetails.Photos}
                       keyExtractor={(item, index) => index.toString()}
-                      renderItem={renderItem}
+                      renderItem={renderItemInternal}
                       horizontal
                       showsHorizontalScrollIndicator={false}
                       pagingEnabled
@@ -261,20 +382,10 @@ const CameraScreen = ({navigation, route}) => {
 
                 {homeDetails.ExternalPhotos.length ? (
                   <>
-                    <Feather
-                      name="rotate-ccw"
-                      size={23}
-                      color={COLORS.primary}
-                      onPress={rotateleft}
-                      style={{
-                        flexDirection: 'row',
-                        alignSelf: 'flex-end',
-                        marginRight: 10,
-                      }}></Feather>
                     <FlatList
                       data={homeDetails.ExternalPhotos}
                       keyExtractor={(item, index) => index.toString()}
-                      renderItem={renderItem}
+                      renderItem={renderItemExternal}
                       horizontal
                       showsHorizontalScrollIndicator={false}
                       pagingEnabled
