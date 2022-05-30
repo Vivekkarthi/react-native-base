@@ -23,7 +23,7 @@ const CustomDrawer = props => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      Alert.alert('DOORBOX App!', 'Are you sure you want to logout?', [
+      Alert.alert('DOORBOX App!', 'Are you sure, you want to logout?', [
         {
           text: 'Cancel',
           onPress: () => null,
@@ -54,9 +54,10 @@ const CustomDrawer = props => {
             <Text
               style={{
                 marginLeft: 20,
-                color: '#000',
+                color: '#0059b3',
                 fontSize: 18,
                 fontFamily: 'Roboto-Medium',
+                fontWeight: 'bold',
                 marginBottom: 5,
               }}>
               Name: {loggedMember.LoginNAME}
@@ -84,7 +85,7 @@ const CustomDrawer = props => {
       </DrawerContentScrollView>
       <View style={{padding: 20, borderTopWidth: 1, borderTopColor: '#ccc'}}>
         <TouchableOpacity
-          style={{paddingVertical: 15}}
+          style={{paddingVertical: 30}}
           onPress={() => logoutUser()}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Ionicons name="exit-outline" size={22} color={'#f17012'} />

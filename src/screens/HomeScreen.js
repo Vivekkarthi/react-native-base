@@ -261,14 +261,14 @@ export default function HomeScreen({navigation, route}) {
                           paddingTop: 6,
                           color: COLORS.white,
                         }}>
-                        <Feather name="box" size={22} /> Box Status
+                        <Feather name="box" size={16} /> Box Status
                       </Text>
                       <Card.Cover
                         style={{
                           alignSelf: 'center',
                           width: 90,
                           height: 85,
-                          top: 10,
+                          top: 15,
                         }}
                         source={
                           homeDetails.PackageState === 1
@@ -281,7 +281,7 @@ export default function HomeScreen({navigation, route}) {
                           textAlign: 'center',
                           color: '#000000',
                           fontWeight: 'bold',
-                          top: 10,
+                          top: 20,
                           lineHeight: 35,
                         }}>
                         {/* {moment(homeDetails.LastSyncDate).format(
@@ -292,7 +292,8 @@ export default function HomeScreen({navigation, route}) {
                       <Text
                         style={{
                           textAlign: 'center',
-                          top: 10,
+                          top: 20,
+                          fontSize: 16,
                           color:
                             homeDetails.PackageState === 1
                               ? '#0DA728'
@@ -318,7 +319,7 @@ export default function HomeScreen({navigation, route}) {
                           paddingBottom: 6,
                           paddingTop: 6,
                         }}>
-                        <Feather name="camera" size={22} /> Internal Camera
+                        <Feather name="camera" size={16} /> Internal Camera
                       </Text>
                       <Card.Cover
                         style={{
@@ -378,7 +379,11 @@ export default function HomeScreen({navigation, route}) {
                       'MMMM DD, YYYY',
                     )}
                     // subtitle={'subtitle'}
-                    titleStyle={{fontSize: 14, alignSelf: 'center'}}
+                    titleStyle={{
+                      fontSize: 16,
+                      alignSelf: 'center',
+                      color: '#0059b3',
+                    }}
                     subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
                     left={props => (
                       <Ionicons

@@ -119,7 +119,7 @@ const AppStack = () => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      Alert.alert('DOORBOX App!', 'Are you sure you want to logout?', [
+      Alert.alert('DOORBOX App!', 'Are you sure, you want to logout?', [
         {
           text: 'Cancel',
           onPress: () => null,
@@ -156,12 +156,105 @@ const AppStack = () => {
         }}
       />
       <Drawer.Screen
+        name="Contact Us"
+        component={ContactStack}
+        options={{
+          headerShown: true,
+          drawerIcon: ({color}) => (
+            <Feather name="file" size={22} color={color} />
+          ),
+          headerTitleAlign: 'center',
+          headerTitle: () => (
+            <Image
+              source={require('../../assets/images/icon.png')}
+              style={{
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
+          ),
+          headerRight: () => (
+            <View
+              style={{
+                paddingRight: 16,
+              }}>
+              <TouchableOpacity onPress={() => logoutUser()}>
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
+              </TouchableOpacity>
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Delivery"
+        component={PackageStack}
+        options={{
+          headerShown: true,
+          drawerIcon: ({color}) => (
+            <Feather name="package" size={22} color={color} />
+          ),
+          headerTitleAlign: 'center',
+          headerTitle: () => (
+            <Image
+              source={require('../../assets/images/icon.png')}
+              style={{
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
+          ),
+          headerRight: () => (
+            <View
+              style={{
+                paddingRight: 16,
+              }}>
+              <TouchableOpacity onPress={() => logoutUser()}>
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
+              </TouchableOpacity>
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
         name="Images"
         component={CameraScreen}
         options={{
           headerShown: true,
           drawerIcon: ({color}) => (
             <Feather name="camera" size={22} color={color} />
+          ),
+          headerTitleAlign: 'center',
+          headerTitle: () => (
+            <Image
+              source={require('../../assets/images/icon.png')}
+              style={{
+                width: 185,
+                height: 88,
+              }}
+              imageStyle={{borderRadius: 25}}
+            />
+          ),
+          headerRight: () => (
+            <View
+              style={{
+                paddingRight: 16,
+              }}>
+              <TouchableOpacity onPress={() => logoutUser()}>
+                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
+              </TouchableOpacity>
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="   Mobile Notifications"
+        component={MobileNotificationsScreen}
+        options={{
+          headerShown: true,
+          drawerIcon: ({color}) => (
+            <Foundation name="mail" size={24} color={color} style={{left: 6}} />
           ),
           headerTitleAlign: 'center',
           headerTitle: () => (
@@ -249,73 +342,6 @@ const AppStack = () => {
         }}
       />
       <Drawer.Screen
-        name="   Mobile Notifications"
-        component={MobileNotificationsScreen}
-        options={{
-          headerShown: true,
-          drawerIcon: ({color}) => (
-            <Foundation
-              name="mobile-signal"
-              size={24}
-              color={color}
-              style={{left: 6}}
-            />
-          ),
-          headerTitleAlign: 'center',
-          headerTitle: () => (
-            <Image
-              source={require('../../assets/images/icon.png')}
-              style={{
-                width: 185,
-                height: 88,
-              }}
-              imageStyle={{borderRadius: 25}}
-            />
-          ),
-          headerRight: () => (
-            <View
-              style={{
-                paddingRight: 16,
-              }}>
-              <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
-              </TouchableOpacity>
-            </View>
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Delivery"
-        component={PackageStack}
-        options={{
-          headerShown: true,
-          drawerIcon: ({color}) => (
-            <Feather name="package" size={22} color={color} />
-          ),
-          headerTitleAlign: 'center',
-          headerTitle: () => (
-            <Image
-              source={require('../../assets/images/icon.png')}
-              style={{
-                width: 185,
-                height: 88,
-              }}
-              imageStyle={{borderRadius: 25}}
-            />
-          ),
-          headerRight: () => (
-            <View
-              style={{
-                paddingRight: 16,
-              }}>
-              <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
-              </TouchableOpacity>
-            </View>
-          ),
-        }}
-      />
-      <Drawer.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
@@ -353,37 +379,6 @@ const AppStack = () => {
           headerShown: true,
           drawerIcon: ({color}) => (
             <Feather name="users" size={22} color={color} />
-          ),
-          headerTitleAlign: 'center',
-          headerTitle: () => (
-            <Image
-              source={require('../../assets/images/icon.png')}
-              style={{
-                width: 185,
-                height: 88,
-              }}
-              imageStyle={{borderRadius: 25}}
-            />
-          ),
-          headerRight: () => (
-            <View
-              style={{
-                paddingRight: 16,
-              }}>
-              <TouchableOpacity onPress={() => logoutUser()}>
-                <Ionicons name="exit-outline" size={27} color={'#f17012'} />
-              </TouchableOpacity>
-            </View>
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Contact Us"
-        component={ContactStack}
-        options={{
-          headerShown: true,
-          drawerIcon: ({color}) => (
-            <Feather name="file" size={22} color={color} />
           ),
           headerTitleAlign: 'center',
           headerTitle: () => (

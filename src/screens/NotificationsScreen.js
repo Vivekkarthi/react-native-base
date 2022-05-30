@@ -106,6 +106,7 @@ const NotificationsScreen = ({navigation, route}) => {
                   fontSize: 14,
                   alignSelf: 'center',
                   justifyContent: 'center',
+                  color: '#0059b3',
                 }}
                 // subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
                 left={props => (

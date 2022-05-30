@@ -9,7 +9,7 @@ export default function CustomHeader({navigation}) {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      Alert.alert('DOORBOX App!', 'Are you sure you want to logout?', [
+      Alert.alert('DOORBOX App!', 'Are you sure, you want to logout?', [
         {
           text: 'Cancel',
           onPress: () => null,

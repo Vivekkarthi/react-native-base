@@ -50,7 +50,7 @@ const NotificationUI = ({
             width: '100%',
           }}>
           <Foundation
-            name="mobile-signal"
+            name="mail"
             size={16}
             style={{textAlign: 'center', justifyContent: 'center'}}
             color={COLORS.white}>
@@ -63,9 +63,10 @@ const NotificationUI = ({
             'MMMM DD, YYYY',
           )}`}
           titleStyle={{
-            fontSize: 14,
+            fontSize: 16,
             alignSelf: 'center',
             justifyContent: 'center',
+            color: '#0059b3',
           }}
           subtitleStyle={{fontSize: 16, alignSelf: 'center'}}
           left={props => (
@@ -107,14 +108,14 @@ const NotificationUI = ({
                 paddingLeft: 16,
               }}>
               <View style={{flex: 1, flexDirection: 'row'}}>
-                <Avatar.Icon
+                {/* <Foundation
                   size={42}
                   color={COLORS.white}
-                  icon="notification-clear-all"
+                  icon="mail"
                   style={{
                     backgroundColor: getColorCode(notification.item.STATUSX),
                   }}
-                />
+                /> */}
                 <View
                   style={{
                     flexDirection: 'column',
@@ -125,13 +126,6 @@ const NotificationUI = ({
                       fontSize: 16,
                       color: '#333',
                       fontWeight: 'bold',
-                    }}>
-                    {notification.item.MsgTitle}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: '#333',
                     }}>
                     {notification.item.MessageX}
                   </Text>

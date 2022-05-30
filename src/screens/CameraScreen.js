@@ -164,6 +164,7 @@ const CameraScreen = ({navigation, route}) => {
                   marginTop: 5,
                   marginBottom: 5,
                   transform: [{rotate: `${internalRotation}deg`}],
+                  //transform: [{rotateY: '180deg'}],
                 }}
                 source={
                   item.Filename
@@ -251,6 +252,7 @@ const CameraScreen = ({navigation, route}) => {
                   marginTop: 5,
                   marginBottom: 5,
                   transform: [{rotate: `${externalRotation}deg`}],
+                  //transform: [{rotateX: '180deg'}],
                 }}
                 source={
                   item.Filename
@@ -317,7 +319,7 @@ const CameraScreen = ({navigation, route}) => {
                   style={{
                     textAlign: 'center',
                     fontSize: 18,
-                    backgroundColor: COLORS.primary,
+                    backgroundColor: '#178b93',
                     paddingBottom: 10,
                     paddingTop: 9,
                     color: COLORS.white,
@@ -372,7 +374,7 @@ const CameraScreen = ({navigation, route}) => {
                   style={{
                     textAlign: 'center',
                     fontSize: 18,
-                    backgroundColor: COLORS.primary,
+                    backgroundColor: '#178b93',
                     color: COLORS.white,
                     paddingBottom: 10,
                     paddingTop: 9,

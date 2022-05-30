@@ -11,6 +11,7 @@ import {
 import {FormProvider, useForm} from 'react-hook-form';
 // import {Button} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 import {useIsFocused} from '@react-navigation/native';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Loader} from '../components/Loader';
@@ -284,8 +285,8 @@ const ProfileScreen = ({navigation, route}) => {
             </View> */}
             <View style={styles.MainContainer}>
               <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
-              <Ionicons
-                name="ios-person-circle-outline"
+              <Feather
+                name="user"
                 size={23}
                 color={COLORS.primary}
                 style={{
@@ -294,7 +295,7 @@ const ProfileScreen = ({navigation, route}) => {
                   marginBottom: 20,
                 }}>
                 <Text style={styles.f18}> Profile</Text>
-              </Ionicons>
+              </Feather>
             </View>
             {loader ? <Loader /> : null}
 

@@ -66,15 +66,15 @@ const MobileNotificationsScreen = ({navigation, route}) => {
   };
 
   const getPreviousNotify = () => {
+    let numDays = 1;
+    let now = new Date(notifyDate.fromDate);
+    now.setDate(now.getDate() - numDays);
     setNotifyDate(prevState => ({
       ...prevState,
-      toDate: notifyDate.fromDate,
-      fromDate: moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks'),
+      toDate: now,
+      fromDate: moment(now).subtract(1, 'weeks'),
     }));
-    getMobileNotifyData(
-      moment(new Date(notifyDate.fromDate)).subtract(1, 'weeks'),
-      notifyDate.fromDate,
-    );
+    getMobileNotifyData(moment(now).subtract(1, 'weeks'), now);
   };
 
   useEffect(() => {
@@ -93,7 +93,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
           <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
           {loader ? <Loader /> : null}
           <Foundation
-            name="mobile-signal"
+            name="mail"
             size={23}
             color={COLORS.primary}
             style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
@@ -112,6 +112,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                   fontSize: 14,
                   alignSelf: 'center',
                   justifyContent: 'center',
+                  color: '#0059b3',
                 }}
                 // subtitleStyle={{fontSize: 12, alignSelf: 'center'}}
                 left={props => (
@@ -154,7 +155,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                       paddingLeft: 16,
                     }}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
-                      <Avatar.Icon
+                      {/* <Avatar.Icon
                         size={42}
                         color={COLORS.white}
                         icon="notification-clear-all"
@@ -163,7 +164,7 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                             mobilenotification.item.STATUSX,
                           ),
                         }}
-                      />
+                      /> */}
                       <View
                         style={{
                           flexDirection: 'column',
@@ -175,15 +176,15 @@ const MobileNotificationsScreen = ({navigation, route}) => {
                             color: '#333',
                             fontWeight: 'bold',
                           }}>
-                          {mobilenotification.item.MsgTitle}
+                          {mobilenotification.item.MessageX}
                         </Text>
-                        <Text
+                        {/* <Text
                           style={{
                             fontSize: 14,
                             color: '#333',
                           }}>
                           {mobilenotification.item.MessageX}
-                        </Text>
+                        </Text> */}
                         <Text
                           style={{
                             fontSize: 14,

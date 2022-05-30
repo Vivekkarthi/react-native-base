@@ -66,7 +66,7 @@ const ContactDetailScreen = ({navigation, route}) => {
           size={23}
           color={COLORS.primary}
           style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-          <Text style={styles.f18}> Contact Details</Text>
+          <Text style={styles.f18}> Contact Us</Text>
         </Ionicons>
 
         <Button
@@ -202,7 +202,7 @@ const ContactDetailScreen = ({navigation, route}) => {
             style={{
               alignSelf: 'flex-start',
               marginTop: 20,
-              backgroundColor: 'green',
+              backgroundColor: COLORS.primary,
               width: 88,
             }}>
             Save

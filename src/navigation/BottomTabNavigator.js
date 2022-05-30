@@ -19,7 +19,7 @@ const HomeStack = ({navigation}) => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      Alert.alert('DOORBOX App!', 'Are you sure you want to logout?', [
+      Alert.alert('DOORBOX App!', 'Are you sure, you want to logout?', [
         {
           text: 'Cancel',
           onPress: () => null,
@@ -79,7 +79,7 @@ const SettingStack = ({navigation}) => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      Alert.alert('DOORBOX App!', 'Are you sure you want to logout?', [
+      Alert.alert('DOORBOX App!', 'Are you sure, you want to logout?', [
         {
           text: 'Cancel',
           onPress: () => null,
@@ -138,7 +138,7 @@ const PackageStack = ({navigation}) => {
   const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      Alert.alert('DOORBOX App!', 'Are you sure you want to logout?', [
+      Alert.alert('DOORBOX App!', 'Are you sure, you want to logout?', [
         {
           text: 'Cancel',
           onPress: () => null,

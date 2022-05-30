@@ -560,7 +560,7 @@ export default function MyboxScreen({navigation, route}) {
                     fontSize: 18,
                     marginTop: 5,
                     marginBottom: 8,
-                    backgroundColor: COLORS.gray,
+                    backgroundColor: COLORS.primary,
                     color: COLORS.white,
                     paddingTop: 9,
                     paddingBottom: 10,
@@ -605,6 +605,7 @@ export default function MyboxScreen({navigation, route}) {
                                 fontSize: 16,
                                 opacity: 0.5,
                                 marginBottom: SIZES.base,
+                                fontWeight: 'bold',
                                 color: '#0d8e8a',
                               }}>
                               Password

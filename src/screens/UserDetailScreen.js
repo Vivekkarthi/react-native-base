@@ -227,7 +227,7 @@ const UserDetailScreen = ({navigation, route}) => {
             <View style={styles.MainContainer}>
               <AppStatusBar colorPalete="WHITE" bg={COLORS.white} />
               <Ionicons
-                name="ios-person-circle-outline"
+                name="ios-people-outline"
                 size={23}
                 color={COLORS.primary}
                 style={{

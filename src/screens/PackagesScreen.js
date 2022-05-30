@@ -125,6 +125,7 @@ const PackagesScreen = ({navigation, route}) => {
                   fontSize: 14,
                   alignSelf: 'center',
                   justifyContent: 'center',
+                  color: '#0059b3',
                 }}
                 // subtitleStyle={{fontSize: 12, alignSelf: 'center'}}
                 left={props => (

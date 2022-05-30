@@ -147,12 +147,12 @@ const ContactScreen = ({navigation, route}) => {
               flexDirection: 'row',
               justifyContent: 'flex-end',
             }}>
-            <Button
+            {/* <Button
               style={{margin: 5}}
               mode="contained"
               onPress={() => Linking.openURL('http://doorbox.ai/')}>
               Manual
-            </Button>
+            </Button> */}
             <Button
               style={{margin: 5}}
               mode="contained"
@@ -168,7 +168,7 @@ const ContactScreen = ({navigation, route}) => {
                 'MMMM DD, YYYY',
               )}`}
               // subtitle={moment(new Date(notifyDate.toDate)).format('MMMM DD, YYYY')}
-              titleStyle={{fontSize: 14, alignSelf: 'center'}}
+              titleStyle={{fontSize: 14, alignSelf: 'center', color: '#0059b3'}}
               subtitleStyle={{fontSize: 14, alignSelf: 'center'}}
               left={props => (
                 <Ionicons
