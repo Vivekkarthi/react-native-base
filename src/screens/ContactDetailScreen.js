@@ -41,20 +41,28 @@ const ContactDetailScreen = ({navigation, route}) => {
   });
   const onsubmit = () => {
     setBtnDisable(false);
-    addNewTicket(loggedMember, supportValue, supportTextValue, hasSupportData)
-      .then(resp => {
-        if (resp === 'Success') {
-          setBtnDisable(true);
-          navigation.navigate('Contacts', {reload: true});
-        } else {
-          setBtnDisable(true);
-          setSupportError({
-            success: 2,
-            message: 'Something went wrong, Please try again.',
-          });
-        }
-      })
-      .catch(e => console.log(e));
+    if (supportTextValue && supportValue) {
+      addNewTicket(loggedMember, supportValue, supportTextValue, hasSupportData)
+        .then(resp => {
+          if (resp === 'Success') {
+            setBtnDisable(true);
+            navigation.navigate('Contacts', {reload: true});
+          } else {
+            setBtnDisable(true);
+            setSupportError({
+              success: 2,
+              message: 'Something went wrong, Please try again.',
+            });
+          }
+        })
+        .catch(e => console.log(e));
+    } else {
+      Toast.showWithGravity(
+        `Complete the form without inputs`,
+        Toast.LONG,
+        Toast.BOTTOM,
+      );
+    }
   };
 
   return (
@@ -163,6 +171,7 @@ const ContactDetailScreen = ({navigation, route}) => {
             disabled={!isEmpty(hasSupportData) ? true : false}
           />
           <TextInput
+            maxLength={140}
             multiline={true}
             numberOfLines={10}
             value={supportTextValue}

@@ -1,13 +1,18 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {View, SafeAreaView, Text, FlatList, RefreshControl} from 'react-native';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  FlatList,
+  RefreshControl,
+  Keyboard,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {Card, Button} from 'react-native-paper';
 import RNSpeedometer from 'react-native-speedometer';
 import {yupResolver} from '@hookform/resolvers/yup';
-//import Tooltip from 'react-native-walkthrough-tooltip';
-//import {Tooltip} from 'native-base';
 
 import {COLORS, SIZES} from '../constants';
 import AppStatusBar from '../components/AppStatusBar';
@@ -29,37 +34,33 @@ import {
 } from '../redux/actions/BoxState';
 import Toast from 'react-native-simple-toast';
 import styles from '../styles/AppStyles';
-import {useIsFocused} from '@react-navigation/native';
 import {useForm, FormProvider} from 'react-hook-form';
 import {controllerPasswordSchema} from '../utils/ValidateSchema';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import {isEmpty} from 'lodash';
-import {green100} from 'react-native-paper/lib/typescript/styles/colors';
 
 export default function MyboxScreen({navigation, route}) {
   const dispatch = useDispatch();
-  const isFocused = useIsFocused();
 
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
   const [onTakePhoto, setOnTakePhoto] = useState({
     internal: true,
     external: true,
   });
   const {loggedMember} = useSelector(state => state.AuthState);
   const {boxDetails} = useSelector(state => state.BoxState);
-  const [controllerPassword, setControllerPassword] = useState({
-    Password: '',
-  });
   const [passwordError, setPasswordError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [pwdVisible, setPwdVisible] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [passcode, setPasscode] = useState(boxDetails.PassCodeX);
+  const PasswordRef = useRef(null);
 
   const methods = useForm({
     criteriaMode: 'all',
     defaultValues: {
-      Password: boxDetails.PassCodeX !== '' ? boxDetails.PassCodeX : '',
+      Password: passcode,
     },
     mode: 'all',
     reValidateMode: 'onChange',
@@ -70,6 +71,8 @@ export default function MyboxScreen({navigation, route}) {
     handleSubmit,
     formState: {errors},
   } = methods;
+
+  console.log('5555555555555555555555555555555555555555555', passcode);
 
   const getMyBoxData = useCallback(() => {
     setLoader(true);
@@ -82,6 +85,9 @@ export default function MyboxScreen({navigation, route}) {
         }));
         if (resp.SyncDateTime) {
           //Good
+          console.log('##########################################', resp);
+          setPasscode(resp.PassCodeX);
+          PasswordRef.current.value = resp.PassCodeX;
           dispatch(saveMyBoxDetails(resp));
           setLoader(false);
         } else {
@@ -193,11 +199,14 @@ export default function MyboxScreen({navigation, route}) {
   };
 
   const onResetSubmit = async user => {
+    Keyboard.dismiss();
+    PasswordRef.current.blur();
     setLoader(true);
     const formData = {
       Password: user.Password,
     };
-    setControllerPassword(() => formData);
+
+    setPasscode(user.Password);
     updateControllerPassword(user, loggedMember.ControllerID)
       .then(async resp => {
         if (resp === 'Success') {
@@ -223,11 +232,13 @@ export default function MyboxScreen({navigation, route}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleInputTextChange = newText => {
+    setPasscode(newText);
+  };
+
   useEffect(() => {
-    if (isFocused) {
-      getMyBoxData();
-    }
-  }, [getMyBoxData, isFocused]);
+    getMyBoxData();
+  }, [boxDetails.PassCodeX, getMyBoxData]);
 
   return (
     <>
@@ -421,13 +432,20 @@ export default function MyboxScreen({navigation, route}) {
                         justifyContent: 'center',
                         width: '48%',
                         height: 160,
-                      }}>
+                      }}
+                      onPress={() =>
+                        Toast.showWithGravity(
+                          `The current Doorbox WIFI is ${boxDetails.WIFI} `,
+                          Toast.LONG,
+                          Toast.BOTTOM,
+                        )
+                      }>
                       <View style={{height: '25%', paddingTop: 2}}>
                         <Button>WIFI</Button>
                       </View>
                       <View style={{height: '75%', marginTop: -2}}>
                         <RNSpeedometer
-                          value={boxDetails.WIFI ? boxDetails.WIFI : 0}
+                          value={boxDetails.WIFI ? Number(boxDetails.WIFI) : 0}
                           size={160}
                           wrapperStyle={{
                             alignSelf: 'center',
@@ -442,7 +460,14 @@ export default function MyboxScreen({navigation, route}) {
                         justifyContent: 'center',
                         width: '48%',
                         height: 160,
-                      }}>
+                      }}
+                      onPress={() =>
+                        Toast.showWithGravity(
+                          `The current Doorbox Battery is ${boxDetails.Battery} `,
+                          Toast.LONG,
+                          Toast.BOTTOM,
+                        )
+                      }>
                       <View style={{height: '25%'}}>
                         <Button>Battery</Button>
                         {/* <Tooltip label="Hey, I'm here!" openDelay={500}>
@@ -485,7 +510,14 @@ export default function MyboxScreen({navigation, route}) {
                     justifyContent: 'center',
                     width: '48%',
                     height: 160,
-                  }}>
+                  }}
+                  onPress={() =>
+                    Toast.showWithGravity(
+                      `The current Doorbox Temperature is ${boxDetails.TEMPER} `,
+                      Toast.LONG,
+                      Toast.BOTTOM,
+                    )
+                  }>
                   <View style={{height: '25%'}}>
                     <Button>Temperature</Button>
                     {/* <Tooltip label="Hey, I'm here!" openDelay={500}>
@@ -497,12 +529,12 @@ export default function MyboxScreen({navigation, route}) {
                         alignSelf: 'center',
                       }}
                       name={getTemperatureType(
-                        boxDetails.Battery
+                        boxDetails.TEMPER
                           ? Math.round(boxDetails.TEMPER / 10) * 10
                           : 0,
                       )}
                       color={getTemperatureTypeColor(
-                        boxDetails.Battery
+                        boxDetails.TEMPER
                           ? Math.round(boxDetails.TEMPER / 10) * 10
                           : 0,
                       )}
@@ -520,41 +552,7 @@ export default function MyboxScreen({navigation, route}) {
                     {boxDetails.TEMPER ? boxDetails.TEMPER : 0}
                   </Text>
                 </Card>
-                {/* <View
-                  style={{
-                    paddingBottom: 10,
-                    flexDirection: 'row',
-                    alignSelf: 'center',
-                  }}>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
-                    <Card
-                      style={{
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        width: '48%',
-                        height: 160,
-                      }}>
-                      <View style={{height: '25%', paddingTop: 2}}>
-                        <Button>Temperature</Button>
-                      </View>
-                      <View style={{height: '75%', marginTop: -2}}>
-                        <RNSpeedometer
-                          value={boxDetails.TEMPER ? boxDetails.TEMPER : 0}
-                          size={160}
-                          wrapperStyle={{
-                            alignSelf: 'center',
-                          }}
-                          labelNoteStyle={{display: 'none'}}
-                        />
-                      </View>
-                    </Card>
-                  </View>
-                </View> */}
+
                 <Text
                   style={{
                     textAlign: 'center',
@@ -568,13 +566,6 @@ export default function MyboxScreen({navigation, route}) {
                   }}>
                   Reset Controller Password
                 </Text>
-                {/* <Tooltip
-                  isVisible={this.state.toolTipVisible}
-                  content={<Text>Check this out!</Text>}
-                  placement="top"
-                  onClose={() =>
-                    this.setState({toolTipVisible: false})
-                  }></Tooltip> */}
 
                 <View
                   style={{
@@ -613,11 +604,7 @@ export default function MyboxScreen({navigation, route}) {
                             </Text>
                             <FormInput
                               iconType="lock"
-                              defaultValues={
-                                boxDetails.PassCodeX !== ''
-                                  ? boxDetails.PassCodeX
-                                  : controllerPassword.Password
-                              }
+                              defaultValues={passcode}
                               textLabel={'Password'}
                               textName={'Password'}
                               keyboardType="default"
@@ -628,11 +615,17 @@ export default function MyboxScreen({navigation, route}) {
                               }}
                               showPassword={showPassword}
                               pwdVisible={pwdVisible}
+                              value={passcode}
+                              onChangeText={() => {
+                                handleInputTextChange();
+                                setPasswordError(null);
+                              }}
+                              refs={PasswordRef}
                             />
                           </View>
                         </FormProvider>
 
-                        {!isEmpty(passwordError) ? (
+                        {passwordError !== '6' ? (
                           <Text
                             style={{
                               fontSize: 16,

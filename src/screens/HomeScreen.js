@@ -181,9 +181,11 @@ export default function HomeScreen({navigation, route}) {
     let interval = 0;
     if (route.name === 'Home') {
       interval = setInterval(
-        () => getAllApiData(),
+        getAllApiData,
         1000 * homeDetails.MobileAppPageRefreshInterval || 10000,
       );
+    } else {
+      clearInterval(interval);
     }
 
     return () => {
