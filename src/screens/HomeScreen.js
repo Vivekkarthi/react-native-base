@@ -255,7 +255,7 @@ export default function HomeScreen({navigation, route}) {
                       <Text
                         style={{
                           textAlign: 'center',
-                          fontSize: 18,
+                          fontSize: 16,
                           backgroundColor: '#178b93',
                           paddingBottom: 6,
                           paddingTop: 6,
@@ -313,7 +313,7 @@ export default function HomeScreen({navigation, route}) {
                       <Text
                         style={{
                           textAlign: 'center',
-                          fontSize: 18,
+                          fontSize: 16,
                           backgroundColor: '#178b93',
                           color: COLORS.white,
                           paddingBottom: 6,

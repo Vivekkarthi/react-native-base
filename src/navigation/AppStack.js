@@ -249,12 +249,12 @@ const AppStack = () => {
         }}
       />
       <Drawer.Screen
-        name="   Mobile Notifications"
+        name=" Mobile Notifications"
         component={MobileNotificationsScreen}
         options={{
           headerShown: true,
           drawerIcon: ({color}) => (
-            <Foundation name="mail" size={24} color={color} style={{left: 6}} />
+            <Foundation name="mail" size={24} color={color} style={{left: 2}} />
           ),
           headerTitleAlign: 'center',
           headerTitle: () => (

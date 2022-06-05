@@ -35,6 +35,7 @@ import {controllerPasswordSchema} from '../utils/ValidateSchema';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import {isEmpty} from 'lodash';
+import {green100} from 'react-native-paper/lib/typescript/styles/colors';
 
 export default function MyboxScreen({navigation, route}) {
   const dispatch = useDispatch();
@@ -202,7 +203,7 @@ export default function MyboxScreen({navigation, route}) {
         if (resp === 'Success') {
           //Good
           setLoader(false);
-          setPasswordError('Controller password updated');
+          setPasswordError('Controller password has been updated');
         } else {
           // Not Good
           setLoader(false);
@@ -637,7 +638,10 @@ export default function MyboxScreen({navigation, route}) {
                               fontSize: 16,
                               fontFamily: 'Lato-Regular',
                               textAlign: 'center',
-                              color: '#D83F50',
+                              color:
+                                passwordError === 'Success'
+                                  ? '#D83F50'
+                                  : '#0DA728',
                             }}>
                             {passwordError}
                           </Text>
