@@ -60,7 +60,7 @@ export default function MyboxScreen({navigation, route}) {
   const methods = useForm({
     criteriaMode: 'all',
     defaultValues: {
-      Password: passcode,
+      Password: '',
     },
     mode: 'all',
     reValidateMode: 'onChange',
@@ -69,10 +69,9 @@ export default function MyboxScreen({navigation, route}) {
 
   const {
     handleSubmit,
+    setValue,
     formState: {errors},
   } = methods;
-
-  console.log('5555555555555555555555555555555555555555555', passcode);
 
   const getMyBoxData = useCallback(() => {
     setLoader(true);
@@ -85,9 +84,8 @@ export default function MyboxScreen({navigation, route}) {
         }));
         if (resp.SyncDateTime) {
           //Good
-          console.log('##########################################', resp);
+          setValue('Password', resp.PassCodeX);
           setPasscode(resp.PassCodeX);
-          PasswordRef.current.value = resp.PassCodeX;
           dispatch(saveMyBoxDetails(resp));
           setLoader(false);
         } else {
@@ -101,7 +99,7 @@ export default function MyboxScreen({navigation, route}) {
         setLoader(false);
         Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
       });
-  }, [dispatch, loggedMember.ControllerID, loggedMember.LoginID]);
+  }, [dispatch, loggedMember.ControllerID, loggedMember.LoginID, setValue]);
 
   const toggleAlarm = alarmState => {
     setLoader(true);
@@ -615,7 +613,7 @@ export default function MyboxScreen({navigation, route}) {
                               }}
                               showPassword={showPassword}
                               pwdVisible={pwdVisible}
-                              value={passcode}
+                              // value={passcode}
                               onChangeText={() => {
                                 handleInputTextChange();
                                 setPasswordError(null);

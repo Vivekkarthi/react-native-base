@@ -177,7 +177,7 @@ export default function HomeScreen({navigation, route}) {
       getMobileNotifyData('');
       getMyBoxData();
     }
-    getAllApiData();
+    // getAllApiData();
     let interval = 0;
     if (route.name === 'Home') {
       interval = setInterval(
