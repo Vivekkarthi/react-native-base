@@ -159,6 +159,7 @@ const ProfileScreen = ({navigation, route}) => {
                 errorobj={errors}
                 refs={NameRef}
                 refField={() => EmailRef.current.focus()}
+                maxLength={20}
               />
             </View>
 
@@ -182,6 +183,7 @@ const ProfileScreen = ({navigation, route}) => {
                 errorobj={errors}
                 refs={EmailRef}
                 refField={() => PhoneNumberRef.current.focus()}
+                maxLength={40}
               />
             </View>
 
@@ -205,6 +207,7 @@ const ProfileScreen = ({navigation, route}) => {
                 errorobj={errors}
                 refs={PhoneNumberRef}
                 refField={() => PasswordRef.current.focus()}
+                maxLength={10}
               />
             </View>
 
@@ -233,6 +236,7 @@ const ProfileScreen = ({navigation, route}) => {
                 showPassword={showPassword}
                 pwdVisible={pwdVisible}
                 refs={PasswordRef}
+                maxLength={20}
               />
             </View>
           </FormProvider>

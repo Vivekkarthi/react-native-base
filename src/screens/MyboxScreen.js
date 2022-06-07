@@ -619,6 +619,7 @@ export default function MyboxScreen({navigation, route}) {
                                 setPasswordError(null);
                               }}
                               refs={PasswordRef}
+                              maxLength={5}
                             />
                           </View>
                         </FormProvider>

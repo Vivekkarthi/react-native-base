@@ -132,6 +132,7 @@ const Inputs = props => {
           onSubmitEditing={props.refField}
           ref={props.refs}
           editable={props.editable}
+          maxLength={props.maxLength}
         />
       );
   }

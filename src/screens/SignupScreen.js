@@ -112,7 +112,7 @@ const SignupScreen = ({navigation}) => {
               autoFocus={true}
               defaultValues={inputUser.Name}
               textLabel={'Name'}
-              // placeHolder={'Name'}
+              maxLength={20}
               textName={'Name'}
               keyboardType="default"
               errorobj={errors}
@@ -142,6 +142,7 @@ const SignupScreen = ({navigation}) => {
               errorobj={errors}
               refs={EmailRef}
               refField={() => PhoneNumberRef.current.focus()}
+              maxLength={40}
             />
           </View>
 
@@ -165,6 +166,7 @@ const SignupScreen = ({navigation}) => {
               errorobj={errors}
               refs={PhoneNumberRef}
               refField={() => PasswordRef.current.focus()}
+              maxLength={10}
             />
           </View>
 
@@ -195,6 +197,7 @@ const SignupScreen = ({navigation}) => {
               pwdVisible={pwdVisible}
               refs={PasswordRef}
               refField={() => ControllerRef.current.focus()}
+              maxLength={20}
             />
           </View>
 
@@ -218,6 +221,7 @@ const SignupScreen = ({navigation}) => {
               keyboardType="default"
               errorobj={errors}
               refs={ControllerRef}
+              maxLength={8}
             />
           </View>
         </FormProvider>

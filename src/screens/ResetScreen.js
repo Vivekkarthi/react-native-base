@@ -126,6 +126,7 @@ const ResetScreen = ({navigation}) => {
                 keyboardType="default"
                 errorobj={errors}
                 refs={EmailRef}
+                maxLength={40}
               />
             </View>
             <Text

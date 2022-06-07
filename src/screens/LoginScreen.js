@@ -212,6 +212,7 @@ const LoginScreen = ({navigation, route}) => {
                           errorobj={errors}
                           refs={PhoneNumberRef}
                           refField={() => PasswordRef.current.focus()}
+                          maxLength={10}
                         />
                       </View>
 
@@ -248,6 +249,7 @@ const LoginScreen = ({navigation, route}) => {
                             showPassword={showPassword}
                             pwdVisible={pwdVisible}
                             refs={PasswordRef}
+                            maxLength={20}
                           />
                         </View>
                       </View>
