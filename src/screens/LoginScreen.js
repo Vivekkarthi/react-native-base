@@ -46,10 +46,14 @@ const LoginScreen = ({navigation, route}) => {
   const PhoneNumberRef = useRef(null);
 
   const methods = useForm({
+    criteriaMode: 'all',
     defaultValues: {
       PhoneNumber: '',
       Password: '',
     },
+    mode: 'all',
+    reValidateMode: 'onChange',
+
     resolver: yupResolver(loginSchema),
   });
   const {

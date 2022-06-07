@@ -623,7 +623,7 @@ export default function MyboxScreen({navigation, route}) {
                           </View>
                         </FormProvider>
 
-                        {passwordError !== '6' ? (
+                        {passwordError !== '' ? (
                           <Text
                             style={{
                               fontSize: 16,

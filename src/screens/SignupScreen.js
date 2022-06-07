@@ -38,6 +38,7 @@ const SignupScreen = ({navigation}) => {
   //
 
   const methods = useForm({
+    criteriaMode: 'all',
     defaultValues: {
       Name: '',
       Email: '',
@@ -45,6 +46,8 @@ const SignupScreen = ({navigation}) => {
       Password: '',
       ControllerId: '',
     },
+    mode: 'all',
+    reValidateMode: 'onChange',
     resolver: yupResolver(registerSchema),
   });
   const {
