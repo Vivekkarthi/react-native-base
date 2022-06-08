@@ -1,13 +1,13 @@
 import * as yup from 'yup';
 
 const loginSchema = yup.object().shape({
-  PhoneNumber: yup.string().required('Login ID is required'),
-  Password: yup.string().max(10).required(),
+  PhoneNumber: yup.string().max(20).required('Login ID is required'),
+  Password: yup.string().max(20).required(),
 });
 
 const registerSchema = yup.object().shape({
   Name: yup.string().min(2).max(20).trim().required('Name is required'),
-  Email: yup.string().email().max(20).trim().required(),
+  Email: yup.string().email().max(40).trim().required(),
   PhoneNumber: yup
     .string()
     .trim()
@@ -17,7 +17,7 @@ const registerSchema = yup.object().shape({
   Password: yup
     .string()
     .trim()
-    .max(10)
+    .max(20)
     // .min(6)
     // .max(24)
     // .matches(
@@ -37,7 +37,7 @@ const addUserSchema = yup.object().shape({
     .matches(/^\d+$/, 'Please Enter Valid Mobile Number')
     .matches(/^\d{3}\d{3}\d{4}$/, 'Mobile number needs to be 10 digits')
     .required('Mobile is required'),
-  Password: yup.string().trim().required(),
+  Password: yup.string().max(20).required(),
 });
 
 const resetPassSchema = yup.object().shape({

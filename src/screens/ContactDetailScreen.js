@@ -10,6 +10,7 @@ import {
 import {Button} from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Toast from 'react-native-simple-toast';
 
 import AppStatusBar from '../components/AppStatusBar';
 import {COLORS} from '../constants';
@@ -24,6 +25,7 @@ const ContactDetailScreen = ({navigation, route}) => {
   const {loggedMember} = useSelector(state => state.AuthState);
   const {ticketResponseDetails} = useSelector(state => state.TicketStateState);
   const [btnDisable, setBtnDisable] = useState(true);
+  const [contactError, setContactError] = useState('');
   const [open, setOpen] = useState(false);
   const [supportValue, setSupportValue] = useState(
     !isEmpty(hasSupportData) ? hasSupportData.SCID : null,
@@ -49,6 +51,7 @@ const ContactDetailScreen = ({navigation, route}) => {
             navigation.navigate('Contacts', {reload: true});
           } else {
             setBtnDisable(true);
+            setContactError(resp);
             setSupportError({
               success: 2,
               message: 'Something went wrong, Please try again.',
@@ -57,11 +60,7 @@ const ContactDetailScreen = ({navigation, route}) => {
         })
         .catch(e => console.log(e));
     } else {
-      Toast.showWithGravity(
-        `Complete the form without inputs`,
-        Toast.LONG,
-        Toast.BOTTOM,
-      );
+      setContactError(`Please enter your question and select the category`);
     }
   };
 
@@ -195,6 +194,18 @@ const ContactDetailScreen = ({navigation, route}) => {
                 color: '#D83F50',
               }}>
               {supportError.message}
+            </Text>
+          ) : null}
+          {!isEmpty(contactError) ? (
+            <Text
+              style={{
+                fontSize: 16,
+                //paddingTop: 120,
+                fontFamily: 'Lato-Regular',
+                textAlign: 'center',
+                color: '#D83F50',
+              }}>
+              {contactError}
             </Text>
           ) : null}
         </View>

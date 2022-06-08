@@ -605,7 +605,7 @@ export default function MyboxScreen({navigation, route}) {
                               defaultValues={passcode}
                               textLabel={'Password'}
                               textName={'Password'}
-                              keyboardType="default"
+                              keyboardType="numeric"
                               errorobj={errors}
                               showHidePassword={() => {
                                 setPwdVisible(!pwdVisible);

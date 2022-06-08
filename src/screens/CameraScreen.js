@@ -7,6 +7,7 @@ import {
   Image,
   Text,
   RefreshControl,
+  Dimensions,
 } from 'react-native';
 
 import AppStatusBar from '../components/AppStatusBar';
@@ -24,6 +25,7 @@ import Toast from 'react-native-simple-toast';
 import {useDispatch} from 'react-redux';
 import Lightbox from 'react-native-lightbox-v2';
 import {Button} from 'react-native-paper';
+const {width, height} = Dimensions.get('window');
 
 const viewConfigRef = {viewAreaCoveragePercentThreshold: 95};
 
@@ -105,7 +107,20 @@ const CameraScreen = ({navigation, route}) => {
   const renderItemInternal = ({item, index}) => {
     return (
       <TouchableOpacity onPress={() => {}} activeOpacity={1}>
-        <View style={{flex: 1}}>
+        <View
+          style={{
+            flex: 1,
+            width: width - 20,
+            height: height / 3,
+            backgroundColor: 'white',
+            margin: 10,
+            borderRadius: 10,
+            shadowColor: '#000',
+            shadowOffset: {width: 0.5, height: 0.5},
+            shadowOpacity: 0.5,
+            shadowRadius: 3,
+            elevation: 5,
+          }}>
           <Lightbox
             backgroundColor="black"
             doubleTapMaxZoom={4}
@@ -145,6 +160,7 @@ const CameraScreen = ({navigation, route}) => {
                     color={COLORS.secondary}
                     onPress={() => rotateLeft('internal')}
                   />
+
                   <Feather
                     name="rotate-cw"
                     size={23}
@@ -158,8 +174,8 @@ const CameraScreen = ({navigation, route}) => {
               <Image
                 style={{
                   borderRadius: 4,
-                  width: 400,
-                  height: 200,
+                  width: width - 20,
+                  height: height / 3,
                   resizeMode: 'cover',
                   marginTop: 5,
                   marginBottom: 5,
@@ -193,7 +209,20 @@ const CameraScreen = ({navigation, route}) => {
   const renderItemExternal = ({item, index}) => {
     return (
       <TouchableOpacity onPress={() => {}} activeOpacity={1}>
-        <View style={{flex: 1}}>
+        <View
+          style={{
+            flex: 1,
+            width: width - 20,
+            height: height / 3,
+            backgroundColor: 'white',
+            margin: 10,
+            borderRadius: 10,
+            shadowColor: '#000',
+            shadowOffset: {width: 0.5, height: 0.5},
+            shadowOpacity: 0.5,
+            shadowRadius: 3,
+            elevation: 5,
+          }}>
           <Lightbox
             backgroundColor="black"
             doubleTapMaxZoom={4}
@@ -246,8 +275,8 @@ const CameraScreen = ({navigation, route}) => {
               <Image
                 style={{
                   borderRadius: 4,
-                  width: 400,
-                  height: 200,
+                  width: width - 20,
+                  height: height / 3,
                   resizeMode: 'cover',
                   marginTop: 5,
                   marginBottom: 5,
@@ -333,8 +362,12 @@ const CameraScreen = ({navigation, route}) => {
                       keyExtractor={(item, index) => index.toString()}
                       renderItem={renderItemInternal}
                       horizontal
-                      showsHorizontalScrollIndicator={false}
                       pagingEnabled
+                      scrollEnabled
+                      snapToAlignment="center"
+                      scrollEventThrottle={16}
+                      decelerationRate={'fast'}
+                      showsHorizontalScrollIndicator={false}
                       ref={ref => {
                         flatListRef.current = ref;
                       }}
@@ -389,8 +422,12 @@ const CameraScreen = ({navigation, route}) => {
                       keyExtractor={(item, index) => index.toString()}
                       renderItem={renderItemExternal}
                       horizontal
-                      showsHorizontalScrollIndicator={false}
                       pagingEnabled
+                      scrollEnabled
+                      snapToAlignment="center"
+                      scrollEventThrottle={16}
+                      decelerationRate={'fast'}
+                      showsHorizontalScrollIndicator={false}
                       ref={ref => {
                         flatListRef.current = ref;
                       }}
