@@ -62,10 +62,8 @@ const OnboardingScreen = ({navigation}) => {
                 resizeMode="stretch"
               />
               <Image
-                style={{height: 330, width: 420}}
-                source={{
-                  uri: 'https://dbmobileapp.s3.us-west-1.amazonaws.com/images/db1.jpg',
-                }}
+                style={{height: 340, width: 410}}
+                source={require('../../assets/images/output-onlinepngtools.png')}
               />
             </>
           ),
@@ -86,10 +84,8 @@ const OnboardingScreen = ({navigation}) => {
                 resizeMode="stretch"
               />
               <Image
-                style={{height: 330, width: 420}}
-                source={{
-                  uri: 'https://dbmobileapp.s3.us-west-1.amazonaws.com/images/db2.jpg',
-                }}
+                style={{height: 380, width: 400}}
+                source={require('../../assets/images/onboard1.jpeg')}
               />
             </>
           ),
@@ -110,10 +106,8 @@ const OnboardingScreen = ({navigation}) => {
                 resizeMode="stretch"
               />
               <Image
-                style={{height: 240, width: 420}}
-                source={{
-                  uri: 'https://dbmobileapp.s3.us-west-1.amazonaws.com/images/db3.jpg',
-                }}
+                style={{height: 340, width: 410}}
+                source={require('../../assets/images/onboard2.jpeg')}
               />
             </>
           ),
