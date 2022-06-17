@@ -355,7 +355,7 @@ const CameraScreen = ({navigation, route}) => {
                   }}>
                   Internal Camera
                 </Text>
-                {homeDetails.Photos.length ? (
+                {homeDetails.Photos && homeDetails.Photos.length ? (
                   <>
                     <FlatList
                       data={homeDetails.Photos}
@@ -415,7 +415,7 @@ const CameraScreen = ({navigation, route}) => {
                   External Camera
                 </Text>
 
-                {homeDetails.ExternalPhotos.length ? (
+                {homeDetails.Photos && homeDetails.ExternalPhotos.length ? (
                   <>
                     <FlatList
                       data={homeDetails.ExternalPhotos}
