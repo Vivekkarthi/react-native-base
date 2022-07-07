@@ -409,6 +409,7 @@ const CameraScreen = ({navigation, route}) => {
                     fontSize: 18,
                     backgroundColor: '#178b93',
                     color: COLORS.white,
+                    display: loggedMember.V3Version === 1 ? 'none' : 'flex',
                     paddingBottom: 10,
                     paddingTop: 9,
                   }}>
@@ -419,6 +420,9 @@ const CameraScreen = ({navigation, route}) => {
                   <>
                     <FlatList
                       data={homeDetails.ExternalPhotos}
+                      style={{
+                        display: loggedMember.V3Version === 1 ? 'none' : 'flex',
+                      }}
                       keyExtractor={(item, index) => index.toString()}
                       renderItem={renderItemExternal}
                       horizontal
@@ -435,7 +439,14 @@ const CameraScreen = ({navigation, route}) => {
                       onViewableItemsChanged={onViewRef.current}
                     />
                     {homeDetails.ExternalPhotos.length > 1 && (
-                      <View style={styles.packageDotView}>
+                      <View
+                        style={[
+                          styles.packageDotView,
+                          {
+                            display:
+                              loggedMember.V3Version === 1 ? 'none' : 'flex',
+                          },
+                        ]}>
                         {homeDetails.ExternalPhotos.map(({}, index) => (
                           <TouchableOpacity
                             key={index.toString()}
@@ -455,7 +466,12 @@ const CameraScreen = ({navigation, route}) => {
                   </>
                 ) : (
                   <Image
-                    style={[styles.cameraImage, styles.mt5, styles.mb5]}
+                    style={[
+                      styles.cameraImage,
+                      styles.mt5,
+                      styles.mb5,
+                      {display: loggedMember.V3Version === 1 ? 'none' : 'flex'},
+                    ]}
                     source={require('../../assets/images/no-image.jpg')}
                   />
                 )}

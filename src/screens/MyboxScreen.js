@@ -75,7 +75,11 @@ export default function MyboxScreen({navigation, route}) {
 
   const getMyBoxData = useCallback(() => {
     setLoader(true);
-    fetchBoxData(loggedMember.LoginID, loggedMember.ControllerID)
+    fetchBoxData(
+      loggedMember.LoginID,
+      loggedMember.ControllerID,
+      loggedMember.V3Version,
+    )
       .then(async resp => {
         setOnTakePhoto(pre => ({
           ...pre,
@@ -99,7 +103,13 @@ export default function MyboxScreen({navigation, route}) {
         setLoader(false);
         Toast.showWithGravity(error.message, Toast.LONG, Toast.BOTTOM);
       });
-  }, [dispatch, loggedMember.ControllerID, loggedMember.LoginID, setValue]);
+  }, [
+    dispatch,
+    loggedMember.ControllerID,
+    loggedMember.LoginID,
+    loggedMember.V3Version,
+    setValue,
+  ]);
 
   const toggleAlarm = alarmState => {
     setLoader(true);
@@ -312,18 +322,22 @@ export default function MyboxScreen({navigation, route}) {
                       </View>
 
                       <View style={{height: '60%'}}>
-                        <Entypo
+                        <MaterialCommunityIcons
                           style={{
                             alignSelf: 'center',
-                            marginTop: 10,
                           }}
-                          name={'camera'}
-                          color={
-                            onTakePhoto.internal
-                              ? COLORS.messageColor4
-                              : 'green'
+                          name={
+                            boxDetails.OnDemandPhoto1 === 1
+                              ? 'camera'
+                              : 'camera-off'
                           }
-                          size={80}
+                          color={
+                            //onTakePhoto.internal
+                            boxDetails.OnDemandPhoto1 === 1
+                              ? 'green'
+                              : COLORS.messageColor4
+                          }
+                          size={100}
                         />
                       </View>
                     </Card>
@@ -367,6 +381,7 @@ export default function MyboxScreen({navigation, route}) {
                   style={{
                     flexDirection: 'column',
                     justifyContent: 'center',
+                    display: loggedMember.V3Version === 1 ? 'none' : 'flex',
                     width: '48%',
                     height: 150,
                   }}>
