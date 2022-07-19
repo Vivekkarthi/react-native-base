@@ -213,7 +213,7 @@ const CameraScreen = ({navigation, route}) => {
           style={{
             flex: 1,
             width: width - 20,
-            height: height / 3,
+            height: '100%',
             backgroundColor: 'white',
             margin: 10,
             borderRadius: 10,
@@ -222,6 +222,7 @@ const CameraScreen = ({navigation, route}) => {
             shadowOpacity: 0.5,
             shadowRadius: 3,
             elevation: 5,
+            transform: [{rotate: '-90deg'}],
           }}>
           <Lightbox
             backgroundColor="black"
@@ -281,7 +282,7 @@ const CameraScreen = ({navigation, route}) => {
                   marginTop: 5,
                   marginBottom: 5,
                   transform: [{rotate: `${externalRotation}deg`}],
-                  //transform: [{rotateX: '180deg'}],
+                  // transform: [{rotate: '-90deg'}],
                 }}
                 source={
                   item.Filename
@@ -297,7 +298,7 @@ const CameraScreen = ({navigation, route}) => {
         <Text
           style={{
             textAlign: 'center',
-            color: '#000000',
+            color: '#fff',
             fontWeight: 'bold',
             lineHeight: 35,
           }}>
@@ -411,6 +412,7 @@ const CameraScreen = ({navigation, route}) => {
                     color: COLORS.white,
                     display: loggedMember.V3Version === 1 ? 'none' : 'flex',
                     paddingBottom: 10,
+                    marginBottom: 10,
                     paddingTop: 9,
                   }}>
                   External Camera

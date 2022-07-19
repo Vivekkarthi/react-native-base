@@ -45,7 +45,7 @@ const resetPassSchema = yup.object().shape({
 });
 
 const controllerPasswordSchema = yup.object().shape({
-  Password: yup.string().max(5).required(),
+  Password: yup.string().min(5).max(5).required(),
 });
 
 export {
