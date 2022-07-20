@@ -148,7 +148,7 @@ const CameraScreen = ({navigation, route}) => {
                     Close
                   </Text>
                 </TouchableOpacity>
-                <View
+                {/* <View
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
@@ -167,7 +167,7 @@ const CameraScreen = ({navigation, route}) => {
                     color={COLORS.secondary}
                     onPress={() => rotateRight('internal')}
                   />
-                </View>
+                </View> */}
               </>
             )}>
             <>
@@ -212,24 +212,25 @@ const CameraScreen = ({navigation, route}) => {
         <View
           style={{
             flex: 1,
-            width: width - 20,
-            height: '100%',
-            backgroundColor: 'white',
-            margin: 10,
-            borderRadius: 10,
-            shadowColor: '#000',
-            shadowOffset: {width: 0.5, height: 0.5},
-            shadowOpacity: 0.5,
-            shadowRadius: 3,
-            elevation: 5,
-            transform: [{rotate: '-90deg'}],
+            // width: width - 20,
+            // height: '100%',
+            //backgroundColor: 'white',
+            // margin: 10,
+            // borderRadius: 10,
+            // shadowColor: '#000',
+            //shadowOffset: {width: 0.5, height: 0.5},
+            // shadowOpacity: 0.5,
+            // shadowRadius: 3,
+            // elevation: 5,
+            //transform: [{rotate: '-90deg'}],
+            //transform: [{rotate: `${externalRotation}deg`}],
           }}>
           <Lightbox
             backgroundColor="black"
             doubleTapMaxZoom={4}
             doubleTapZoomStep={1}
             springConfig={{tension: 15, friction: 7}}
-            swipeToDismiss={false}
+            swipeToDismiss={true}
             renderHeader={close => (
               <>
                 <TouchableOpacity
@@ -251,7 +252,7 @@ const CameraScreen = ({navigation, route}) => {
                     Close
                   </Text>
                 </TouchableOpacity>
-                <View
+                {/* <View
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
@@ -269,20 +270,20 @@ const CameraScreen = ({navigation, route}) => {
                     color={COLORS.secondary}
                     onPress={() => rotateRight('external')}
                   />
-                </View>
+                </View> */}
               </>
             )}>
             <>
               <Image
                 style={{
                   borderRadius: 4,
-                  width: width - 20,
-                  height: height / 3,
+                  width: width + 15,
+                  height: height / 2.5,
                   resizeMode: 'cover',
                   marginTop: 5,
                   marginBottom: 5,
-                  transform: [{rotate: `${externalRotation}deg`}],
-                  // transform: [{rotate: '-90deg'}],
+                  //transform: [{rotate: `${externalRotation}deg`}],
+                  transform: [{rotate: '-90deg'}],
                 }}
                 source={
                   item.Filename
@@ -298,9 +299,10 @@ const CameraScreen = ({navigation, route}) => {
         <Text
           style={{
             textAlign: 'center',
-            color: '#fff',
+            color: '#000',
             fontWeight: 'bold',
-            lineHeight: 35,
+            lineHeight: 30,
+            marginTop: 60,
           }}>
           {item.DateTimeX}
         </Text>
