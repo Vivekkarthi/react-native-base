@@ -20,4 +20,5 @@ export const ENDPOINTURL = {
   MemberSaveTicketResponse: 'APISaveTicketReponse/',
   MemberPackage: 'ApiGetPackageDelivery/',
   MemberManualURL: 'ApiGetManualURL/',
+  MemberDeleteuserAccount: 'ApiDeleteUserAccountMASTER/',
 };

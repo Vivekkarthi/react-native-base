@@ -13,12 +13,14 @@ import {
 } from '@react-navigation/drawer';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Button} from 'react-native-paper';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {logoutSuccess} from '../redux/actions/AuthState';
 import {isEmpty} from 'lodash';
 
 const CustomDrawer = props => {
+  console.log('propspropspropspropsprops', props);
   const {loggedMember} = useSelector(state => state.AuthState);
   const dispatch = useDispatch();
   const logoutUser = async () => {
@@ -56,7 +58,7 @@ const CustomDrawer = props => {
                 marginLeft: 20,
                 color: '#0059b3',
                 fontSize: 18,
-                fontFamily: 'Roboto-Medium',
+                fontFamily: 'Lato-Regular',
                 fontWeight: 'bold',
                 marginBottom: 5,
               }}>
@@ -67,7 +69,7 @@ const CustomDrawer = props => {
                 marginLeft: 20,
                 color: '#000',
                 fontSize: 18,
-                fontFamily: 'Roboto-Medium',
+                fontFamily: 'Lato-Regular',
                 marginBottom: 5,
               }}>
               Controller: {loggedMember.ControllerName}
@@ -84,6 +86,14 @@ const CustomDrawer = props => {
         </View>
       </DrawerContentScrollView>
       <View style={{padding: 20, borderTopWidth: 1, borderTopColor: '#ccc'}}>
+        {/* <View style={{flexDirection: 'row'}}>
+        <Button
+            mode="contained"
+            onPress={() => props.navigation.navigate('AccountDelete')}
+            style={{alignSelf: 'flex-end'}}>
+            Delete Account
+          </Button>
+          </View> */}
         <TouchableOpacity
           style={{paddingVertical: 30}}
           onPress={() => logoutUser()}>
@@ -92,7 +102,7 @@ const CustomDrawer = props => {
             <Text
               style={{
                 fontSize: 15,
-                fontFamily: 'Roboto-Medium',
+                fontFamily: 'Lato-Regular',
                 marginLeft: 5,
                 fontWeight: 'bold',
               }}>

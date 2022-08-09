@@ -1,10 +1,9 @@
 import {clearAppData, getRequest, postRequest} from '../../utils/Handlers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {isEqual} from 'lodash';
-import {NetworkInfo} from 'react-native-network-info';
 import DeviceInfo from 'react-native-device-info';
 import {ENDPOINTURL} from '../../utils/Constants';
-import {getFcmToken} from '../../utils/NotificationServices';
+// import {getFcmToken} from '../../utils/NotificationServices';
 
 export const initialState = {
   loggedMember: {},
@@ -59,7 +58,8 @@ export async function memberLogin(userData, navigation) {
 }
 
 export async function memberMobileToken(userData) {
-  const fcmToken = await getFcmToken();
+  // const fcmToken = await getFcmToken();
+  const fcmToken = '';
   const queryParams = `sK=token&hardwareid=&userid=${userData.USERRECORDID}&sTokenx=${fcmToken}`;
   const params = {
     url: ENDPOINTURL.MemberMobileToken,
@@ -116,6 +116,21 @@ export function memberDeleteuser(recordId) {
     queryParams,
   };
 
+  return postRequest(params)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      throw error;
+    });
+}
+
+export function memberDeleteuserAccount(loggedMember) {
+  const queryParams = `sK=token&iUSERID=${loggedMember.USERRECORDID}&iRoleID=${loggedMember.RoleID}&CustID=${loggedMember.CustID}`;
+  const params = {
+    url: ENDPOINTURL.MemberDeleteuserAccount,
+    queryParams,
+  };
   return postRequest(params)
     .then(response => {
       return response;

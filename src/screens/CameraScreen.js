@@ -18,13 +18,12 @@ import {COLORS} from '../constants';
 import {useSelector} from 'react-redux';
 import StaticBottomTabs from '../components/StaticBottomTabs';
 import styles from '../styles/AppStyles';
-import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 import moment from 'moment';
 import {fetchHomeData, saveMemberHomeDetails} from '../redux/actions/HomeState';
 import Toast from 'react-native-simple-toast';
 import {useDispatch} from 'react-redux';
 import Lightbox from 'react-native-lightbox-v2';
-import {Button} from 'react-native-paper';
+
 const {width, height} = Dimensions.get('window');
 
 const viewConfigRef = {viewAreaCoveragePercentThreshold: 95};

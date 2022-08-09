@@ -2,8 +2,8 @@ import React from 'react';
 import {Alert, Image, TouchableOpacity, View} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Foundation from 'react-native-vector-icons/Foundation';
 import Feather from 'react-native-vector-icons/Feather';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch} from 'react-redux';
 
 import BottomTabNavigator from './BottomTabNavigator';
@@ -24,6 +24,7 @@ import {COLORS} from '../constants';
 import UserDetailScreen from '../screens/UserDetailScreen';
 
 import WebViewUI from '../components/WebViewUI';
+import AccountDeleteScreen from '../screens/AccountDeleteScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -141,7 +142,7 @@ const AppStack = () => {
         drawerInactiveTintColor: '#333',
         drawerLabelStyle: {
           marginLeft: -25,
-          fontFamily: 'Roboto-Medium',
+          fontFamily: 'Lato-Regular',
           fontSize: 15,
         },
       }}>
@@ -249,12 +250,17 @@ const AppStack = () => {
         }}
       />
       <Drawer.Screen
-        name=" Mobile Notifications"
+        name="Mobile Notifications"
         component={MobileNotificationsScreen}
         options={{
           headerShown: true,
           drawerIcon: ({color}) => (
-            <Foundation name="mail" size={24} color={color} style={{left: 2}} />
+            <Ionicons
+              name="ios-notifications-outline"
+              size={22}
+              color={color}
+              style={{left: 2}}
+            />
           ),
           headerTitleAlign: 'center',
           headerTitle: () => (
@@ -410,6 +416,20 @@ const AppStack = () => {
           headerShown: true,
           drawerIcon: ({color}) => (
             <Feather name="file" size={22} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Account Delete"
+        component={AccountDeleteScreen}
+        options={{
+          headerShown: true,
+          drawerIcon: color => (
+            <MaterialCommunityIcons
+              name="delete-alert-outline"
+              size={22}
+              color={color}
+            />
           ),
         }}
       />
